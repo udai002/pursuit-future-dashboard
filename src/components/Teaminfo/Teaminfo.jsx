@@ -1,11 +1,15 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Addteamform from './Addteamform';
 import { useState } from 'react';
 import Addemployeeform from './Addemployeeform';
 import Table from '../table'
+import arrow from "../../assets/arrow.png"
+import { useNavigate } from 'react-router';
 
 const Teaminfo = () => {
   const [modalType, setModalType] = useState(null);
+  const[team,setTeam]=useState([])
+  const navigate = useNavigate()
 
   const handleOpenModal = (type) => {
     setModalType(type);
@@ -15,10 +19,35 @@ const Teaminfo = () => {
     setModalType(null);
   };
 
+  const Teams = async()=>{
+    try{
+    const data = await fetch("http://localhost:3000/team/team")
+    const response = await data.json()
+    setTeam(response)
+    }
+    catch(error){
+      console.log("error occured",error)
+    }
+    
+  }
+
+  useEffect(()=>{
+    Teams()
+  },[])
+
   const columns = [
-    { id: 'Team Name', header: 'Team Name' },
+    { id: 'name', header: 'Team Name', cell:(row)=>(
+    <button onClick={() => navigate(`/teams/${row.id}/employees`, { state: row })}>
+        <div className='flex jusify-center align-center item-center gap-2'>
+        <p className='text-[#004aad]'>{row.name}</p>
+        <img src={arrow} alt="arrow" className='w-3 h-3' />
+
+      </div>
+      </button>
+    )},
+
     { id: 'No. of Members', header: 'No. of Members' },
-    { id: 'Contact Number', header: 'Contact Number' },
+    { id: 'contact', header: 'Contact Number' },
     { id: 'Payment Count', header: 'Payment Count' },
     { id: 'Action', header: 'Action' }
   ]
@@ -39,8 +68,8 @@ const Teaminfo = () => {
           </div>
         </div>
       </div>
-      <div>
-        <Table />
+      <div className='p-10'>
+        <Table  data={team} columns={columns}/>
 
       </div>
       {modalType === 'team' && (

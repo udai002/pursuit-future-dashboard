@@ -7,7 +7,7 @@ import { Toaster } from "react-hot-toast";
 import Announcements from "./components/announcements";
 import Teaminformation from "./pages/Teaminformation";
 import EmployeeTable from "./components/Teaminfo/EmployeeTable";
-import OverView from "./pages/Overview/OverViewPage";
+import OverView from "./pages/Overview/Teamlead";
 import DigitalMarketing from "./pages/Overview/DigitalMarketing";
 import TL from "./pages/Overview/TL";
 import Operations from "./pages/Overview/Operations";
@@ -15,7 +15,9 @@ import HR from "./pages/Overview/HR";
 import HROverView from "./pages/Overview/HR";
 import PostSales from "./pages/Overview/PostSales";
 import Intern from "./pages/Overview/Intern";
-import OverViewPage from "./pages/Overview/OverViewPage";
+import OverViewPage from "./pages/Overview/Teamlead";
+import Teamlead from "./pages/Overview/Teamlead";
+import Superadmin from "./pages/Overview/Superadmin";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -29,18 +31,20 @@ function App() {
         <Route path="/teams/:teamid/employees" Component={EmployeeTable} />
         <Route path="/overview" Component={OverViewPage} />
 
-        <Route path="/overview" Component={DigitalMarketing} />
-        <Route path="/overview" Component={Intern} />
+        <Route path="/DigitalMarketing" Component={DigitalMarketing} />
+        <Route path="/intern" Component={Intern} />
 
-        <Route path="/overview" Component={TL} />
+        <Route path="/leamlead" Component={Teamlead} />
 
-        <Route path="/overview" Component={Operations} />
+        <Route path="/operations" Component={Operations} />
 
-        <Route path="/overview" Component={HROverView} />
+        <Route path="/HROverView" Component={HROverView} />
 
-        <Route path="/overview" Component={PostSales} />
+        <Route path="/poatleaves" Component={PostSales} />
+         <Route path="/admin" Component={Superadmin} />
 
-        <Route path="/overview" Component={OverView} />
+
+       
       </Routes>
       <Toaster></Toaster>
     </>

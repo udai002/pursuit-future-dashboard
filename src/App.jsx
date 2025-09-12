@@ -9,19 +9,22 @@ import Teaminformation from "./pages/Teaminformation"
 import EmployeeTable from './components/Teaminfo/EmployeeTable'
 import Attendence from "./components/Attendence"
 
+
 function App() {
   const [count, setCount] = useState(0)
 
   return (
     <>
-     <Routes>
-      <Route path='/' Component={Home} />
-      <Route path='/announcements' Component={Announcements} />
-      <Route path='/teaminfo' Component={Teaminformation}/>
-           <Route path='/teams/:teamid/employees' Component={EmployeeTable}/>
-            <Route path='/attendence' Component={Attendence} />
-            <Toaster></Toaster>
-     </Routes>
+      <Routes>
+        <Route path='/' Component={Home} />
+        <Route path='/announcements' Component={Announcements} />
+        <Route path='/teaminfo' Component={Teaminformation} />
+        <Route path='/teams/:teamid/employees' Component={EmployeeTable} />
+        <Route path='/attendence' Component={Attendence} />
+        <Route path="/login" Component={Signin} />
+        
+      </Routes>
+      <Toaster></Toaster>
     </>
   )
 }

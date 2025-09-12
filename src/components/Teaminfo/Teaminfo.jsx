@@ -7,6 +7,7 @@ import arrow from "../../assets/arrow.png"
 import { useNavigate } from 'react-router';
 import Delete from '../../assets/Teaminfo/delete.svg';
 import Edit from '../../assets/Teaminfo/edit.svg';
+import toast, {Toaster} from 'react-hot-toast'
 
 const Teaminfo = () => {
   const [modalType, setModalType] = useState(null);
@@ -18,15 +19,15 @@ const Teaminfo = () => {
    const handleOpenModal = (type, data = null) => {
     setModalType(type);
     if (type === 'team' && data) {
-      setEditData(data);
+      setEditAddteam(data);
     } else {
-      setEditData(null);
+      setEditAddteam(null);
     }
   };
 
    const handleCloseModal = () => {
     setModalType(null);
-    setEditData(null);
+    setEditAddteam(null);
     Teams(); 
   };
 
@@ -55,7 +56,7 @@ const Teaminfo = () => {
         method: 'DELETE',
       });
       if (response.ok) {
-        alert("are you sure")
+        toast.warning("are you sure")
         console.log('Team deleted successfully');
         Teams();
       } else {

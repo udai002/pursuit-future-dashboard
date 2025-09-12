@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
+import toast, {Toaster} from 'react-hot-toast'
 
 
 
-const Addteamform = ({ onClose , editAddteam}) => {
+const Addteamform = ({ onClose, editAddteam }) => {
     const [loading, setLoading] = useState(true)
     const [formData, setFormData] = useState({
         location: '',
@@ -15,7 +16,7 @@ const Addteamform = ({ onClose , editAddteam}) => {
             setFormData({
                 location: editAddteam.location,
                 name: editAddteam.name,
-                 contact: editAddteam.contact,
+                contact: editAddteam.contact,
             });
         }
     }, [editAddteam])
@@ -30,27 +31,31 @@ const Addteamform = ({ onClose , editAddteam}) => {
         e.preventDefault();
         try {
             const method = editAddteam ? 'PUT' : 'POST';
-            console.log(editAddteam._id);
             const url = editAddteam ? `http://localhost:3000/team/team/${editAddteam._id}`
-            : 'http://localhost:3000/team/team';
+                : 'http://localhost:3000/team/team';
 
-            const response = await fetch (url, {
+            const response = await fetch(url, {
                 method: method,
-                   body: JSON.stringify({
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
                     ...formData,
                     contact: Number(formData.contact),
-            })
+                })
             });
-            if (response.ok) {
-                alert('data added successfully')
+
+            if (response) {
+                console.log(response)
+               toast.success(editAddteam ? 'Team updated successfully' : 'Team added successfully');
                 if (onClose) onClose();
             } else {
                 const errorData = await response.json();
-                alert('Failed to add team.');
+               toast.error('Failed to add team.');
             }
         } catch (e) {
             console.log('Data not added', e);
-            alert('Error connecting to the server.');
+            toast.error('Error connecting to the server.');
         }
     };
 

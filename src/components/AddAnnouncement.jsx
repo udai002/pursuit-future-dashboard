@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 const AddAnnouncement = ({ onClose, refreshData, editAnnocement }) => {
+  const [loading,setLoading]=useState(false)
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -26,42 +27,46 @@ const AddAnnouncement = ({ onClose, refreshData, editAnnocement }) => {
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const fd = new FormData();
-    fd.append("title", formData.title);
-    fd.append("description", formData.description);
-    if (formData.image) {
-      fd.append("image", formData.image[0]);
+ const handleSubmit = async (e) => {
+  setLoading(true)
+   e.preventDefault();
+   const fd = new FormData();
+   fd.append("title", formData.title);
+   fd.append("description", formData.description);
+   if (formData.image) {
+     fd.append("image", formData.image); 
     }
 
-    try {
-      const method = editAnnocement ? "PUT" : "POST";
-      console.log(editAnnocement._id);
-      const url = editAnnocement
-        ? `http://localhost:3000/announcement/announcement/${editAnnocement._id}`
-        : "http://localhost:3000/announcement/announcement";
-      const response = await fetch(url, {
-        method: method,
-        body: fd,
-      });
+   try {
+     const method = editAnnocement ? "PUT" : "POST";
+     const url = editAnnocement
+       ? `http://localhost:3000/announcement/announcement/${editAnnocement._id}`
+       : "http://localhost:3000/announcement/announcement";
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(
-          errorText || `Server responded with status: ${response.status}`
-        );
-      }
+     const response = await fetch(url, {
+       method,
+       body: fd,
+     });
 
-      const data = await response.json();
-      console.log("Response data:", data);
+     if (!response.ok) {
+       const errorText = await response.text();
+       throw new Error(
+         errorText || `Server responded with status: ${response.status}`
+       );
+     }
 
-      refreshData();
-      onClose();
-    } catch (error) {
-      console.error("Error creating announcement:", error.message);
-    }
-  };
+     const data = await response.json();
+     console.log("Response data:", data);
+     setLoading(false)
+
+     refreshData();
+     onClose();
+   } catch (error) {
+     console.error("Error creating announcement:", error.message);
+         setLoading(false);
+   }
+ };
+
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -114,7 +119,7 @@ const AddAnnouncement = ({ onClose, refreshData, editAnnocement }) => {
                 type="submit"
                 className="bg-[#004AAD] px-7 text-lg rounded-lg text-white h-12"
               >
-                Publish
+              {loading?"Publishing..." :" Publish"}
               </button>
             </div>
           </div>

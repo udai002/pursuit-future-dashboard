@@ -5,14 +5,14 @@ const Table = ({ data, columns, emptyMessage = "No data available." }) => {
     
 console.log(data)
     return (
-      <div className=" w-full justify-center align-center overflow-y-auto h-[70vh] pt-4">
+      <div className=" w-full justify-center align-center pt-4">
         <div className="flex w-full justify-center align-center">
           <table className="w-[100%] border-collapse overflow-auto sticky">
             <thead>
               <tr className="">
                 {columns.map((col) => (
                   <th
-                    className="px-4 py-1 border-b border-[#004AAD] text-[#444444] bg-[#ffffff]"
+                    className="px-4 py-1 border-b border-[#004AAD] text-[#444444] bg-[#E6EDF7]"
                     key={col.id}
                   >
                     {col.header}

@@ -125,7 +125,7 @@ const Announcements = () => {
               ✕
             </button>
             <img
-              src={showImage}
+              src={`http://localhost:3000${showImage}`}
               alt="Announcement"
               className="max-h-[80vh] w-auto mx-auto"
             />

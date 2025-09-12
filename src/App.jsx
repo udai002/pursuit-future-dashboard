@@ -12,7 +12,7 @@ import Payment from './pages/Home/pay';
 import Lead from './pages/Home/lead';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
 
   return (
     <>
@@ -27,7 +27,7 @@ function App() {
      </Routes>
      <Toaster></Toaster>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

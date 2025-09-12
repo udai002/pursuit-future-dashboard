@@ -1,13 +1,97 @@
-import React from 'react'
 
-export default function Announcements() {
+import React, { useEffect, useState } from "react";
+import AddAnnouncement from "./AddAnnouncement";
+import Table from "./table";
+
+const Announcements = () => {
+  const [modalType, setModalType] = useState(null);
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [showImage, setShowImage] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:3000/announcement/announcement"
+        );
+        const result = await response.json();
+        setData(result);
+      } catch (error) {
+        console.log("error", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const onClose = ()=>{
+    setModalType(null)
+  }
+
+  const columns = [
+    { id: "announcementId", header: "Announcement ID" },
+    { id: "title", header: "Title" },
+    { id: "createdAt", header: "Publish Date" },
+    { id: "description", header: "Description" },
+    {
+      id: "image",
+      header: "Image",
+      cell: (row) => (
+        <button
+          className="text-[#004AAD]"
+          onClick={() => {
+            if (row.image) {
+              setShowImage(row.image);
+              setModalType("image");
+            }
+          }}
+        >
+          View Image
+        </button>
+      ),
+    },
+  ];
+
   return (
-    <div className='m-6 h-80 border-[#004AAD]   border rounded-md bg-[#004AAD1A] items-center cursor-pointer'>
-        <div className='p-2'>
-            <h1 className='text-[#004AAD]  text-2xl'>Announcements</h1>
+    <div className="">
+      <div className="flex justify-between">
+        <p>Announcements</p>
+        <button
+          className="bg-[#004AAD] text-white p-2 rounded-lg"
+          onClick={() => setModalType("add")}
+        >
+          Create Announcement
+        </button>
+      </div>
+
+      <div>
+        {loading ? <p>Loading...</p> : <Table data={data} columns={columns} />}
+      </div>
+
+      {modalType === "add" && <AddAnnouncement onClose={onClose} />}
+
+      {modalType === "image" && showImage && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-4 rounded-lg shadow-lg max-w-2xl w-full relative">
+            <button
+              className="absolute top-2 right-2 text-gray-600 text-xl"
+              onClick={() => setModalType(null)}
+            >
+              ✕
+            </button>
+            <img
+              src={showImage}
+              alt="Announcement"
+              className="max-h-[80vh] w-auto mx-auto"
+            />
+          </div>
         </div>
-       
-      
+      )}
     </div>
-  )
-}
+  );
+};
+
+export default Announcements;
+

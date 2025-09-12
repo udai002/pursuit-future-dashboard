@@ -7,6 +7,7 @@ import arrow from "../../assets/arrow.png"
 import { useNavigate } from 'react-router';
 import Delete from '../../assets/Teaminfo/delete.svg';
 import Edit from '../../assets/Teaminfo/edit.svg';
+import toast, {Toaster} from 'react-hot-toast'
 
 const Teaminfo = () => {
   const [modalType, setModalType] = useState(null);
@@ -18,21 +19,21 @@ const Teaminfo = () => {
    const handleOpenModal = (type, data = null) => {
     setModalType(type);
     if (type === 'team' && data) {
-      setEditData(data);
+      setEditAddteam(data);
     } else {
-      setEditData(null);
+      setEditAddteam(null);
     }
   };
 
    const handleCloseModal = () => {
     setModalType(null);
-    setEditData(null);
+    setEditAddteam(null);
     Teams(); 
   };
 
   const Teams = async()=>{
     try{
-    const data = await fetch("http://localhost:3000/team/team")
+    const data = await fetch(`${import.meta.env.VITE_BACKEND_URL}/team/team`)
     const response = await data.json()
     setTeam(response)
     }
@@ -51,12 +52,11 @@ const Teaminfo = () => {
     const handleDelete = async (id) => {
       if(window.confirm('Are you sure you want to delete?')){
     try {
-      const response = await fetch(`http://localhost:3000/team/team/${id}`, {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/team/team/${id}`, {
         method: 'DELETE',
       });
       if (response.ok) {
-        alert("are you sure")
-        console.log('Team deleted successfully');
+      toast.success('Team deleted successfully');
         Teams();
       } else {
         console.error('Failed to delete the team.');

@@ -1,6 +1,9 @@
 import React from 'react'
+import useAuth from '../../context/AuthContext'
 
 const Home = () => {
+  const {userDetails} = useAuth()
+  console.log("user details...." ,userDetails)
   return (
     <div className=''>
       this is home page

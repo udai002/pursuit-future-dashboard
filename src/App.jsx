@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import './App.css'
-import { Route, Routes } from 'react-router'
+import { Route, Routes, useLocation, useParams } from 'react-router'
 import Home from './pages/Home/Home'
 import Signin from './pages/Home/Authentication/Signin'
 import { Toaster } from 'react-hot-toast'
@@ -14,16 +14,29 @@ import AddAttendence from './components/AddAttendence'
 import Dps from './pages/Home/dps';
 import Payment from './pages/Home/pay';
 import Lead from './pages/Home/lead';
+import ForgotPassword from './pages/Home/Authentication/ForgotPassword'
+import { Sidenavbar } from './components/Navigation/Sidenavbar'
+
+const siderBarAvoiders = [
+  "/login",
+  "/forgotPassword"
+
+]
 
 
 function App() {
   const [count, setCount] = useState(0);
 
+  const {pathname} = useLocation()
+  console.log("this is location" , pathname)
+
   return (
     <>
-
+  {!siderBarAvoiders.includes(pathname) && <Sidenavbar/> }
      <Routes>
       <Route path='/' Component={Home} />
+      <Route path="/login" Component={Signin}/>
+      <Route path='/forgotPassword' Component={ForgotPassword}/>
       <Route path='/announcements' Component={Announcements} />
       <Route path='/teaminfo' Component={Teaminformation}/>
       <Route path='/teams/:teamid/employees' Component={EmployeeTable}/>

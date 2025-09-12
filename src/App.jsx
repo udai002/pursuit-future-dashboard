@@ -10,6 +10,7 @@ import EmployeeTable from './components/Teaminfo/EmployeeTable'
 import Dps from './pages/Home/dps';
 import Payment from './pages/Home/pay';
 import Lead from './pages/Home/lead';
+
 function App() {
   const [count, setCount] = useState(0)
 

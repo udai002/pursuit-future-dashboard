@@ -9,6 +9,7 @@ import { Toaster } from 'react-hot-toast'
 import Announcements from './components/announcements'
 import Teaminformation from "./pages/Teaminformation"
 import EmployeeTable from './components/Teaminfo/EmployeeTable'
+import ForgotPassword from './pages/Home/Authentication/ForgotPassword'
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
       <Route path='/announcements' Component={Announcements} />
       <Route path='/teaminfo' Component={Teaminformation}/>
       <Route path='/teams/:teamid/employees' Component={EmployeeTable}/>
+      <Route path='/forgotPassword' Component={ForgotPassword}/>
      </Routes>
      <Toaster></Toaster>
     </>

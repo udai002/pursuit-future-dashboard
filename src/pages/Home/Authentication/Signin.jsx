@@ -5,6 +5,9 @@ import CustomInput from '../../../components/ui/CustomInput';
 import { TbLockPassword } from "react-icons/tb";
 import CustomButton from '../../../components/ui/CustomButton';
 import useAuth from '../../../context/AuthContext';
+import { useNavigate } from 'react-router';
+
+
 
 const Signin = () => {
 
@@ -15,10 +18,11 @@ const Signin = () => {
     const [isDisabled , setIsDisabled] = useState(true)
 
     const {loginUser , loading} = useAuth()
+    const navigate = useNavigate()
 
     async function  onSubmitLogin(e){
         e.preventDefault()
-        if(!username && !password){
+        if(!password || !username){
             toast.error("All fields are mandatory")
             return 
         }
@@ -37,10 +41,10 @@ const Signin = () => {
         <CustomInput type={"text"} title="Username" icon={<FaRegUserCircle className='text-xl text-[#004AAD]'/>} onChange={(e)=>setUsername(e.target.value)} value={username} />
         <CustomInput type={"password"} title="Password" icon={<TbLockPassword className='text-xl text-[#004AAD]'/>} onChange={(e)=>setPassword(e.target.value)} value={password}/>
         <CustomButton type={"submit"} isLoading={loading} title="Enter the portal"  />
-        <div className='-mt-2 flex'>
-            <p className='text-sm font-semibold text-[#004AAD]'>Forgot Password?</p>
-        </div>
       </form>
+       <div className='-mt-2 flex'>
+            <button className='text-sm font-semibold text-[#004AAD]' onClick={()=>{navigate('/forgotPassword')}}>Forgot Password?</button>
+        </div>
       </div>
     </div>
   )

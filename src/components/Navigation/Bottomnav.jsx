@@ -12,10 +12,10 @@ export const Bottomnav = () => {
   }
 
   return (
-    <div className="flex flex-col  border-t mt-3  p-2">
+    <div className="flex flex-col  border-t mt-3 md:p-2">
       <Button
         className="bg-[#004aad]"
-        onclick={() => {}}  
+        onclick={() => {}}
         title="Settings"
         icon={<IoSettingsOutline className="h-7 w-7" />}
       />
@@ -26,7 +26,7 @@ export const Bottomnav = () => {
         icon={<MdOutlineSupportAgent className="h-7 w-7" />}
       />
       <Button
-        className="bg-red-500 rounded-md"
+        className="bg-[#004aad] rounded-md "
         onclick={() => {}}
         title="Log Out"
         icon={<IoIosLogOut className="h-7 w-7" />}

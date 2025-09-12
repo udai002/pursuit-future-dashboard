@@ -42,7 +42,7 @@ const Button = (props) => {
   );
 
   const icons = (
-    <div className="flex items-center justify-center">
+    <div className="flex items-center justify-center ">
       {props.icon && (
         <span
           className={`p-2 rounded-lg ${

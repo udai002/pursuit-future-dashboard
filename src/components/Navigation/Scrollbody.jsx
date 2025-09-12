@@ -50,7 +50,7 @@ const OptionsList = [
 function Scrollbody() {
   return (
     <>
-      <div className="overflow-y-auto h-[50%] overflew-scrollbar-hide mt-2 md:p-4  w-72  ">
+      <div className="overflow-y-auto h-[50%] md:h-[50%] overflew-scrollbar-hide mt-2 md:p-2  w-72   ">
         {OptionsList.map((item) => (
           <Button
             className=""

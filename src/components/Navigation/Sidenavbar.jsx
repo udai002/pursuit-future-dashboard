@@ -16,7 +16,7 @@ const {open,setOpen}=useContext(Store)
     <div className="flex flex-row h-screen w-auto">
       <div
         className={`bg-[#004aad] p-2 m-3 pt-4 rounded-[20px] transition-all duration-300 ease-in-out
-        ${open ? "w-72 p-4" : "w-16 p-0"} overflow-hidden`}
+        ${open ? "w-72 p-4" : "w-16"} overflow-hidden`}
       >
        <Navheader/>
        <Scrollbody/>
@@ -25,7 +25,7 @@ const {open,setOpen}=useContext(Store)
       </div>
 
       <img
-        className={`cursor-pointer p-1 rounded-full transition-transform duration-300
+        className={`cursor-pointer p-1 rounded-full transition-transform duration-300 
           ${
             open
               ? "w-10 h-10 top-6 right-6 relative"

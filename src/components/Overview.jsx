@@ -1,0 +1,25 @@
+import React from "react";
+
+export default function OverviewComp({title,revenue,img}) {
+  return (
+    <div className="">
+         <div className="p-3 m-5 border-[#004AAD]  w-64  rounded-md border bg-[#004AAD1A] items-center cursor-pointer">
+      <div className="flex gap-3">
+        <img src={img} className="h-5" />
+        <h1 className="">{title}</h1>
+      </div>
+
+      <div className="mt-2 text-[#004AAD]">
+        <h1 className="font-sans text-2xl">{revenue}</h1>
+      </div>
+    </div>
+
+    </div>
+   
+  );
+}
+
+
+
+
+

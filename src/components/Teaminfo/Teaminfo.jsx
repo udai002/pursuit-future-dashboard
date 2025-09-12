@@ -5,28 +5,42 @@ import Addemployeeform from './Addemployeeform';
 import Table from '../table'
 import arrow from "../../assets/arrow.png"
 import { useNavigate } from 'react-router';
+import Delete from '../../assets/Teaminfo/delete.svg';
+import Edit from '../../assets/Teaminfo/edit.svg';
+import toast, {Toaster} from 'react-hot-toast'
 
 const Teaminfo = () => {
   const [modalType, setModalType] = useState(null);
   const[team,setTeam]=useState([])
+    const [loading, setLoading] = useState(true);
+   const [editAddteam, setEditAddteam] = useState(null); 
   const navigate = useNavigate()
 
-  const handleOpenModal = (type) => {
+   const handleOpenModal = (type, data = null) => {
     setModalType(type);
+    if (type === 'team' && data) {
+      setEditAddteam(data);
+    } else {
+      setEditAddteam(null);
+    }
   };
 
-  const handleCloseModal = () => {
+   const handleCloseModal = () => {
     setModalType(null);
+    setEditAddteam(null);
+    Teams(); 
   };
 
   const Teams = async()=>{
     try{
-    const data = await fetch("http://localhost:3000/team/team")
+    const data = await fetch(`${import.meta.env.VITE_BACKEND_URL}/team/team`)
     const response = await data.json()
     setTeam(response)
     }
     catch(error){
       console.log("error occured",error)
+    }finally {
+      setLoading(false)
     }
     
   }
@@ -35,7 +49,35 @@ const Teaminfo = () => {
     Teams()
   },[])
 
-  const columns = [
+    const handleDelete = async (id) => {
+      if(window.confirm('Are you sure you want to delete?')){
+    try {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/team/team/${id}`, {
+        method: 'DELETE',
+      });
+      if (response.ok) {
+      toast.success('Team deleted successfully');
+        Teams();
+      } else {
+        console.error('Failed to delete the team.');
+      }
+    } catch (error) {
+      console.error('Error during deletion:', error);
+    }
+  }
+  };
+
+  const handleEdit = (addteam) => {
+    setEditAddteam(addteam);
+    setModalType("edit")
+  };
+
+  const onClose = () => {
+    setModalType(null);
+    setEditAddteam(null);
+  };
+
+  const columns = [ 
     { id: 'name', header: 'Team Name', cell:(row)=>(
     <button onClick={() => navigate(`/teams/${row.id}/employees`, { state: row })}>
         <div className='flex jusify-center align-center item-center gap-2'>
@@ -49,7 +91,20 @@ const Teaminfo = () => {
     { id: 'No. of Members', header: 'No. of Members' },
     { id: 'contact', header: 'Contact Number' },
     { id: 'Payment Count', header: 'Payment Count' },
-    { id: 'Action', header: 'Action' }
+    {
+      id: "actions",
+      header: "Actions",
+      cell: (row) => (
+        <div className="flex gap-5 ml-5">
+          <button onClick={() =>handleDelete(row._id)}>
+            <img src={Delete} className="w-5 h-6" />
+          </button>
+          <button onClick={() =>{handleEdit(row)}}>
+            <img src={Edit} alt="Edit" className="w-7 h-7" />
+          </button>
+        </div>
+      ),
+    },
   ]
   return (
     <div>
@@ -69,11 +124,14 @@ const Teaminfo = () => {
         </div>
       </div>
       <div className='p-10'>
-        <Table  data={team} columns={columns}/>
-
+        {loading ? <p>Loading...</p> : <Table  data={team} columns={columns}/>}
       </div>
-      {modalType === 'team' && (
-        <Addteamform onClose={handleCloseModal} />)}
+
+
+      {(modalType === 'team' || modalType === "edit") && (
+        <Addteamform 
+        onClose={handleCloseModal}
+        editAddteam={editAddteam} />)}
 
       {modalType === 'employee' && (
         <Addemployeeform onClose={handleCloseModal} />)}

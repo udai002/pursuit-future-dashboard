@@ -7,15 +7,21 @@ import { Toaster } from 'react-hot-toast'
 import Announcements from './components/announcements'
 import Teaminformation from "./pages/Teaminformation"
 import EmployeeTable from './components/Teaminfo/EmployeeTable'
+
+import Attendence from "./components/Attendence"
+import AddAttendence from './components/AddAttendence'
+
 import Dps from './pages/Home/dps';
 import Payment from './pages/Home/pay';
 import Lead from './pages/Home/lead';
+
 
 function App() {
   const [count, setCount] = useState(0);
 
   return (
     <>
+
      <Routes>
       <Route path='/' Component={Home} />
       <Route path='/announcements' Component={Announcements} />
@@ -24,8 +30,10 @@ function App() {
       <Route path='/lead' Component={Lead}/>
       <Route path='/pay' Component={Payment}/>
       <Route path='/dps' Component={Dps}/>
+             <Route path="/addattendence" Component={AddAttendence} />
      </Routes>
      <Toaster></Toaster>
+
     </>
   );
 }

@@ -2,33 +2,59 @@
 import React, { useEffect, useState } from "react";
 import AddAnnouncement from "./AddAnnouncement";
 import Table from "./table";
+import Delete from "../assets/delete.png";
+import Edit from "../assets/edit.png";
 
 const Announcements = () => {
   const [modalType, setModalType] = useState(null);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showImage, setShowImage] = useState(null);
+  const [editAnnocement, setEditAnnouncement] = useState(null);
+
+  const fetchData = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:3000/announcement/announcement"
+      );
+      const result = await response.json();
+      setData(result);
+    } catch (error) {
+      console.log("error", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          "http://localhost:3000/announcement/announcement"
-        );
-        const result = await response.json();
-        setData(result);
-      } catch (error) {
-        console.log("error", error);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchData();
   }, []);
 
-  const onClose = ()=>{
-    setModalType(null)
+  const handleDelete = async (id)=>{
+    if(window.confirm("Are you sure you want to delete?")){
+      try {
+        const response = await fetch(
+          `http://localhost:3000/announcement/announcement/${id}`,
+          { method: "DELETE" }
+        );
+        if(!response.ok){
+          throw new Error("failed to delete announcement")
+        }
+        fetchData()
+      } catch (error) {
+        console.log("error in deleting announcement", error)
+      }
+    }
   }
+  const handleEdit = (announcement) => {
+    setEditAnnouncement(announcement);
+    setModalType("edit")
+  };
+
+  const onClose = () => {
+    setModalType(null);
+    setEditAnnouncement(null);
+  };
 
   const columns = [
     { id: "announcementId", header: "Announcement ID" },
@@ -52,10 +78,21 @@ const Announcements = () => {
         </button>
       ),
     },
+    {
+      id: "action",
+      header: "Actions",
+      cell: (row) => (
+        <div className="flex gap-3">
+          <img src={Delete} alt="" onClick={()=>handleDelete(row._id)}
+           className="w-6 h-7 cursor-pointer" />
+          <img src={Edit} alt="" onClick={()=>{handleEdit(row)}} className="w-6 h-7 cursor-pointer" />
+        </div>
+      ),
+    },
   ];
 
   return (
-    <div className="">
+    <div>
       <div className="flex justify-between">
         <p>Announcements</p>
         <button
@@ -70,7 +107,13 @@ const Announcements = () => {
         {loading ? <p>Loading...</p> : <Table data={data} columns={columns} />}
       </div>
 
-      {modalType === "add" && <AddAnnouncement onClose={onClose} />}
+      {(modalType === "add" || modalType === "edit") && (
+        <AddAnnouncement
+          onClose={onClose}
+          refreshData={fetchData}
+          editAnnocement={editAnnocement}
+        />
+      )}
 
       {modalType === "image" && showImage && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -82,7 +125,7 @@ const Announcements = () => {
               ✕
             </button>
             <img
-              src={showImage}
+              src={`http://localhost:3000${showImage}`}
               alt="Announcement"
               className="max-h-[80vh] w-auto mx-auto"
             />

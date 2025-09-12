@@ -59,6 +59,7 @@ function AuthProvider({children}){
     async function loginUser(data){
 
         console.log("this is running" , import.meta.env.VITE_BACKEND_URL)
+        
         try{
             const options = {
                 method:"POST" , 

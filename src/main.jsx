@@ -6,14 +6,18 @@ import App from './App.jsx'
 import NavBarContext from './context/NavBarContext.jsx'
 import { AuthProvider } from './context/AuthContext.jsx'
 
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
-        <AuthProvider>
-          <NavBarContext>
-            <App />
-          </NavBarContext>
-        </AuthProvider>
-    </BrowserRouter>
-  </StrictMode>,
+
+      <AuthProvider>
+    <NavBarContext>
+    <App />
+    </NavBarContext>
+    </AuthProvider>
+      </BrowserRouter>
+
+
+  </StrictMode>
 )

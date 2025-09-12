@@ -10,7 +10,7 @@ console.log(data)
           <table className="w-[100%] border-collapse overflow-auto sticky">
             <thead>
               <tr className="">
-                {columns.map((col) => (
+                {columns?.map((col) => (
                   <th
                     className="px-4 py-1 border-b border-[#004AAD] text-[#444444] bg-[#E6EDF7]"
                     key={col.id}
@@ -21,7 +21,7 @@ console.log(data)
               </tr>
             </thead>
             <tbody>
-              {data.map((row, rowIndex) => (
+              {data?.map((row, rowIndex) => (
                 <tr key={rowIndex}>
                   {columns.map((col) => (
                     <td

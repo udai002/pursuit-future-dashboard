@@ -8,6 +8,7 @@ import Announcements from './components/announcements'
 import Teaminformation from "./pages/Teaminformation"
 import EmployeeTable from './components/Teaminfo/EmployeeTable'
 import Attendence from "./components/Attendence"
+import AddAttendence from './components/AddAttendence'
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
         <Route path='/teams/:teamid/employees' Component={EmployeeTable} />
         <Route path='/attendence' Component={Attendence} />
         <Route path="/login" Component={Signin} />
+                <Route path="/addattendence" Component={AddAttendence} />
         
       </Routes>
       <Toaster></Toaster>

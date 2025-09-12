@@ -7,7 +7,7 @@ import Home from './pages/Home/Home'
 import Announcements from './components/announcements'
 import Teaminformation from "./pages/Teaminformation"
 import EmployeeTable from './components/Teaminfo/EmployeeTable'
-import Attendence from "./components/Teaminfo/Attendence"
+import Attendence from "./components/Attendence"
 
 function App() {
   const [count, setCount] = useState(0)
@@ -19,8 +19,7 @@ function App() {
         <Route path='/announcements' Component={Announcements} />
         <Route path='/teaminfo' Component={Teaminformation} />
         <Route path='/teams/:teamid/employees' Component={EmployeeTable} />
-
-        <Route path='/employees/:employeeId/attendence' Component={Attendence} />
+        <Route path='/attendence' Component={Attendence} />
 
       </Routes>
     </>

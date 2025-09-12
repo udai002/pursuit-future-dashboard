@@ -31,8 +31,8 @@ const Addteamform = ({ onClose, editAddteam }) => {
         e.preventDefault();
         try {
             const method = editAddteam ? 'PUT' : 'POST';
-            const url = editAddteam ? `http://localhost:3000/team/team/${editAddteam._id}`
-                : 'http://localhost:3000/team/team';
+            const url = editAddteam ? `${import.meta.env.VITE_BACKEND_URL}/team/team/${editAddteam._id}`
+                : `${import.meta.env.VITE_BACKEND_URL}/team/team`;
 
             const response = await fetch(url, {
                 method: method,

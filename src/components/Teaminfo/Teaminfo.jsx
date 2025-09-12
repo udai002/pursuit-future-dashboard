@@ -33,7 +33,7 @@ const Teaminfo = () => {
 
   const Teams = async()=>{
     try{
-    const data = await fetch("http://localhost:3000/team/team")
+    const data = await fetch(`${import.meta.env.VITE_BACKEND_URL}/team/team`)
     const response = await data.json()
     setTeam(response)
     }
@@ -52,12 +52,11 @@ const Teaminfo = () => {
     const handleDelete = async (id) => {
       if(window.confirm('Are you sure you want to delete?')){
     try {
-      const response = await fetch(`http://localhost:3000/team/team/${id}`, {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/team/team/${id}`, {
         method: 'DELETE',
       });
       if (response.ok) {
-        toast.warning("are you sure")
-        console.log('Team deleted successfully');
+      toast.success('Team deleted successfully');
         Teams();
       } else {
         console.error('Failed to delete the team.');

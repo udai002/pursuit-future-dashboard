@@ -11,7 +11,8 @@ import Edit from '../../assets/Teaminfo/edit.svg';
 const Teaminfo = () => {
   const [modalType, setModalType] = useState(null);
   const[team,setTeam]=useState([])
-   const [editData, setEditData] = useState(null); 
+    const [loading, setLoading] = useState(true);
+   const [editAddteam, setEditAddteam] = useState(null); 
   const navigate = useNavigate()
 
    const handleOpenModal = (type, data = null) => {
@@ -37,6 +38,8 @@ const Teaminfo = () => {
     }
     catch(error){
       console.log("error occured",error)
+    }finally {
+      setLoading(false)
     }
     
   }
@@ -46,6 +49,7 @@ const Teaminfo = () => {
   },[])
 
     const handleDelete = async (id) => {
+      if(window.confirm('Are you sure you want to delete?')){
     try {
       const response = await fetch(`http://localhost:3000/team/team/${id}`, {
         method: 'DELETE',
@@ -60,8 +64,18 @@ const Teaminfo = () => {
     } catch (error) {
       console.error('Error during deletion:', error);
     }
+  }
   };
 
+  const handleEdit = (addteam) => {
+    setEditAddteam(addteam);
+    setModalType("edit")
+  };
+
+  const onClose = () => {
+    setModalType(null);
+    setEditAddteam(null);
+  };
 
   const columns = [ 
     { id: 'name', header: 'Team Name', cell:(row)=>(
@@ -85,7 +99,7 @@ const Teaminfo = () => {
           <button onClick={() =>handleDelete(row._id)}>
             <img src={Delete} className="w-5 h-6" />
           </button>
-          <button onClick={() => handleOpenModal('team', row)}>
+          <button onClick={() =>{handleEdit(row)}}>
             <img src={Edit} alt="Edit" className="w-7 h-7" />
           </button>
         </div>
@@ -110,11 +124,14 @@ const Teaminfo = () => {
         </div>
       </div>
       <div className='p-10'>
-        <Table  data={team} columns={columns}/>
-
+        {loading ? <p>Loading...</p> : <Table  data={team} columns={columns}/>}
       </div>
-      {modalType === 'team' && (
-        <Addteamform onClose={handleCloseModal} />)}
+
+
+      {(modalType === 'team' || modalType === "edit") && (
+        <Addteamform 
+        onClose={handleCloseModal}
+        editAddteam={editAddteam} />)}
 
       {modalType === 'employee' && (
         <Addemployeeform onClose={handleCloseModal} />)}

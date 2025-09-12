@@ -9,7 +9,7 @@ import Teaminformation from "./pages/Teaminformation";
 import EmployeeTable from "./components/Teaminfo/EmployeeTable";
 import OverView from "./pages/Overview/Teamlead";
 import DigitalMarketing from "./pages/Overview/DigitalMarketing";
-import TL from "./pages/Overview/TL";
+import TL from "./pages/Overview/Teamlead";
 import Operations from "./pages/Overview/Operations";
 import HR from "./pages/Overview/HR";
 import HROverView from "./pages/Overview/HR";
@@ -24,11 +24,15 @@ function App() {
 
   return (
     <>
+    
       <Routes>
+        
+        
         <Route path="/" Component={Home} />
         <Route path="/announcements" Component={Announcements} />
         <Route path="/teaminfo" Component={Teaminformation} />
         <Route path="/teams/:teamid/employees" Component={EmployeeTable} />
+        
         <Route path="/overview" Component={OverViewPage} />
 
         <Route path="/DigitalMarketing" Component={DigitalMarketing} />
@@ -40,8 +44,9 @@ function App() {
 
         <Route path="/HROverView" Component={HROverView} />
 
-        <Route path="/poatleaves" Component={PostSales} />
-         <Route path="/admin" Component={Superadmin} />
+        <Route path="/postsales" Component={PostSales} />
+
+        <Route path="/admin" Component={Superadmin} />
 
 
        

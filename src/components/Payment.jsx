@@ -4,7 +4,7 @@ export default function Payment() {
 
 
   return (
-   <div className='p-3 m-5 border-[#004AAD]   border  w-64  rounded-md  bg-[#004AAD1A] items-center cursor-pointer '>
+   <div className='p-3 mt-2 border-[#004AAD]   border  w-64  rounded-md  bg-[#004AAD1A] items-center cursor-pointer '>
     <div className='flex justify-between gap-7'>
         <div>
             <h1>Pending Payment</h1>

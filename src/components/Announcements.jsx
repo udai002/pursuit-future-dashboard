@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import AddAnnouncement from "./AddAnnouncement";
 import Table from "./table";
@@ -93,3 +94,4 @@ const Announcements = () => {
 };
 
 export default Announcements;
+

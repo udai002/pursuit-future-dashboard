@@ -5,18 +5,28 @@ import Addemployeeform from './Addemployeeform';
 import Table from '../table'
 import arrow from "../../assets/arrow.png"
 import { useNavigate } from 'react-router';
+import Delete from '../../assets/Teaminfo/delete.svg';
+import Edit from '../../assets/Teaminfo/edit.svg';
 
 const Teaminfo = () => {
   const [modalType, setModalType] = useState(null);
   const[team,setTeam]=useState([])
+   const [editData, setEditData] = useState(null); 
   const navigate = useNavigate()
 
-  const handleOpenModal = (type) => {
+   const handleOpenModal = (type, data = null) => {
     setModalType(type);
+    if (type === 'team' && data) {
+      setEditData(data);
+    } else {
+      setEditData(null);
+    }
   };
 
-  const handleCloseModal = () => {
+   const handleCloseModal = () => {
     setModalType(null);
+    setEditData(null);
+    Teams(); 
   };
 
   const Teams = async()=>{
@@ -35,7 +45,25 @@ const Teaminfo = () => {
     Teams()
   },[])
 
-  const columns = [
+    const handleDelete = async (id) => {
+    try {
+      const response = await fetch(`http://localhost:3000/team/team/${id}`, {
+        method: 'DELETE',
+      });
+      if (response.ok) {
+        alert("are you sure")
+        console.log('Team deleted successfully');
+        Teams();
+      } else {
+        console.error('Failed to delete the team.');
+      }
+    } catch (error) {
+      console.error('Error during deletion:', error);
+    }
+  };
+
+
+  const columns = [ 
     { id: 'name', header: 'Team Name', cell:(row)=>(
     <button onClick={() => navigate(`/teams/${row.id}/employees`, { state: row })}>
         <div className='flex jusify-center align-center item-center gap-2'>
@@ -49,7 +77,20 @@ const Teaminfo = () => {
     { id: 'No. of Members', header: 'No. of Members' },
     { id: 'contact', header: 'Contact Number' },
     { id: 'Payment Count', header: 'Payment Count' },
-    { id: 'Action', header: 'Action' }
+    {
+      id: "actions",
+      header: "Actions",
+      cell: (row) => (
+        <div className="flex gap-5 ml-5">
+          <button onClick={() =>handleDelete(row._id)}>
+            <img src={Delete} className="w-5 h-6" />
+          </button>
+          <button onClick={() => handleOpenModal('team', row)}>
+            <img src={Edit} alt="Edit" className="w-7 h-7" />
+          </button>
+        </div>
+      ),
+    },
   ]
   return (
     <div>

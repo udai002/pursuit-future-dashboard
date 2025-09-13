@@ -1,57 +1,127 @@
 import { PiSquaresFourLight } from "react-icons/pi";
 import { FaTruckFast } from "react-icons/fa6";
 import Button from "./Button";
+import useAuth from "../../context/AuthContext";
 
 const OptionsList = [
   {
     id: 1,
     title: "Overview",
     icon: <PiSquaresFourLight className="h-7 w-7" />,
-    link: "",
+    link: "/",
+    access:[ 
+            "Admin" ,
+            "Operations" , 
+            "HR" , 
+            "Team Lead" , 
+            "Intern" , 
+            "Post Sales" , 
+            "Digital Marteking"
+         ],
   },
   {
     id: 2,
     title: "Team Info",
     icon: <FaTruckFast className="h-6 w-6 " />,
-    link: "",
+    link: "/teaminfo",
+    access:[ 
+            "Admin" ,
+            // "Operations" , 
+            // "HR" , 
+            // "Team Lead" , 
+            // "Intern" , 
+            // "Post Sales" , 
+            // "Digital Marteking"
+         ],
   },
   {
     id: 3,
     title: "Sales Leads Info",
     icon: <FaTruckFast className="h-6 w-6 " />,
-    link: "",
+    link: "/",
+    access:[ 
+            "Admin" ,
+            // "Operations" , 
+            // "HR" , 
+            // "Team Lead" , 
+            // "Intern" , 
+            "Post Sales" , 
+            // "Digital Marteking"
+         ],
   },
   {
     id: 4,
     title: "Lead Gen. Info",
     icon: <FaTruckFast className="h-6 w-6 " />,
-    link: "",
+    link: "/lead",
+    access:[ 
+            "Admin" ,
+            // "Operations" , 
+            // "HR" , 
+            // "Team Lead" , 
+            "Intern" , 
+            // "Post Sales" , 
+            // "Digital Marteking"
+         ],
   },
   {
     id: 5,
     title: "Payment Links",
     icon: <FaTruckFast className="h-6 w-6 " />,
-    link: "",
+    link: "/pay",
+    access:[ 
+            "Admin" ,
+            "Operations" , 
+            // "HR" , 
+            // "Team Lead" , 
+            "Intern" , 
+            "Post Sales" , 
+            // "Digital Marteking"
+         ],
   },
   {
     id: 6,
     title: "DPS Data",
     icon: <FaTruckFast className="h-6 w-6 " />,
-    link: "",
+    link: "/dps",
+    access:[ 
+            "Admin" ,
+            // "Operations" , 
+            // "HR" , 
+            "Team Lead" , 
+            "Intern" , 
+            // "Post Sales" , 
+            // "Digital Marteking"
+         ],
   },
   {
     id: 7,
     title: "Announcements",
     icon: <FaTruckFast className="h-6 w-6 " />,
-    link: "",
+    link: "/announcements",
+    access:[[ 
+            "Admin" ,
+            // "Operations" , 
+            // "HR" , 
+            // "Team Lead" , 
+            // "Intern" , 
+            // "Post Sales" , 
+            "Digital Marteking"
+         ],]
   },
+
 ];
 
+
 function Scrollbody() {
+  
+  const {userDetails , isLoggedIn   , loadingAuth} = useAuth()
+  console.log('this is ' , userDetails , isLoggedIn)
+  console.log('this is accress control' , OptionsList[0].access===userDetails?.role)
   return (
     <>
       <div className="overflow-y-auto h-[50%] md:h-[50%] overflew-scrollbar-hide mt-2 md:p-2  w-72   ">
-        {OptionsList.map((item) => (
+        {OptionsList.map((item) => item.access.includes(userDetails?.role) && (
           <Button
             className=""
             link={item.link}
@@ -60,6 +130,7 @@ function Scrollbody() {
             options={item.options}
           />
         ))}
+        {}
       </div>
     </>
   );

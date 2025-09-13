@@ -8,7 +8,9 @@ const AuthContext  = createContext({
     loading:false , 
     isLoggedIn:false , 
     loginUser:()=>{} ,
-    sessionError:false 
+    sessionError:false ,
+    loadingAuth:false , 
+    logout:()=>{}
 })
 
 function AuthProvider({children}){
@@ -17,6 +19,7 @@ function AuthProvider({children}){
     const [loading , setLoading] = useState(false)
     const [isLoggedIn , setIsLoggedIn] = useState(false)
     const [sessionError , setSessionError] = useState(false)
+    const [loadingAuth  , setLoadingAuth] = useState(true)
 
     const navigate = useNavigate()
 
@@ -35,6 +38,7 @@ function AuthProvider({children}){
                 }
                 const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/user/details` , options)
                 const result = await response.json()
+                setLoadingAuth(false)
                 if(response.ok){
                     setUserDetails(result.data)
                     setIsLoggedIn(true)
@@ -44,13 +48,14 @@ function AuthProvider({children}){
                     toast.error(result.msg)
                     navigate("/login")
                 }
+
+                
             }catch(e){
                 setSessionError(true)
                 toast.error("Network Error")
                 console.log("this is session error...", e)
             }
         }
-
         verifySession()
 
 
@@ -76,6 +81,7 @@ function AuthProvider({children}){
             if(response.ok){
                 toast.success(result.msg)
                 console.log(result.token)
+                setUserDetails(result.user)
                 localStorage.setItem("session_token" , JSON.stringify(result.token))
                 navigate("/")
             }else{
@@ -87,8 +93,13 @@ function AuthProvider({children}){
         }
     }
 
+    function logout(){
+        localStorage.removeItem('session_token')
+        navigate('/login')
+    }
 
-    return <AuthContext.Provider value={{loading , isLoggedIn , userDetails , loginUser , sessionError}}>
+
+    return <AuthContext.Provider value={{loading , isLoggedIn , userDetails , loginUser , sessionError , loadingAuth , logout}}>
         {children}
     </AuthContext.Provider>
 }

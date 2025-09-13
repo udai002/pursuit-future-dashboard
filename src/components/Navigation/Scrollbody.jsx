@@ -16,7 +16,7 @@ const OptionsList = [
             "Team Lead" , 
             "Intern" , 
             "Post Sales" , 
-            "Digital Marteking"
+            "Digital Marketing"
          ],
   },
   {
@@ -38,14 +38,14 @@ const OptionsList = [
     id: 3,
     title: "Sales Leads Info",
     icon: <FaTruckFast className="h-6 w-6 " />,
-    link: "/",
+    link: "SalesLeadInfo",
     access:[ 
             "Admin" ,
             // "Operations" , 
             // "HR" , 
             // "Team Lead" , 
-            // "Intern" , 
-            "Post Sales" , 
+            "Intern" , 
+            // "Post Sales" , 
             // "Digital Marteking"
          ],
   },
@@ -73,7 +73,7 @@ const OptionsList = [
             "Admin" ,
             "Operations" , 
             // "HR" , 
-            // "Team Lead" , 
+            "Team Lead" , 
             "Intern" , 
             "Post Sales" , 
             // "Digital Marteking"
@@ -86,11 +86,11 @@ const OptionsList = [
     link: "/dps",
     access:[ 
             "Admin" ,
-            // "Operations" , 
+            "Operations" , 
             // "HR" , 
-            "Team Lead" , 
+            // "Team Lead" , 
             "Intern" , 
-            // "Post Sales" , 
+            "Post Sales" , 
             // "Digital Marteking"
          ],
   },
@@ -99,17 +99,62 @@ const OptionsList = [
     title: "Announcements",
     icon: <FaTruckFast className="h-6 w-6 " />,
     link: "/announcements",
-    access:[[ 
+    access:[
             "Admin" ,
             // "Operations" , 
             // "HR" , 
             // "Team Lead" , 
             // "Intern" , 
             // "Post Sales" , 
-            "Digital Marteking"
-         ],]
-  },
+            "Digital Marketing"
 
+         ]
+  },
+   {
+    id:8,
+    title: "MembersInfo",
+    icon: <FaTruckFast className="h-6 w-6 " />,
+    link:"/MembersInfo",
+    access:[
+            // "Admin" ,
+            // "Operations" , 
+            // "HR" , 
+            "Team Lead" , 
+            // "Intern" , 
+            // "Post Sales" , 
+            // "Digital Marteking"
+         ]
+  },
+  {
+    id:9,
+    title: "EmployeesInfo",
+    icon: <FaTruckFast className="h-6 w-6 " />,
+    link:"/employeeInfo",
+    access:[
+            // "Admin" ,
+            // "Operations" , 
+            "HR" , 
+            // "Team Lead" , 
+            // "Intern" , 
+            // "Post Sales" , 
+            // "Digital Marteking"
+         ]
+  },
+  {
+    id:10,
+    title: "StudentsInfo",
+    icon: <FaTruckFast className="h-6 w-6 " />,
+    link:"/studentsinfo",
+    access:[
+            // "Admin" ,
+            "Operations" , 
+            // "HR" , 
+            // "Team Lead" , 
+            "Intern" , 
+            "Post Sales" , 
+            // "Digital Marteking"
+         ]
+  }
 ];
 
 
@@ -120,10 +165,10 @@ function Scrollbody() {
   console.log('this is accress control' , OptionsList[0].access===userDetails?.role)
   return (
     <>
-      <div className="overflow-y-auto h-[50%] md:h-[50%] overflew-scrollbar-hide mt-2 md:p-2  w-72   ">
+      <div className="overflow-y-auto h-[50%] md:h-[50%] overflow-scrollbar-hide mt-2 md:p-2 w-72   ">
         {OptionsList.map((item) => item.access.includes(userDetails?.role) && (
           <Button
-            className=""
+            className="w-60"
             link={item.link}
             icon={item.icon}
             title={item.title}

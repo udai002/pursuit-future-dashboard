@@ -31,7 +31,14 @@ import Lead from './pages/Home/lead';
 import ForgotPassword from './pages/Home/Authentication/ForgotPassword'
 import { Sidenavbar } from './components/Navigation/Sidenavbar'
 import useAuth from './context/AuthContext'
+
 import TopNavBar from './components/TopNavBar'
+
+import MembersInfo from './pages/Home/MembersInfo'
+import SalesLeadsInfo from './pages/Home/SalesLeadsInfo'
+import EmployeesInfo from './pages/Home/EmployeesInfo'
+import StudentsInfo from './pages/Home/StudentsInfo'
+
 
 const siderBarAvoiders = [
   "/login",
@@ -84,6 +91,7 @@ function App() {
     return <Routes>
       <Route path="/" Component={Superadmin} />
       <Route path="/teaminfo" Component={Teaminformation} />
+      <Route path='/salesLeadInfo' Component={SalesLeadsInfo}/>
       <Route path='/lead' Component={Lead} />
       <Route path='/pay' Component={Payment} />
       <Route path='/dps' Component={Dps} />
@@ -95,8 +103,8 @@ function App() {
   //operation routes 
   function OperationDashboard(){
     return <Routes>
-      {/* student 
-      attends */}
+      <Route path='/studentsinfo' Component={StudentsInfo}/>       
+      {/* attends */} 
       <Route path='/pay' Component={Payment} />
       <Route path='/dps' Component={Dps} />
     </Routes>
@@ -107,8 +115,8 @@ function App() {
     return <Routes>
       <Route path="/" Component={HROverView} />
        <Route path="/addattendence" Component={AddAttendence} />
+       <Route path='/employeeinfo' Component={EmployeesInfo}/>
       {/* attends  */}
-      {/* Emplooyee info  */}
     </Routes>
   }
 
@@ -118,11 +126,9 @@ function TLDashboard(){
       <Route path="/" Component={Teamlead} />
       <Route path='/pay' Component={Payment} />
       <Route path='/dps' Component={Dps} />
+      <Route path='/membersinfo' Component={MembersInfo}/>
 
       {/* attends  */}
-      {/* member info  */}
-  
-{/* attends  */}
 
   </Routes>
 }
@@ -130,13 +136,13 @@ function TLDashboard(){
   //interns routes 
   function InterDashboard(){
     return <Routes>
-        <Route path="/" Component={Intern} />
-      {/* student info  */}
-      {/* sales lead info  */}
+      <Route path="/" Component={Intern} />
+      <Route path='/studentsinfo' Component={StudentsInfo}/>
+      <Route path='/salesLeadInfo' Component={SalesLeadsInfo}/>
       <Route path='/lead' Component={Lead} />
-
       <Route path='/pay' Component={Payment} />
       <Route path='/dps' Component={Dps} />
+      {/* attend  */}
 
     </Routes>
   }
@@ -146,7 +152,7 @@ function TLDashboard(){
     return <Routes>
         <Route path="/" Component={PostSales} />
         {/* attends */}
-        {/* student info  */}
+      <Route path='/studentsinfo' Component={StudentsInfo}/>
       <Route path='/pay' Component={Payment} />
       <Route path='/dps' Component={Dps} />
 
@@ -189,10 +195,12 @@ function TLDashboard(){
   }
 
   return (
+
     <>
           
 
     <div className='flex'>
+
       {!siderBarAvoiders.includes(pathname) && <Sidenavbar />}
       <div className='flex flex-col'>
         <div>
@@ -213,7 +221,7 @@ function TLDashboard(){
       {/*
         <Route path="/teams/:teamid/employees" Component={EmployeeTable} />
 
-        <Route path="/operations" Component={Operations} />
+        <Route path="/operations" Component={Operxations} />
         <Route path="/admin" Component={Superadmin} />
         <Route path="/unauthorized" Component={UnAuthorized} />
         <Route path='role' element={<RoleBasedAccess requiredRoles={["Admin", "Post Sales", "Team Lead"]}>

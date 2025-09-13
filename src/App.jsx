@@ -191,7 +191,7 @@ function TLDashboard(){
   }
 
   return (
-    <div className='flex'>
+    <div className='flex w-screen'>
       {!siderBarAvoiders.includes(pathname) && <Sidenavbar />}
         {renderRoleBased()}
         <Routes>

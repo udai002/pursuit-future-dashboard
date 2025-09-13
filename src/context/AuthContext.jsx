@@ -93,9 +93,32 @@ function AuthProvider({children}){
         }
     }
 
-    function logout(){
-        localStorage.removeItem('session_token')
-        navigate('/login')
+    async function logout(){
+        try{
+            let token = localStorage.getItem("session_token")
+            token = JSON.parse(token)
+            console.log("this is error..." , token)
+            navigate('/login')
+            const options  ={
+                method:"DELETE" ,
+                headers:{
+                    "Content-Type":"application/json"
+                } ,
+                body:JSON.stringify({token})
+            }
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/user/logout` , options)
+            const result = await response.json()
+            console.log(result)
+            if(response){
+                toast.success(result.msg)
+                navigate("/login")
+            }else{
+                toast.error(result.msg)
+            }
+            localStorage.removeItem('session_token')
+        }catch(e){
+            console.log("Error in logout",e)
+        }
     }
 
 

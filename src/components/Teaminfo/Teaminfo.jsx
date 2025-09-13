@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router';
 import Delete from '../../assets/Teaminfo/delete.svg';
 import Edit from '../../assets/Teaminfo/edit.svg';
 import toast, {Toaster} from 'react-hot-toast'
+import { ColorRing } from 'react-loader-spinner';
 
 const Teaminfo = () => {
   const [modalType, setModalType] = useState(null);
@@ -107,8 +108,13 @@ const Teaminfo = () => {
     },
   ]
   return (
-    <div>
-      <div className='flex'>
+    <div className='w-full p-5'>
+      
+      <div className='w-full'>
+        {loading ? <div className='flex justify-center items-center h-screen'>
+          <ColorRing colors={["#004AAD" , "#004AAD" , "#004AAD" , "#004AAD" , "#004AAD"]}/>
+        </div> : <>
+        <div className='flex'>
         <div className='flex-1'>
           <p>Team Info</p>
         </div>
@@ -123,8 +129,7 @@ const Teaminfo = () => {
           </div>
         </div>
       </div>
-      <div className='p-10'>
-        {loading ? <p>Loading...</p> : <Table  data={team} columns={columns}/>}
+        <Table  data={team} columns={columns}/></>}
       </div>
 
 
@@ -134,7 +139,7 @@ const Teaminfo = () => {
         editAddteam={editAddteam} />)}
 
       {modalType === 'employee' && (
-        <Addemployeeform onClose={handleCloseModal} />)}
+        <Addemployeeform handleCloseModal={handleCloseModal} teamsInfo={team}  />)}
     </div>
 
   )

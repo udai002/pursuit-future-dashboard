@@ -106,7 +106,7 @@ const OptionsList = [
             // "Team Lead" , 
             // "Intern" , 
             // "Post Sales" , 
-            "Digital Marteking"
+            "Digital Marketing"
          ],]
   },
 
@@ -120,10 +120,10 @@ function Scrollbody() {
   console.log('this is accress control' , OptionsList[0].access===userDetails?.role)
   return (
     <>
-      <div className="overflow-y-auto h-[50%] md:h-[50%] overflew-scrollbar-hide mt-2 md:p-2  w-72   ">
+      <div className="overflow-y-auto h-[50%] md:h-[50%] overflow-scrollbar-hide mt-2 md:p-2 w-72   ">
         {OptionsList.map((item) => item.access.includes(userDetails?.role) && (
           <Button
-            className=""
+            className="w-60"
             link={item.link}
             icon={item.icon}
             title={item.title}

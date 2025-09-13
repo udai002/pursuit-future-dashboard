@@ -15,8 +15,9 @@ const {open,setOpen}=useContext(Store)
   return (
     <div className="flex flex-row h-screen">
       <div
-        className={`bg-[#004aad] p-2 m-3 pt-4 rounded-[20px] transition-all duration-300 ease-in-out
-        ${open ? "w-72 p-4" : "w-16"} overflow-hidden `}
+
+        className={`bg-[#004aad] ml-2  pt-4 rounded-[20px] transition-all duration-300 ease-in-out
+        ${open ? "w-72 p-4" : "w-16"} overflow-hidden`}
       >
        <Navheader/>
        <Scrollbody/>

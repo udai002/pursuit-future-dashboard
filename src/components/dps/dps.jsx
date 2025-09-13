@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-const DpsDataPage = () => {
+const DpsDataPage = ({ onAddDps }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
@@ -30,86 +30,92 @@ const DpsDataPage = () => {
   }, [page, limit, preferredMonth]);
 
   return (
-    <div className="flex h-screen bg-gray-50">
-      <main className="flex-1 flex flex-col p-4">
-        <div className="flex items-center justify-between mb-4">  
-            <select value={preferredMonth} onChange={(e) => {
+    <div className="flex h-screen">
+      <main className="flex-1 flex flex-col p-8">
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="text-xl font-semibold text-gray-800">
+            DPS Student Data
+          </h1>
+
+          <div className="flex items-center space-x-3">
+            <select value={preferredMonth}
+              onChange={(e) => {
                 setPreferredMonth(e.target.value);
                 setPage(1);
               }}
-              className="border rounded px-2 py-1 bg-blue-600 text-white">
+              className="border border-gray-300 rounded-lg px-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
               <option value="">All</option>
-              <option value="January">January</option>
-              <option value="February">February</option>
-              <option value="March">March</option>
-              <option value="April">April</option>
-              <option value="May">May</option>
-              <option value="June">June</option>
-              <option value="July">July</option>
-              <option value="August">August</option>
-              <option value="September">September</option>
-              <option value="October">October</option>
-              <option value="November">November</option>
-              <option value="December">December</option>
+              {[
+                "January","February","March","April","May","June",
+                "July","August","September","October","November","December",
+              ].map((month) => (
+                <option key={month} value={month}>
+                  {month}
+                </option>
+              ))}
             </select>
-
+            <button onClick={onAddDps} className="bg-[#004AAD] text-white px-5 py-2 rounded-lg shadow hover:bg-blue-800 transition">
+              + Add DPS
+            </button>
+          </div>
         </div>
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto bg-white rounded-xl shadow-md border border-gray-200">
           {loading ? (
-            <p className="text-center text-gray-600">Loading...</p>
+            <p className="text-center text-gray-600 py-6">Loading...</p>
           ) : (
-            <div className="overflow-x-auto border rounded-lg shadow-sm">
-              <table className="min-w-full border-collapse">
-                <thead>
-                  <tr className="bg-blue-100 text-left">
-                    <th className="px-4 py-2 border text-center">Student Name</th>
-                    <th className="px-4 py-2 border text-center">Student Email ID</th>
-                    <th className="px-4 py-2 border text-center">Student Contact No</th>
-                    <th className="px-4 py-2 border text-center">Student WhatsApp No</th>
-                    <th className="px-4 py-2 border text-center">Study Department</th>
-                    <th className="px-4 py-2 border text-center">Year of Study</th>
-                    <th className="px-4 py-2 border text-center">Domain/Course Opted</th>
-                    <th className="px-4 py-2 border text-center">Preferred Program Month</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {data.length > 0 ? (
-                    data.map((student, index) => (
-                      <tr key={index} className="hover:bg-gray-50 border-b last:border-none">
-                        <td className="px-4 py-2 border">{student.studentName}</td>
-                        <td className="px-4 py-2 border">{student.studentEmail}</td>
-                        <td className="px-4 py-2 border">{student.studentContactNo}</td>
-                        <td className="px-4 py-2 border">{student.studentWhatsAppNo}</td>
-                        <td className="px-4 py-2 border">{student.studyDepartment}</td>
-                        <td className="px-4 py-2 border">{student.yearOfStudy}</td>
-                        <td className="px-4 py-2 border">{student.domainCourseOpted}</td>
-                        <td className="px-4 py-2 border">{student.preferredProgramMonth}</td>
-                      </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td colSpan="8" className="px-4 py-6 text-center text-gray-500">
-                        No data available
-                      </td>
+            <table className="min-w-full text-sm text-gray-700">
+              <thead>
+                <tr className="bg-[#004AAD] text-white text-left">
+                  {[
+                    "Student Name",
+                    "Email",
+                    "Contact No",
+                    "WhatsApp No",
+                    "Department",
+                    "Year",
+                    "Course Opted",
+                    "Preferred Month",
+                  ].map((head, i) => (
+                    <th key={i} className="px-4 py-3 font-medium" >
+                      {head}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {data.length > 0 ? (
+                  data.map((student, index) => (
+                    <tr key={index} className={`hover:bg-blue-50 transition ${ index % 2 === 0 ? "bg-white" : "bg-gray-50"}`}>
+                      <td className="px-4 py-3">{student.studentName}</td>
+                      <td className="px-4 py-3">{student.studentEmail}</td>
+                      <td className="px-4 py-3">{student.studentContactNo}</td>
+                      <td className="px-4 py-3">{student.studentWhatsAppNo}</td>
+                      <td className="px-4 py-3">{student.studyDepartment}</td>
+                      <td className="px-4 py-3">{student.yearOfStudy}</td>
+                      <td className="px-4 py-3">{student.domainCourseOpted}</td>
+                      <td className="px-4 py-3">{student.preferredProgramMonth}</td>
                     </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="8" className="px-4 py-6 text-center text-gray-500">
+                      No data available
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
           )}
         </div>
-        <div className="flex justify-center items-center mt-4 space-x-4">
-          <button
-            onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
-            disabled={page === 1}
-            className="px-3 py-1 border rounded disabled:opacity-50">
+        <div className="flex justify-center items-center mt-6 space-x-4">
+          <button onClick={() => setPage((prev) => Math.max(prev - 1, 1))} disabled={page === 1} className="px-4 py-2 border rounded-lg bg-white shadow hover:bg-gray-100 disabled:opacity-50">
             Prev
           </button>
-          <span> Page {page} of {totalPages}</span>
-          <button
-            onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
-            disabled={page === totalPages}
-            className="px-3 py-1 border rounded disabled:opacity-50">
+          <span className="text-sm font-medium text-gray-700">
+            Page {page} of {totalPages}
+          </span>
+          <button onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))} disabled={page === totalPages}
+            className="px-4 py-2 border rounded-lg bg-white shadow hover:bg-gray-100 disabled:opacity-50">
             Next
           </button>
         </div>

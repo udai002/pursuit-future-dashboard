@@ -21,10 +21,8 @@ import Superadmin from "./pages/Overview/Superadmin";
 import RoleBasedAccess from "../RoleBasedAccess";
 import UnAuthorized from "./pages/UnAuthorized";
 
-
-import Attendence from "./components/Attendence"
 import AddAttendence from './components/AddAttendence'
-import AttendenceShow from "./components/Attendenceshow"
+import AttendenceShow from './components/Attendence'
 
 import Dps from './pages/Home/dps';
 import Payment from './pages/Home/pay';

@@ -57,9 +57,25 @@ const Announcements = () => {
   };
 
   const columns = [
-    { id: "announcementId", header: "Announcement ID" },
+    { id: "announcementId", header: "Announcement ID",
+      cell: (row) => {
+      return row.announcementId.toUpperCase(); 
+ }
+},
     { id: "title", header: "Title" },
-    { id: "createdAt", header: "Publish Date" },
+    { id: "createdAt", header: "Publish Date",
+      cell:(row)=>{
+        const date = new Date(row.createdAt);
+        const options = {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+        };
+       return date.toLocaleDateString(undefined, options);
+
+      }
+
+     },
     { id: "description", header: "Description" },
     {
       id: "image",

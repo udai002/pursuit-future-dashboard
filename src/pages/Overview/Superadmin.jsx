@@ -10,7 +10,7 @@ import AnnouncementsOverView from '../../components/AnnouncementsOverView'
 export default function Superadmin() {
   return (
     <div className=''>
-      <div className='flex'>
+      <div className='flex gap-2'>
         <OverviewComp title="Total Target" revenue="Rs 1,00,000" img={total} className="  "></OverviewComp>
                
                <OverviewComp title="Projected Revenue" revenue="Rs 1,00,000" img={total}></OverviewComp>
@@ -19,7 +19,7 @@ export default function Superadmin() {
            
 
       </div>
-      <div className='flex'>
+      <div className='flex  mt-3 gap-3'>
       <div className='flex-col'>
          <OverviewComp title="Total Payment counts" revenue="50"/>
         <Payment/>

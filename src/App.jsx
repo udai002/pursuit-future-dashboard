@@ -21,9 +21,8 @@ import Superadmin from "./pages/Overview/Superadmin";
 import RoleBasedAccess from "../RoleBasedAccess";
 import UnAuthorized from "./pages/UnAuthorized";
 
-
-import Attendence from "./components/Attendence"
 import AddAttendence from './components/AddAttendence'
+import AttendenceShow from './components/Attendence'
 
 import Dps from './pages/Home/dps';
 import Payment from './pages/Home/pay';
@@ -74,7 +73,7 @@ function App() {
         }
       }
 
-      if(userDetails){
+      if (userDetails) {
         setRoleAccess(userDetails.role)
       }
     }
@@ -97,83 +96,110 @@ function App() {
 
 
   //operation routes 
-  function OperationDashboard(){
+  function OperationDashboard() {
     return <Routes>
       <Route path='/studentsinfo' Component={StudentsInfo}/>       
       {/* attends */} 
       <Route path='/pay' Component={Payment} />
       <Route path='/dps' Component={Dps} />
+      <Route path='/attendenceshow' Component={AttendenceShow} />
+
     </Routes>
   }
 
   //HR routes 
-  function HRDashBoard(){
+  function HRDashBoard() {
     return <Routes>
       <Route path="/" Component={HROverView} />
-       <Route path="/addattendence" Component={AddAttendence} />
+      <Route path="/addattendence" Component={AddAttendence} />
+      <Route path='/attendenceshow' Component={AttendenceShow} />
+
        <Route path='/employeeinfo' Component={EmployeesInfo}/>
+
       {/* attends  */}
     </Routes>
   }
 
   //TL routs 
-function TLDashboard(){
-  return <Routes>
+  function TLDashboard() {
+    return <Routes>
       <Route path="/" Component={Teamlead} />
       <Route path='/pay' Component={Payment} />
       <Route path='/dps' Component={Dps} />
+      <Route path='/attendenceshow' Component={AttendenceShow} />
+
+      {/* attends  */}
+      {/* member info  */}
       <Route path='/membersinfo' Component={MembersInfo}/>
 
       {/* attends  */}
 
-  </Routes>
-}
+
+      {/* attends  */}
+
+    </Routes>
+  }
 
   //interns routes 
-  function InterDashboard(){
+  function InterDashboard() {
     return <Routes>
       <Route path="/" Component={Intern} />
+
+      {/* student info  */}
+      {/* sales lead info  */}
+
       <Route path='/studentsinfo' Component={StudentsInfo}/>
       <Route path='/salesLeadInfo' Component={SalesLeadsInfo}/>
+
       <Route path='/lead' Component={Lead} />
       <Route path='/pay' Component={Payment} />
       <Route path='/dps' Component={Dps} />
+
+      <Route path='/attendenceshow' Component={AttendenceShow} />
       {/* attend  */}
+
 
     </Routes>
   }
 
   //post sales
-  function PostSalesDashboard(){
+  function PostSalesDashboard() {
     return <Routes>
-        <Route path="/" Component={PostSales} />
+
+      <Route path="/" Component={PostSales} />
+      {/* attends */}
+      {/* student info  */}
+
         {/* attends */}
       <Route path='/studentsinfo' Component={StudentsInfo}/>
+
       <Route path='/pay' Component={Payment} />
       <Route path='/dps' Component={Dps} />
+      <Route path='/attendenceshow' Component={AttendenceShow} />
 
     </Routes>
   }
 
   //Digital marketing
-  function DigitalMarketingDashboard(){
+  function DigitalMarketingDashboard() {
     return <Routes>
-        <Route path="/" Component={DigitalMarketing} />
-        {/* attendance  */}
+      <Route path="/" Component={DigitalMarketing} />
+      {/* attendance  */}
       <Route path="/announcements" Component={Announcements} />
+      <Route path='/attendenceshow' Component={AttendenceShow} />
 
     </Routes>
   }
 
 
   function renderRoleBased() {
-    
+
     switch (userDetails?.role) {
       case options.admin:
         return <AdminDashboard />
       case options.operations:
         return <OperationDashboard />
-        case options.HR:
+      case options.HR:
         return <HRDashBoard />
       case options.teamLead:
         return <TLDashboard />
@@ -186,21 +212,21 @@ function TLDashboard(){
     }
   }
 
-  if(loadingAuth){
+  if (loadingAuth) {
     return <div>loading....</div>
   }
 
   return (
     <div className='flex w-screen'>
       {!siderBarAvoiders.includes(pathname) && <Sidenavbar />}
-        {renderRoleBased()}
-        <Routes>
+      {renderRoleBased()}
+      <Routes>
         <Route path='/' Component={Home} />
         <Route path="/login" Component={Signin} />
         <Route path='/forgotPassword' Component={ForgotPassword} />
         <Route Component={<div>Your lost...</div>} />
       </Routes>
-        {/* <Routes>
+      {/* <Routes>
         <Route path='/' Component={Home} />
         <Route path="/login" Component={Signin} />
         <Route path='/forgotPassword' Component={ForgotPassword} />

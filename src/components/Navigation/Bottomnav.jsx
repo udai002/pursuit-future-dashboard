@@ -3,9 +3,10 @@ import Button from "./Button";
 import { IoIosLogOut } from "react-icons/io";
 import { IoSettingsOutline } from "react-icons/io5";
 import { MdOutlineSupportAgent } from "react-icons/md";
+import useAuth from "../../context/AuthContext";
 
 export const Bottomnav = () => {
-  //   const { logout } = useAdmin();
+    const { logout } = useAuth();
 
   function handleLogout() {
     logout();
@@ -27,7 +28,7 @@ export const Bottomnav = () => {
       />
       <Button
         className="bg-[#004aad] rounded-md "
-        onclick={() => {}}
+        onclick={() => {handleLogout()}}
         title="Log Out"
         icon={<IoIosLogOut className="h-7 w-7" />}
       />

@@ -201,7 +201,7 @@ const ForgotPassword = () => {
 
 
   return (
-    <div className='flex flex-col gap-3 justify-center items-center h-screen'>
+    <div className='flex w-screen flex-col gap-3 justify-center items-center h-screen'>
         <p className='font-semibold '>Forgot password don't worry..</p>
       {renderFunction()}
     </div>

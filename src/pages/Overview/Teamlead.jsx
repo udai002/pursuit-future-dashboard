@@ -11,7 +11,7 @@ import AnnouncementsOverView from '../../components/AnnouncementsOverView'
 
 export default function Teamlead() {
   return (
-    <div className='ml-6'>
+    <div className=''>
 
     <div className='flex gap-2'>
 
@@ -22,7 +22,7 @@ export default function Teamlead() {
 
     </div>
 
-    <div className=' flex '>
+    <div className=' flex  mt-3 gap-3 '>
         <div>
 
              <div>

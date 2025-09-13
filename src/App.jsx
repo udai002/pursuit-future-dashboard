@@ -31,6 +31,7 @@ import Lead from './pages/Home/lead';
 import ForgotPassword from './pages/Home/Authentication/ForgotPassword'
 import { Sidenavbar } from './components/Navigation/Sidenavbar'
 import useAuth from './context/AuthContext'
+import TopNavBar from './components/TopNavBar'
 
 const siderBarAvoiders = [
   "/login",
@@ -188,11 +189,18 @@ function TLDashboard(){
   }
 
   return (
+    <>
+          
+
     <div className='flex'>
       {!siderBarAvoiders.includes(pathname) && <Sidenavbar />}
+      <div className='flex flex-col'>
+        <div>
+        {userDetails?<TopNavBar/>:""}
+      </div>
         {renderRoleBased()}
         <Routes>
-        <Route path='/' Component={Home} />
+        {/* <Route path='/' Component={Home} /> */}
         <Route path="/login" Component={Signin} />
         <Route path='/forgotPassword' Component={ForgotPassword} />
         <Route Component={<div>Your lost...</div>} />
@@ -213,7 +221,11 @@ function TLDashboard(){
         </RoleBasedAccess>} /> */}
 
       <Toaster></Toaster>
+      </div>
+      
     </div>
+    </>
+    
   );
 }
 

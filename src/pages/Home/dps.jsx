@@ -10,7 +10,7 @@ const Dps = () => {
   const handleClose = () => setShowCreate(false);
 
   return (
-    <div className="p-10">
+    <div className="">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-bold text-gray-800">DPS Data</h2>
         <div className="flex items-center space-x-3">

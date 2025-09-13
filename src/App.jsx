@@ -196,7 +196,7 @@ function TLDashboard(){
       {!siderBarAvoiders.includes(pathname) && <Sidenavbar />}
       <div className='flex flex-col'>
         <div>
-        {userDetails?<TopNavBar/>:""}
+        {!siderBarAvoiders.includes(pathname) &&<TopNavBar/>}
       </div>
         {renderRoleBased()}
         <Routes>

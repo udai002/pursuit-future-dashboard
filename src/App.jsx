@@ -24,6 +24,7 @@ import UnAuthorized from "./pages/UnAuthorized";
 
 import Attendence from "./components/Attendence"
 import AddAttendence from './components/AddAttendence'
+import AttendenceShow from "./components/Attendenceshow"
 
 import Dps from './pages/Home/dps';
 import Payment from './pages/Home/pay';
@@ -70,7 +71,7 @@ function App() {
         }
       }
 
-      if(userDetails){
+      if (userDetails) {
         setRoleAccess(userDetails.role)
       }
     }
@@ -92,85 +93,92 @@ function App() {
 
 
   //operation routes 
-  function OperationDashboard(){
+  function OperationDashboard() {
     return <Routes>
       {/* student 
       attends */}
       <Route path='/pay' Component={Payment} />
       <Route path='/dps' Component={Dps} />
+      <Route path='/attendenceshow' Component={AttendenceShow} />
+
     </Routes>
   }
 
   //HR routes 
-  function HRDashBoard(){
+  function HRDashBoard() {
     return <Routes>
       <Route path="/" Component={HROverView} />
-       <Route path="/addattendence" Component={AddAttendence} />
+      <Route path="/addattendence" Component={AddAttendence} />
+      <Route path='/attendenceshow' Component={AttendenceShow} />
       {/* attends  */}
       {/* Emplooyee info  */}
     </Routes>
   }
 
   //TL routs 
-function TLDashboard(){
-  return <Routes>
+  function TLDashboard() {
+    return <Routes>
       <Route path="/" Component={Teamlead} />
       <Route path='/pay' Component={Payment} />
       <Route path='/dps' Component={Dps} />
+      <Route path='/attendenceshow' Component={AttendenceShow} />
 
       {/* attends  */}
       {/* member info  */}
-  
-{/* attends  */}
 
-  </Routes>
-}
+      {/* attends  */}
+
+    </Routes>
+  }
 
   //interns routes 
-  function InterDashboard(){
+  function InterDashboard() {
     return <Routes>
-        <Route path="/" Component={Intern} />
+      <Route path="/" Component={Intern} />
       {/* student info  */}
       {/* sales lead info  */}
       <Route path='/lead' Component={Lead} />
 
       <Route path='/pay' Component={Payment} />
       <Route path='/dps' Component={Dps} />
+      <Route path='/attendenceshow' Component={AttendenceShow} />
 
     </Routes>
   }
 
   //post sales
-  function PostSalesDashboard(){
+  function PostSalesDashboard() {
     return <Routes>
-        <Route path="/" Component={PostSales} />
-        {/* attends */}
-        {/* student info  */}
+      <Route path="/" Component={PostSales} />
+      {/* attends */}
+      {/* student info  */}
       <Route path='/pay' Component={Payment} />
       <Route path='/dps' Component={Dps} />
+      <Route path='/attendenceshow' Component={AttendenceShow} />
 
     </Routes>
   }
 
   //Digital marketing
-  function DigitalMarketingDashboard(){
+  function DigitalMarketingDashboard() {
     return <Routes>
-        <Route path="/" Component={DigitalMarketing} />
-        {/* attendance  */}
+      <Route path="/" Component={DigitalMarketing} />
+      {/* attendance  */}
       <Route path="/announcements" Component={Announcements} />
+      <Route path='/attendenceshow' Component={AttendenceShow} />
 
     </Routes>
   }
 
 
   function renderRoleBased() {
-    
+
     switch (userDetails?.role) {
       case options.admin:
         return <AdminDashboard />
       case options.operations:
         return <OperationDashboard />
-        case options.HR:
+      case options.HR:
         return <HRDashBoard />
       case options.teamLead:
         return <TLDashboard />
@@ -183,21 +191,21 @@ function TLDashboard(){
     }
   }
 
-  if(loadingAuth){
+  if (loadingAuth) {
     return <div>loading....</div>
   }
 
   return (
     <div className='flex'>
       {!siderBarAvoiders.includes(pathname) && <Sidenavbar />}
-        {renderRoleBased()}
-        <Routes>
+      {renderRoleBased()}
+      <Routes>
         <Route path='/' Component={Home} />
         <Route path="/login" Component={Signin} />
         <Route path='/forgotPassword' Component={ForgotPassword} />
         <Route Component={<div>Your lost...</div>} />
       </Routes>
-        {/* <Routes>
+      {/* <Routes>
         <Route path='/' Component={Home} />
         <Route path="/login" Component={Signin} />
         <Route path='/forgotPassword' Component={ForgotPassword} />

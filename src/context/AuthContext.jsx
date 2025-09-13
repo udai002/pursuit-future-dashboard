@@ -77,7 +77,7 @@ function AuthProvider({children}){
             const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/user/login` , options)
             setLoading(false)
             const result = await response.json()
-            console.log(response)
+            console.log("from authcontext",response)
             if(response.ok){
                 toast.success(result.msg)
                 console.log(result.token)

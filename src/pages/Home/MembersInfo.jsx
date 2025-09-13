@@ -1,7 +1,6 @@
 import React from 'react'
 import Table from '../../components/table'
 import { GoArrowUpRight } from "react-icons/go";
-import { Sidenavbar } from '../../components/Navigation/Sidenavbar';
 
 const MembersInfo = () => {
 
@@ -59,8 +58,7 @@ const MembersInfo = () => {
     ]
   return (
     <>
-    <div className='flex'>
-    <Sidenavbar/>
+       <div className='mt-[5%]'>
     <Table columns={columns} data={data}/>
     </div>
     </>

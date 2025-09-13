@@ -30,6 +30,10 @@ import Lead from './pages/Home/lead';
 import ForgotPassword from './pages/Home/Authentication/ForgotPassword'
 import { Sidenavbar } from './components/Navigation/Sidenavbar'
 import useAuth from './context/AuthContext'
+import MembersInfo from './pages/Home/MembersInfo'
+import SalesLeadsInfo from './pages/Home/SalesLeadsInfo'
+import EmployeesInfo from './pages/Home/EmployeesInfo'
+import StudentsInfo from './pages/Home/StudentsInfo'
 
 const siderBarAvoiders = [
   "/login",
@@ -82,6 +86,7 @@ function App() {
     return <Routes>
       <Route path="/" Component={Superadmin} />
       <Route path="/teaminfo" Component={Teaminformation} />
+      <Route path='/salesLeadInfo' Component={SalesLeadsInfo}/>
       <Route path='/lead' Component={Lead} />
       <Route path='/pay' Component={Payment} />
       <Route path='/dps' Component={Dps} />
@@ -93,8 +98,8 @@ function App() {
   //operation routes 
   function OperationDashboard() {
     return <Routes>
-      {/* student 
-      attends */}
+      <Route path='/studentsinfo' Component={StudentsInfo}/>       
+      {/* attends */} 
       <Route path='/pay' Component={Payment} />
       <Route path='/dps' Component={Dps} />
       <Route path='/attendenceshow' Component={AttendenceShow} />
@@ -108,8 +113,10 @@ function App() {
       <Route path="/" Component={HROverView} />
       <Route path="/addattendence" Component={AddAttendence} />
       <Route path='/attendenceshow' Component={AttendenceShow} />
+
+       <Route path='/employeeinfo' Component={EmployeesInfo}/>
+
       {/* attends  */}
-      {/* Emplooyee info  */}
     </Routes>
   }
 
@@ -123,6 +130,10 @@ function App() {
 
       {/* attends  */}
       {/* member info  */}
+      <Route path='/membersinfo' Component={MembersInfo}/>
+
+      {/* attends  */}
+
 
       {/* attends  */}
 
@@ -133,13 +144,20 @@ function App() {
   function InterDashboard() {
     return <Routes>
       <Route path="/" Component={Intern} />
+
       {/* student info  */}
       {/* sales lead info  */}
-      <Route path='/lead' Component={Lead} />
 
+      <Route path='/studentsinfo' Component={StudentsInfo}/>
+      <Route path='/salesLeadInfo' Component={SalesLeadsInfo}/>
+
+      <Route path='/lead' Component={Lead} />
       <Route path='/pay' Component={Payment} />
       <Route path='/dps' Component={Dps} />
+
       <Route path='/attendenceshow' Component={AttendenceShow} />
+      {/* attend  */}
+
 
     </Routes>
   }
@@ -147,9 +165,14 @@ function App() {
   //post sales
   function PostSalesDashboard() {
     return <Routes>
+
       <Route path="/" Component={PostSales} />
       {/* attends */}
       {/* student info  */}
+
+        {/* attends */}
+      <Route path='/studentsinfo' Component={StudentsInfo}/>
+
       <Route path='/pay' Component={Payment} />
       <Route path='/dps' Component={Dps} />
       <Route path='/attendenceshow' Component={AttendenceShow} />
@@ -194,7 +217,7 @@ function App() {
   }
 
   return (
-    <div className='flex'>
+    <div className='flex w-screen'>
       {!siderBarAvoiders.includes(pathname) && <Sidenavbar />}
       {renderRoleBased()}
       <Routes>
@@ -211,7 +234,7 @@ function App() {
       {/*
         <Route path="/teams/:teamid/employees" Component={EmployeeTable} />
 
-        <Route path="/operations" Component={Operations} />
+        <Route path="/operations" Component={Operxations} />
         <Route path="/admin" Component={Superadmin} />
         <Route path="/unauthorized" Component={UnAuthorized} />
         <Route path='role' element={<RoleBasedAccess requiredRoles={["Admin", "Post Sales", "Team Lead"]}>

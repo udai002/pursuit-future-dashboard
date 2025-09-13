@@ -10,16 +10,8 @@ const Dps = () => {
   const handleClose = () => setShowCreate(false);
 
   return (
-    <div className="p-10">
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-xl font-bold text-gray-800">DPS Data</h2>
-        <div className="flex items-center space-x-3">
-          <button onClick={handleOpen} className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">
-            Add DPS
-          </button>
-        </div>
-      </div>
-      <Hello />
+    <div className="inline w-full">
+      <Hello onAddDps={handleOpen} />
       {showCreate && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg w-11/12 md:w-1/2 relative">

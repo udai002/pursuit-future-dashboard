@@ -35,6 +35,7 @@ import SalesLeadsInfo from './pages/Home/SalesLeadsInfo'
 import EmployeesInfo from './pages/Home/EmployeesInfo'
 import StudentsInfo from './pages/Home/StudentsInfo'
 
+
 const siderBarAvoiders = [
   "/login",
   "/forgotPassword"
@@ -91,6 +92,7 @@ function App() {
       <Route path='/pay' Component={Payment} />
       <Route path='/dps' Component={Dps} />
       <Route path="/announcements" Component={Announcements} />
+      <Route path="/attendance" Component={AttendenceShow} />
     </Routes>
   }
 
@@ -102,7 +104,9 @@ function App() {
       {/* attends */} 
       <Route path='/pay' Component={Payment} />
       <Route path='/dps' Component={Dps} />
-      <Route path='/attendenceshow' Component={AttendenceShow} />
+      <Route path='/attendence' Component={AttendenceShow} />
+      
+
 
     </Routes>
   }
@@ -112,9 +116,11 @@ function App() {
     return <Routes>
       <Route path="/" Component={HROverView} />
       <Route path="/addattendence" Component={AddAttendence} />
-      <Route path='/attendenceshow' Component={AttendenceShow} />
+      <Route path='/attendence' Component={AttendenceShow} />
 
        <Route path='/employeeinfo' Component={EmployeesInfo}/>
+      
+
 
       {/* attends  */}
     </Routes>
@@ -126,11 +132,13 @@ function App() {
       <Route path="/" Component={Teamlead} />
       <Route path='/pay' Component={Payment} />
       <Route path='/dps' Component={Dps} />
-      <Route path='/attendenceshow' Component={AttendenceShow} />
+      <Route path='/attendence' Component={AttendenceShow} />
 
       {/* attends  */}
       {/* member info  */}
       <Route path='/membersinfo' Component={MembersInfo}/>
+     
+
 
       {/* attends  */}
 
@@ -150,12 +158,14 @@ function App() {
 
       <Route path='/studentsinfo' Component={StudentsInfo}/>
       <Route path='/salesLeadInfo' Component={SalesLeadsInfo}/>
+      
+
 
       <Route path='/lead' Component={Lead} />
       <Route path='/pay' Component={Payment} />
       <Route path='/dps' Component={Dps} />
 
-      <Route path='/attendenceshow' Component={AttendenceShow} />
+      <Route path='/attendence' Component={AttendenceShow} />
       {/* attend  */}
 
 
@@ -172,10 +182,11 @@ function App() {
 
         {/* attends */}
       <Route path='/studentsinfo' Component={StudentsInfo}/>
+  
 
       <Route path='/pay' Component={Payment} />
       <Route path='/dps' Component={Dps} />
-      <Route path='/attendenceshow' Component={AttendenceShow} />
+      <Route path='/attendence' Component={AttendenceShow} />
 
     </Routes>
   }
@@ -186,7 +197,8 @@ function App() {
       <Route path="/" Component={DigitalMarketing} />
       {/* attendance  */}
       <Route path="/announcements" Component={Announcements} />
-      <Route path='/attendenceshow' Component={AttendenceShow} />
+      <Route path='/attendence' Component={AttendenceShow} />
+   
 
     </Routes>
   }
@@ -225,6 +237,7 @@ function App() {
         <Route path="/login" Component={Signin} />
         <Route path='/forgotPassword' Component={ForgotPassword} />
         <Route Component={<div>Your lost...</div>} />
+     
       </Routes>
       {/* <Routes>
         <Route path='/' Component={Home} />

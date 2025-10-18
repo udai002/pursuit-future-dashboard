@@ -252,7 +252,7 @@ function App() {
 
         <Route path="/login" Component={Signin} />
         <Route path='/forgotPassword' Component={ForgotPassword} />
-        <Route Component={<div>Your lost...</div>} />
+        <Route Component={<div>Your lost..</div>} />
      
       </Routes>
       {/* <Routes>

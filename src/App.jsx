@@ -238,13 +238,13 @@ function App() {
 
     <div className='flex'>
 
-      {!siderBarAvoiders.includes(pathname) && <Sidenavbar />
+      {!siderBarAvoiders.includes(pathname) && <Sidenavbar />}
       <div className='flex flex-col'>
         <div>
         {!siderBarAvoiders.includes(pathname) &&<TopNavBar/>}
+        
       </div>
     
-        {/* <Route path='/' Component={Home} /> */}
 
       {renderRoleBased()}
       <Routes>

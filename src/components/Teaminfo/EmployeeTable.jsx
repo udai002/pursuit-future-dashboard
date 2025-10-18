@@ -21,6 +21,7 @@ const Employees = () => {
                         <p className='text-[#004aad]'>{row.empname}</p>
                         <img src={arrow} alt="arrow" className='w-3 h-3' />
 
+
                     </div>
                 </button>
             )
@@ -36,7 +37,7 @@ const Employees = () => {
             <h2 className="text-xl font-bold mb-4">
                 Employees
             </h2>
-            <Table data={team.employees || []} columns={columns} />
+            <Table  data={team.employees || []} columns={columns} />
         </div>
     );
 };

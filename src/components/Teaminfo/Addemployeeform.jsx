@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import Teaminfo from './Teaminfo'
 import toast from 'react-hot-toast'
+import uploadProfile from '../../assets/Teaminfo/uploadProfile.png'
+import { useRef } from 'react'
 
 const Addemployeeform = ({teamsInfo ,handleCloseModal}) => {
 
@@ -13,6 +15,10 @@ const Addemployeeform = ({teamsInfo ,handleCloseModal}) => {
             // "Post Sales" , 
             "Digital Marteking"
          ]
+    const filePath=useRef()
+    const handleEvent=()=>{
+        filePath.current.click()
+    }
 
     const [username , setUsername] = useState("")
     const [email , setEmail] = useState("")
@@ -70,42 +76,81 @@ const Addemployeeform = ({teamsInfo ,handleCloseModal}) => {
                 </div>
                 <form className='grid-cols-2 gap-4' onSubmit={handleCreateEmployee}>
                     <p className='font-Regular font-family:DM Sans text-[#444444]'>Add Employee</p>
-                    <div className='flex gap-3 p-2 '>
-                        <input type="text" placeholder='Employee name' className='border-2 border-[#004AAD] p-3 rounded-lg w-full' value={username} onChange={(e)=>setUsername(e.target.value)} />
-                        <input type="text" placeholder='Employee Email ID' className='border-2 border-[#004AAD] p-3 rounded-lg w-full'  value={email} onChange={(e)=>setEmail(e.target.value)} />
+                    <div className='flex '>
+                        <div className=' w-1/2 rounded-2xl '>
+                            <div className='flex  p-2 '>
+                                {/* <input type="text" placeholder='Employee name' className='border-2 border-[#004AAD] p-3 rounded-lg w-full' value={username} onChange={(e)=>setUsername(e.target.value)} /> */}
+                                <select className="border border-[#004AAD] p-3 border-2 rounded-2xl text-lg w-full  " defaultValue="" value={role} onChange={e=>setRole(e.target.value)} >
+                                    {/* <option value="" className="text-[#004AAD] ">Employee Type</option> */}
+                                <option value="Intern"  className='text-[#004AAD] '>Intern</option>
+                                    <option value="Admin"  className='text-[#004AAD]'>Admin</option>
+                                    <option value="Operations"  className='text-[#004AAD]'>Operations</option>
+                                    <option value="HR"  className='text-[#004AAD]'>HR</option>
+                                    <option value="Team Lead"  className='text-[#004AAD]'>Team Lead</option>
+                                    <option value="Post Sales"  className='text-[#004AAD]'>Post Sales</option>
+                                    <option value="Digital Marteking"  className='text-[#004AAD]'>Digital Marteking</option>
+                                </select>
+                                
+                            </div>
+                            <div className='flex gap-3 p-2'>
+                                
+                                <input type="text" placeholder='Employee Name' className='border-2 border-[#004AAD] p-3 rounded-2xl w-full placeholder:text-lg placeholder:border-2'  value={username} onChange={(e)=>setUsername(e.target.value)} />
+                                {/* <input type="text" placeholder='Employee  WhatsApp Number' className='border-2 border-[#004AAD] p-3 rounded-lg w-full'  value={whatsappNumber} onChange={(e)=>setWhatsappNumber(e.target.value)}/> */}
+                            </div>
+                            {/* <div className='flex gap-3 p-2'>
+                                <select
+                                    className="border border-[#004AAD] p-3 rounded-lg w-full text-[#004AAD]"
+                                    defaultValue="" value={role} onChange={e=>setRole(e.target.value)}>
+                                    <option value="Intern"  className='text-[#004AAD]'>Intern</option>
+                                    <option value="Admin"  className='text-[#004AAD]'>Admin</option>
+                                    <option value="Operations"  className='text-[#004AAD]'>Operations</option>
+                                    <option value="HR"  className='text-[#004AAD]'>HR</option>
+                                    <option value="Team Lead"  className='text-[#004AAD]'>Team Lead</option>
+                                    <option value="Post Sales"  className='text-[#004AAD]'>Post Sales</option>
+                                    <option value="Digital Marteking"  className='text-[#004AAD]'>Digital Marteking</option>
+                                </select>
+                                <input value={password} onChange={e=>setPassword(e.target.value)} type="text" placeholder='Employee Password' className='border-2 border-[#004AAD] p-3 rounded-lg w-full' />
+                            </div> */}
+                            <div className='flex gap-3 p-2'>
+
+                                <input type="text" placeholder='Employee Email ID' className='border-2 border-[#004AAD] p-3 rounded-2xl w-full placeholder:text-lg'  value={email} onChange={(e)=>setEmail(e.target.value)} />
+
+                            </div>
+                        </div>
+                        <div className='border-2 rounded-2xl border-[#004AAD] w-1/2  p-3 flex flex-col text-center'>
+                            <div className=' flex flex-col justify-center align-center h-full '>
+                                
+                                <input type="file" name="" id="" ref={filePath} hidden/>
+                                <div className='flex flex-col justify-center align-center ' onClick={handleEvent}>
+                                    <p className='#444444 text-[16px]'>Upload Profile</p>
+                                <div className=' flex justify-center align-center'>
+                                    <img src={uploadProfile} alt="" className=' w-10 h-10'  />
+                                </div>
+                                <p className='text-[#888888]'>Supported  format png,jpg,or jpeg</p>
+                                </div>
+                            </div>
+                        </div>
+                       
                     </div>
                     <div className='flex gap-3 p-2'>
-                        <input type="text" placeholder='Employee Contact Number' className='border-2 border-[#004AAD] p-3 rounded-lg w-full'  value={phone} onChange={(e)=>setPhone(e.target.value)} />
-                        <input type="text" placeholder='Employee  WhatsApp Number' className='border-2 border-[#004AAD] p-3 rounded-lg w-full'  value={whatsappNumber} onChange={(e)=>setWhatsappNumber(e.target.value)}/>
-                    </div>
-                    <div className='flex gap-3 p-2'>
-                        <select
-                            className="border border-[#004AAD] p-3 rounded-lg w-full text-[#004AAD]"
-                            defaultValue="" value={role} onChange={e=>setRole(e.target.value)}>
-                            <option value="Intern"  className='text-[#004AAD]'>Intern</option>
-                            <option value="Admin"  className='text-[#004AAD]'>Admin</option>
-                            <option value="Operations"  className='text-[#004AAD]'>Operations</option>
-                            <option value="HR"  className='text-[#004AAD]'>HR</option>
-                            <option value="Team Lead"  className='text-[#004AAD]'>Team Lead</option>
-                            <option value="Post Sales"  className='text-[#004AAD]'>Post Sales</option>
-                            <option value="Digital Marteking"  className='text-[#004AAD]'>Digital Marteking</option>
-                        </select>
-                        <input value={password} onChange={e=>setPassword(e.target.value)} type="text" placeholder='Employee Password' className='border-2 border-[#004AAD] p-3 rounded-lg w-full' />
+                        <input type="text" placeholder='Employee Contact Number' className='border-2 border-[#004AAD] p-3 rounded-2xl w-1/2 placeholder:text-lg'  value={phone} onChange={(e)=>setPhone(e.target.value)} />
+                        <input type="text" placeholder='Employee  WhatsApp Number' className='border-2 border-[#004AAD] p-3 rounded-2xl w-1/2'  value={whatsappNumber} onChange={(e)=>setWhatsappNumber(e.target.value)}/>
                     </div>
                     <div className='flex gap-3 p-2'>
                         <select
                         value={team} onChange={e=>setTeam(e.target.value)}
-                            className="border border-[#004AAD] p-3 rounded-lg w-full text-[#004AAD]" defaultValue={teamsInfo[0]._id}>
+                            className="border-2 border-[#004AAD] p-3 rounded-2xl w-1/2 text-[#004AAD]" defaultValue="select Team">
                             {teamsInfo.map(item=>{
                                 console.log(item)
                                  return <option value={item._id}  className='text-[#004AAD]'>{item.name}</option>})}
                         </select>
                         <select
-                            className="border border-[#004AAD] p-3 rounded-lg w-full text-[#004AAD]"
+                            className="border-2 border-[#004AAD] p-3 rounded-2xl w-1/2 text-[#004AAD]"
                             defaultValue="" value={officeLocation} onChange={e=>setOfficeLocation(e.target.value)}>
                             <option value="Hyderabad"  className="text-[#004AAD]">Hyderabad</option>
                             <option value="Banglore"  className="text-[#004AAD]">Banglore</option>
                         </select>
+
                     </div>
                     <div>
                         <button type='submit' className='bg-[#004AAd] text-white p-2 rounded-lg'>Add </button>

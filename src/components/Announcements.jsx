@@ -118,17 +118,16 @@ const Announcements = () => {
     <div>
       <div className="flex gap-[640px]">
         <div className="flex gap-4">
-          <div className="text-2xl text-[#444444]">Announcements</div>
+          <div className="text-2xl text-[#444444] mt-3">Announcements</div>
             <CustomSelect title="All" options={[
                 "January","February","March","April","May","June",
                 "July","August","September","October","November","December",
               ]}/>
-        
         </div> 
 
         <div>
           <button
-          className="bg-[#004AAD] text-white p-2 rounded-lg  hover:bg-[#00a99D] duration-200"
+          className="bg-[#004AAD] text-white p-2 rounded-lg  hover:bg-[#00a99D] duration-200 mt-3"
           onClick={() => setModalType("add")}>Create Announcement
           </button>
         </div>

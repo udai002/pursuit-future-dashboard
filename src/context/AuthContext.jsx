@@ -81,7 +81,7 @@ function AuthProvider({children}){
             if(response.ok){
                 toast.success(result.msg)
                 console.log(result.token)
-                setUserDetails(result.user)
+                setUserDetails(()=>result.user)
                 localStorage.setItem("session_token" , JSON.stringify(result.token))
                 navigate("/")
             }else{

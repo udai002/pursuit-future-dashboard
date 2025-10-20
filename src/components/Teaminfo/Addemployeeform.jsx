@@ -42,6 +42,7 @@ const Addemployeeform = ({teamsInfo ,handleCloseModal}) => {
             }
             const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/user` , options)
             const result = await response.json() 
+            console.log("form suser",result.data)
             if(response.ok){
                 toast.success(result.msg)
                 setUsername("")

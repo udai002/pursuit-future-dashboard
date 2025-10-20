@@ -25,7 +25,7 @@ console.log(data)
                 <tr key={rowIndex}>
                   {columns.map((col) => (
                     <td
-                      className="px-4 text-center py-2 border-b border-[#004AAD]"
+                      className="px-4 text-center py-2 border-b border-[#004AAD] text-[#444444]"
                       key={`${rowIndex}-${col.id}`}
                     >
                       {col.cell ? col.cell(row) : row[col.id]}

@@ -4,6 +4,9 @@ import AddAnnouncement from "./AddAnnouncement";
 import Table from "./table";
 import Delete from "../assets/delete.png";
 import Edit from "../assets/edit.png";
+import { RxCaretDown } from "react-icons/rx";
+import { GoArrowUpRight } from "react-icons/go";
+import CustomSelect from "./button/CustomSelect";
 
 const Announcements = () => {
   const [modalType, setModalType] = useState(null);
@@ -81,8 +84,8 @@ const Announcements = () => {
       id: "image",
       header: "Image",
       cell: (row) => (
-        <button
-          className="text-[#004AAD]"
+        <div className="flex gap-1 text-[#004AAD] "> 
+          <button
           onClick={() => {
             if (row.image) {
               setShowImage(row.image);
@@ -91,12 +94,16 @@ const Announcements = () => {
           }}
         >
           View Image
-        </button>
+           </button>
+           <div className="mt-1.5"><GoArrowUpRight size={16}/></div>
+          
+        </div>
+        
       ),
     },
     {
       id: "action",
-      header: "Actions",
+      header: "Action",
       cell: (row) => (
         <div className="flex gap-3">
           <img src={Delete} alt="" onClick={()=>handleDelete(row._id)}
@@ -109,14 +116,22 @@ const Announcements = () => {
 
   return (
     <div>
-      <div className="flex justify-between">
-        <p>Announcements</p>
-        <button
-          className="bg-[#004AAD] text-white p-2 rounded-lg"
-          onClick={() => setModalType("add")}
-        >
-          Create Announcement
-        </button>
+      <div className="flex gap-[640px]">
+        <div className="flex gap-4">
+          <div className="text-2xl text-[#444444] mt-3">Announcements</div>
+            <CustomSelect title="All" options={[
+                "January","February","March","April","May","June",
+                "July","August","September","October","November","December",
+              ]}/>
+        </div> 
+
+        <div>
+          <button
+          className="bg-[#004AAD] text-white p-2 rounded-lg  hover:bg-[#00a99D] duration-200 mt-3"
+          onClick={() => setModalType("add")}>Create Announcement
+          </button>
+        </div>
+        
       </div>
 
       <div>

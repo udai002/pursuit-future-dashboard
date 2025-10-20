@@ -11,45 +11,34 @@ import AnnouncementsOverView from '../../components/AnnouncementsOverView'
 
 export default function Teamlead() {
   return (
+    <div>
     <div className=''>
 
-    <div className='flex gap-2'>
-
-        <OverviewComp title="Total Target" revenue="Rs 80,00,000" img={total} className=""></OverviewComp> 
+      <div className='flex gap-2'>
+        <OverviewComp title="Total Target" revenue="Rs 80,00,000" img={total} className=""></OverviewComp>
         <OverviewComp title="Projected Revenue" revenue="Rs 3,00,000" img={total}></OverviewComp>
         <OverviewComp title="Revenue Credited" revenue="Rs 2,00,000" img={revenue}></OverviewComp>
         <OverviewComp title="Pending Revenue" revenue="Rs 6,00,000" img={pending}></OverviewComp>
-
-    </div>
-
-    <div className=' flex  mt-3 gap-3 '>
+      </div>
+      <div className=' flex  mt-3 gap-3 '>
         <div>
+          <div>
+            <OverviewComp title="Total Payment Counts" revenue=" 50" img="" />
+          </div>
 
-             <div>
-             <OverviewComp title="Total Payment Counts" revenue=" 50" img=""/>
+          <div className='flex '>
+            <Payment />
+          </div>
         </div>
-
-        <div className='flex '>
-            <Payment/>
-           
-           
-        </div>
-
-        </div>
-
-       
-
         <div className='w-full'>
-             <AnnouncementsOverView></AnnouncementsOverView>
+          <AnnouncementsOverView></AnnouncementsOverView>
         </div>
-        
-        
-    </div>
-    <Assign_leads/>
-
-    </div>
-    
-    
+      </div>
+       </div>
+          <div className='mt-[4px]'>
+        <Assign_leads />
+      </div>
+      </div>
   )
 }
 

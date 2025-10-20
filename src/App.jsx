@@ -38,7 +38,7 @@ import SalesLeadsInfo from './pages/Home/SalesLeadsInfo'
 import EmployeesInfo from './pages/Home/EmployeesInfo'
 import StudentsInfo from './pages/Home/StudentsInfo'
 
-
+import Watermark from './components/watermark'
 const siderBarAvoiders = [
   "/login",
   "/forgotPassword"
@@ -129,6 +129,15 @@ function App() {
     </Routes>
   }
 
+  //HR Intern routes
+  function HRInternDashboard(){
+    return <Routes>
+      <Route path='/' Component={HROverView}/>
+      <Route path='/addattendance' Component={AddAttendence}/>
+      <Route path='/attendance' Component={AttendenceShow}/>
+      <Route path='/employeeinfo' Component={EmployeesInfo}/>
+    </Routes>
+  }
   //TL routs 
   function TLDashboard() {
     return <Routes>
@@ -237,6 +246,8 @@ function App() {
           
 
     <div className='flex'>
+      <Watermark opacity={0.2} size={180} rotate={-40} text="pursuit future technologies"/>
+
 
       {!siderBarAvoiders.includes(pathname) && <Sidenavbar />}
       <div className='flex flex-col'>
@@ -245,8 +256,9 @@ function App() {
         
       </div>
     
-
+      <div>
       {renderRoleBased()}
+      </div>
       <Routes>
         <Route path='/' Component={Home} />
 
@@ -270,7 +282,7 @@ function App() {
           <Teaminformation />
         </RoleBasedAccess>} /> */}
 
-      <Toaster></Toaster>
+      <Toaster/>
       </div>
       
     </div>

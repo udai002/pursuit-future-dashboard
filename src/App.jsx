@@ -287,7 +287,7 @@ function App() {
       <Toaster/>
       </div>
       
-    </div>
+    
     </>
     
   );

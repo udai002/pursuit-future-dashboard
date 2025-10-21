@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Papa from "papaparse";
+import CustomSelect from "../button/CustomSelect";
+import { IoIosArrowDown } from "react-icons/io";
 const CsvToTable = () => {
   const [data, setData] = useState([]);
   const [headers, setHeaders] = useState([]);
@@ -57,13 +59,54 @@ const CsvToTable = () => {
   return (
     <div className="p-8 font-sans bg-gray-100 min-h-screen inline">
       <h2 className="mb-6 text-2xl font-bold text-blue-900">Upload CSV</h2>
-      <input type="file" accept=".csv" onChange={handleFileChange} className="p-2 border border-blue-900 rounded-md cursor-pointer mr-3"/>
-      <button onClick={handleUpload} className="px-5 py-2 bg-blue-900 text-white rounded-md mr-3 hover:bg-blue-800 transition">
+      <input
+        type="file"
+        accept=".csv"
+        onChange={handleFileChange}
+        className="p-2 border border-blue-900 rounded-md cursor-pointer mr-3"
+      />
+      <button
+        onClick={handleUpload}
+        className="px-5 py-2 bg-blue-900 text-white rounded-md mr-3 hover:bg-blue-800 transition"
+      >
         Upload
       </button>
-      <button onClick={handleDelete} className="px-5 py-2 bg-red-600 text-white rounded-md hover:bg-red-500 transition" >
+      <button
+        onClick={handleDelete}
+        className="px-5 py-2 bg-red-600 text-white rounded-md hover:bg-red-500 transition"
+      >
         Delete All
       </button>
+
+      <div className="flex justify-between mt-6 mr-2">
+        <div className="flex mt-4">
+          <h3 className="text-gray-600 text-3xl">Lead Gen Info</h3>
+        </div>
+        <div className="flex gap-[0.5px]">
+          <CustomSelect
+            className="h-[]"
+            title="Month"
+            options={[
+              "January",
+              "February",
+              "March",
+              "April",
+              "May",
+              "June",
+              "July",
+              "August",
+              "September",
+              "October",
+              "November",
+              "December",
+            ]}
+          />
+
+          <CustomSelect className="h-[]" title="Team Name" />
+          <CustomSelect className="h-[]" title="Member" />
+        </div>
+      </div>
+
       {data.length > 0 && (
         <div className="mt-6 overflow-x-auto bg-white rounded-lg shadow-md">
           <table className="w-full border-collapse">
@@ -84,7 +127,7 @@ const CsvToTable = () => {
                 <tr
                   key={rowIndex}
                   className={`transition ${
-                    rowIndex % 2 === 0 ? "bg-gray-50" : "bg-white"
+                    rowIndex % 2 === 0 ? "bg-white" : "bg-white"
                   } hover:bg-indigo-100`}
                 >
                   {headers.map((header, colIndex) => (

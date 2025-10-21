@@ -21,6 +21,21 @@ const OptionsList = [
   },
   {
     id: 2,
+    title: "Attendence",
+    icon: <FaTruckFast className="h-6 w-6 " />,
+    link: "/attendence",
+    access:[ 
+            "Admin" ,
+            "Operations" , 
+            "HR" , 
+            "Team Lead" , 
+            "Intern" , 
+            "Post Sales" , 
+            "Digital Marteking"
+         ],
+  },
+  {
+    id: 3,
     title: "Team Info",
     icon: <FaTruckFast className="h-6 w-6 " />,
     link: "/teaminfo",
@@ -35,7 +50,7 @@ const OptionsList = [
          ],
   },
   {
-    id: 3,
+    id: 4,
     title: "Sales Leads Info",
     icon: <FaTruckFast className="h-6 w-6 " />,
     link: "SalesLeadInfo",
@@ -50,7 +65,7 @@ const OptionsList = [
          ],
   },
   {
-    id: 4,
+    id: 5,
     title: "Lead Gen. Info",
     icon: <FaTruckFast className="h-6 w-6 " />,
     link: "/lead",
@@ -65,7 +80,7 @@ const OptionsList = [
          ],
   },
   {
-    id: 5,
+    id: 6,
     title: "Payment Links",
     icon: <FaTruckFast className="h-6 w-6 " />,
     link: "/pay",
@@ -80,7 +95,7 @@ const OptionsList = [
          ],
   },
   {
-    id: 6,
+    id: 7,
     title: "DPS Data",
     icon: <FaTruckFast className="h-6 w-6 " />,
     link: "/dps",
@@ -95,7 +110,7 @@ const OptionsList = [
          ],
   },
   {
-    id: 7,
+    id: 8,
     title: "Announcements",
     icon: <FaTruckFast className="h-6 w-6 " />,
     link: "/announcements",

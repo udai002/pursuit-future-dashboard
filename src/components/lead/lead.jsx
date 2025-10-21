@@ -33,7 +33,7 @@ const CsvToTable = () => {
   };
 
   const handleDelete = () => {
-    fetch("http://localhost:3000/api/lead/delcsv", {
+    fetch("http://localhost:3000/lead/delete", {
       method: "DELETE",
     })
       .then((res) => res.json())
@@ -57,7 +57,7 @@ const CsvToTable = () => {
   }, []);
 
   return (
-    <div className="p-8 font-sans bg-gray-100 min-h-screen inline">
+    <div className="font-sans bg-gray-100 min-h-screen inline">
       <h2 className="mb-6 text-2xl font-bold text-blue-900">Upload CSV</h2>
       <input
         type="file"
@@ -78,8 +78,8 @@ const CsvToTable = () => {
         Delete All
       </button>
 
-      <div className="flex justify-between mt-6 mr-2">
-        <div className="flex mt-4">
+      <div className="flex mt-6 mr-2">
+        <div className="flex flex-1 mt-4">
           <h3 className="text-gray-600 text-3xl">Lead Gen Info</h3>
         </div>
         <div className="flex gap-[0.5px]">

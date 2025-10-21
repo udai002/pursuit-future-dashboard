@@ -82,7 +82,7 @@ const Teaminfo = () => {
     { id: 'name', header: 'Team Name', cell:(row)=>(
     <button onClick={() => navigate(`/teams/${row._id}/employees`, { state: row })}>
         <div className='flex jusify-center align-center item-center gap-2'>
-        <p className='text-[#004aad]'>{row.name}</p>
+        <p className='text-[#004aad] text-[16px] '>{row.name}</p>
         <img src={arrow} alt="arrow" className='w-3 h-3' />
 
       </div>
@@ -108,7 +108,7 @@ const Teaminfo = () => {
     },
   ]
   return (
-    <div className='w-full p-5'>
+    <div className='w-full py-5 pr-5'>
       
       <div className='w-full'>
         {loading ? <div className='flex justify-center items-center h-screen'>
@@ -129,7 +129,9 @@ const Teaminfo = () => {
           </div>
         </div>
       </div>
-        <Table  data={team} columns={columns}/></>}
+        <div className='w-full'>
+          <Table  data={team} columns={columns}/>
+          </div></>}
       </div>
 
 

@@ -21,7 +21,7 @@ const {open,setOpen}=useContext(Store)
       >
        <Navheader/>
        <Scrollbody/>
-       <Bottomnav />
+       <Bottomnav />  
        
       </div>
 

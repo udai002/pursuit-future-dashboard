@@ -37,6 +37,8 @@ import MembersInfo from './pages/Home/MembersInfo'
 import SalesLeadsInfo from './pages/Home/SalesLeadsInfo'
 import EmployeesInfo from './pages/Home/EmployeesInfo'
 import StudentsInfo from './pages/Home/StudentsInfo'
+import TeamEmployees from "./components/Teaminfo/EmployeeTable"
+import AttendanceCalendar  from "./components/Teaminfo/Attendence"
 
 import Watermark from './components/watermark'
 const siderBarAvoiders = [
@@ -96,6 +98,8 @@ function App() {
       <Route path='/dps' Component={Dps} />
       <Route path="/announcements" Component={Announcements} />
       <Route path="/attendance" Component={AttendenceShow} />
+      <Route path="/teams/:teamId/employees" element={<TeamEmployees />} />
+       <Route path="/employees/:teamId/attendence" element={<AttendanceCalendar />} />
     </Routes>
   }
 
@@ -256,12 +260,13 @@ function App() {
       
 
       {renderRoleBased()}
+      </div>
       <Routes>
         {/* <Route path='/' Component={Home} /> */}
 
         <Route path="/login" Component={Signin} />
         <Route path='/forgotPassword' Component={ForgotPassword} />
-        <Route Component={<div>Your lost...</div>} />
+        <Route Component={<div>Your lost..</div>} />
      
       </Routes>
       {/* <Routes>
@@ -279,7 +284,7 @@ function App() {
           <Teaminformation />
         </RoleBasedAccess>} /> */}
 
-      <Toaster></Toaster>
+      <Toaster/>
       </div>
       
     </div>

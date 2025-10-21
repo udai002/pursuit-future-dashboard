@@ -12,7 +12,7 @@ console.log(data)
               <tr className="">
                 {columns?.map((col) => (
                   <th
-                    className="px-4 py-1 border-b border-[#004AAD] text-[#444444] bg-[#E6EDF7]"
+                    className="px-4  py-1 border-b text-left border-[#004AAD] text-[#444444] bg-[#E6EDF7]"
                     key={col.id}
                   >
                     {col.header}
@@ -20,12 +20,12 @@ console.log(data)
                 ))}
               </tr>
             </thead>
-            <tbody>
+            <tbody >
               {data?.map((row, rowIndex) => (
                 <tr key={rowIndex}>
                   {columns.map((col) => (
                     <td
-                      className="px-4 text-center py-2 border-b border-[#004AAD]"
+                      className="px-4  py-2 border-b border-[#004AAD]"
                       key={`${rowIndex}-${col.id}`}
                     >
                       {col.cell ? col.cell(row) : row[col.id]}

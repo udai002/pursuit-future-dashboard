@@ -70,7 +70,7 @@ const Addemployeeform = ({teamsInfo ,handleCloseModal}) => {
 
     return (
          <div className='flex justify-center items-center bg-black/75 w-screen h-screen fixed top-0 left-0' >
-            <div className='w-[850px] p-6 bg-white border fixed border-[#004AAD] rounded-lg'>
+            <div className='w-[850px]  p-6 bg-white border-2 fixed border-[#004AAD] rounded-lg'>
                  <div className='absolute flex justify-end w-[93%] items-center'>
                     <button className='font-bold text-xl ' onClick={()=>handleCloseModal()}>X</button>
                 </div>
@@ -109,7 +109,7 @@ const Addemployeeform = ({teamsInfo ,handleCloseModal}) => {
                                     <option value="Post Sales"  className='text-[#004AAD]'>Post Sales</option>
                                     <option value="Digital Marteking"  className='text-[#004AAD]'>Digital Marteking</option>
                                 </select>
-                                <input value={password} onChange={e=>setPassword(e.target.value)} type="text" placeholder='Employee Password' className='border-2 border-[#004AAD] p-3 rounded-lg w-full' />
+                                // <input value={password} onChange={e=>setPassword(e.target.value)} type="text" placeholder='Employee Password' className='border-2 border-[#004AAD] p-3 rounded-lg w-full' />
                             </div> */}
                             <div className='flex gap-3 p-2'>
 
@@ -150,7 +150,6 @@ const Addemployeeform = ({teamsInfo ,handleCloseModal}) => {
                             <option value="Hyderabad"  className="text-[#004AAD]">Hyderabad</option>
                             <option value="Banglore"  className="text-[#004AAD]">Banglore</option>
                         </select>
-
                     </div>
                     <div>
                         <button type='submit' className='bg-[#004AAd] text-white p-2 rounded-lg'>Add </button>

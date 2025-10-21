@@ -245,20 +245,19 @@ function App() {
     <>
           
 
-    <div className='flex'>
+    <div className='flex w-full'>
       <Watermark opacity={0.2} size={180} rotate={-40} text="pursuit future technologies"/>
 
 
       {!siderBarAvoiders.includes(pathname) && <Sidenavbar />}
-      <div className='flex flex-col'>
-        <div>
-        {!siderBarAvoiders.includes(pathname) &&<TopNavBar/>}
+      <div className='flex flex-col w-full gap-4 '>
         
-      </div>
+        {!siderBarAvoiders.includes(pathname) &&<TopNavBar/>}
+      
 
       {renderRoleBased()}
       <Routes>
-        <Route path='/' Component={Home} />
+        {/* <Route path='/' Component={Home} /> */}
 
         <Route path="/login" Component={Signin} />
         <Route path='/forgotPassword' Component={ForgotPassword} />

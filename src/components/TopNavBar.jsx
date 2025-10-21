@@ -5,9 +5,9 @@ export default function TopNavBar() {
     const{userDetails}=useAuth()
     const[loc,setLoc]=useState("No Location Added")
   return (
-    <div className="">
+    
 
-          <div className="flex p-5 gap-72  ">
+          <div className="flex justify-between items-center p-4">
       <div className="flex gap-6">
         <div className="border border-[#004AAD]  rounded-xl">
           <h1 className="text-[#004AAD] m-2">{userDetails.role?userDetails.role:"No role added"}</h1>
@@ -29,7 +29,6 @@ export default function TopNavBar() {
       </div>
     </div>
 
-    </div>
   
   );
 }

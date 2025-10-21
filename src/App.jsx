@@ -38,7 +38,7 @@ import SalesLeadsInfo from './pages/Home/SalesLeadsInfo'
 import EmployeesInfo from './pages/Home/EmployeesInfo'
 import StudentsInfo from './pages/Home/StudentsInfo'
 import TeamEmployees from "./components/Teaminfo/EmployeeTable"
-import AttendanceCalendar  from "./components/Teaminfo/Attendence"
+import AttendanceCalendar from "./components/Teaminfo/Attendence"
 
 import Watermark from './components/watermark'
 const siderBarAvoiders = [
@@ -92,14 +92,14 @@ function App() {
     return <Routes>
       <Route path="/" Component={Superadmin} />
       <Route path="/teaminfo" Component={Teaminformation} />
-      <Route path='/salesLeadInfo' Component={SalesLeadsInfo}/>
+      <Route path='/salesLeadInfo' Component={SalesLeadsInfo} />
       <Route path='/lead' Component={Lead} />
       <Route path='/pay' Component={Payment} />
       <Route path='/dps' Component={Dps} />
       <Route path="/announcements" Component={Announcements} />
       <Route path="/attendance" Component={AttendenceShow} />
       <Route path="/teams/:teamId/employees" element={<TeamEmployees />} />
-       <Route path="/employees/:teamId/attendence" element={<AttendanceCalendar />} />
+      <Route path="/employees/:teamId/attendence" element={<AttendanceCalendar />} />
     </Routes>
   }
 
@@ -107,12 +107,12 @@ function App() {
   //operation routes 
   function OperationDashboard() {
     return <Routes>
-      <Route path='/studentsinfo' Component={StudentsInfo}/>       
-      {/* attends */} 
+      <Route path='/studentsinfo' Component={StudentsInfo} />
+      {/* attends */}
       <Route path='/pay' Component={Payment} />
       <Route path='/dps' Component={Dps} />
       <Route path='/attendence' Component={AttendenceShow} />
-      
+
 
 
     </Routes>
@@ -125,8 +125,8 @@ function App() {
       <Route path="/addattendence" Component={AddAttendence} />
       <Route path='/attendence' Component={AttendenceShow} />
 
-       <Route path='/employeeinfo' Component={EmployeesInfo}/>
-      
+      <Route path='/employeeinfo' Component={EmployeesInfo} />
+
 
 
       {/* attends  */}
@@ -134,12 +134,12 @@ function App() {
   }
 
   //HR Intern routes
-  function HRInternDashboard(){
+  function HRInternDashboard() {
     return <Routes>
-      <Route path='/' Component={HROverView}/>
-      <Route path='/addattendance' Component={AddAttendence}/>
-      <Route path='/attendance' Component={AttendenceShow}/>
-      <Route path='/employeeinfo' Component={EmployeesInfo}/>
+      <Route path='/' Component={HROverView} />
+      <Route path='/addattendance' Component={AddAttendence} />
+      <Route path='/attendance' Component={AttendenceShow} />
+      <Route path='/employeeinfo' Component={EmployeesInfo} />
     </Routes>
   }
   //TL routs 
@@ -152,8 +152,8 @@ function App() {
 
       {/* attends  */}
       {/* member info  */}
-      <Route path='/membersinfo' Component={MembersInfo}/>
-     
+      <Route path='/membersinfo' Component={MembersInfo} />
+
 
 
       {/* attends  */}
@@ -172,9 +172,9 @@ function App() {
       {/* student info  */}
       {/* sales lead info  */}
 
-      <Route path='/studentsinfo' Component={StudentsInfo}/>
-      <Route path='/salesLeadInfo' Component={SalesLeadsInfo}/>
-      
+      <Route path='/studentsinfo' Component={StudentsInfo} />
+      <Route path='/salesLeadInfo' Component={SalesLeadsInfo} />
+
 
 
       <Route path='/lead' Component={Lead} />
@@ -196,9 +196,9 @@ function App() {
       {/* attends */}
       {/* student info  */}
 
-        {/* attends */}
-      <Route path='/studentsinfo' Component={StudentsInfo}/>
-  
+      {/* attends */}
+      <Route path='/studentsinfo' Component={StudentsInfo} />
+
 
       <Route path='/pay' Component={Payment} />
       <Route path='/dps' Component={Dps} />
@@ -214,8 +214,6 @@ function App() {
       {/* attendance  */}
       <Route path="/announcements" Component={Announcements} />
       <Route path='/attendence' Component={AttendenceShow} />
-   
-
     </Routes>
   }
 
@@ -247,34 +245,35 @@ function App() {
   return (
 
     <>
-          
-
-    <div className='flex w-full'>
-      <Watermark opacity={0.2} size={180} rotate={-40} text="pursuit future technologies"/>
 
 
-      {!siderBarAvoiders.includes(pathname) && <Sidenavbar />}
-      <div className='flex flex-col w-full gap-4 '>
+      <div className='flex w-full'>
         
-        {!siderBarAvoiders.includes(pathname) &&<TopNavBar/>}
-      
+        <Watermark opacity={0.2} size={180} rotate={-40} text="pursuit future technologies" />
 
-      {renderRoleBased()}
-      </div>
-      <Routes>
-        {/* <Route path='/' Component={Home} /> */}
 
-        <Route path="/login" Component={Signin} />
-        <Route path='/forgotPassword' Component={ForgotPassword} />
-        <Route Component={<div>Your lost..</div>} />
-     
-      </Routes>
-      {/* <Routes>
+        {!siderBarAvoiders.includes(pathname) && <Sidenavbar />}
+        <div className='flex flex-col w-full gap-4 '>
+
+          {!siderBarAvoiders.includes(pathname) && <TopNavBar />}
+
+
+          {renderRoleBased()}
+        </div>
+        <Routes>
+          {/* <Route path='/' Component={Home} /> */}
+
+          <Route path="/login" Component={Signin} />
+          <Route path='/forgotPassword' Component={ForgotPassword} />
+          <Route Component={<div>Your lost..</div>} />
+
+        </Routes>
+        {/* <Routes>
         <Route path='/' Component={Home} />
         <Route path="/login" Component={Signin} />
         <Route path='/forgotPassword' Component={ForgotPassword} />
       </Routes> */}
-      {/*
+        {/*
         <Route path="/teams/:teamid/employees" Component={EmployeeTable} />
 
         <Route path="/operations" Component={Operxations} />
@@ -284,13 +283,13 @@ function App() {
           <Teaminformation />
         </RoleBasedAccess>} /> */}
 
-      <Toaster/>
-      </div>
-      
-    
-    </>
-    
-  );
-}
+        <Toaster />
 
-export default App;
+</div>
+
+      </>
+
+      );
+    }
+
+      export default App;

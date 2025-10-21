@@ -80,74 +80,77 @@ const CsvToTable = () => {
       <div className="flex mt-6 mr-2">
         <div className="flex flex-1 mt-4">
 
-      <div className="flex justify-between mt-6 mr-2">
-        <div className="flex mt-4">
-          <h3 className="text-gray-600 text-3xl">Lead Gen Info</h3>
-        </div>
-        <div className="flex gap-[0.5px]">
-          <CustomSelect
-            className="h-[]"
-            title="Month"
-            options={[
-              "January",
-              "February",
-              "March",
-              "April",
-              "May",
-              "June",
-              "July",
-              "August",
-              "September",
-              "October",
-              "November",
-              "December",
-            ]}
-          />
+          <div className="flex justify-between mt-6 mr-2">
+            <div className="flex mt-4">
+              <h3 className="text-gray-600 text-3xl">Lead Gen Info</h3>
+            </div>
+            <div className="flex gap-[0.5px]">
+              <CustomSelect
+                className="h-[]"
+                title="Month"
+                options={[
+                  "January",
+                  "February",
+                  "March",
+                  "April",
+                  "May",
+                  "June",
+                  "July",
+                  "August",
+                  "September",
+                  "October",
+                  "November",
+                  "December",
+                ]}
+              />
 
-          <CustomSelect className="h-[]" title="Team Name" />
-          <CustomSelect className="h-[]" title="Member" />
+              <CustomSelect className="h-[]" title="Team Name" />
+              <CustomSelect className="h-[]" title="Member" />
+            </div>
+          </div>
+
+          {data.length > 0 && (
+            <div className="mt-6 overflow-x-auto bg-white rounded-lg shadow-md">
+              <table className="w-full border-collapse">
+                <thead className="bg-blue-900 text-white">
+                  <tr>
+                    {headers.map((header, index) => (
+                      <th
+                        key={index}
+                        className="px-4 py-3 text-left text-sm font-semibold border-b border-gray-200"
+                      >
+                        {header}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {data.map((row, rowIndex) => (
+                    <tr
+                      key={rowIndex}
+                      className={`transition ${rowIndex % 2 === 0 ? "bg-white" : "bg-white"
+                        } hover:bg-indigo-100`}
+                    >
+                      {headers.map((header, colIndex) => (
+                        <td
+                          key={colIndex}
+                          className="px-4 py-3 text-sm text-gray-800 border-b border-gray-200"
+                        >
+                          {row[header]}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
       </div>
-
-      {data.length > 0 && (
-        <div className="mt-6 overflow-x-auto bg-white rounded-lg shadow-md">
-          <table className="w-full border-collapse">
-            <thead className="bg-blue-900 text-white">
-              <tr>
-                {headers.map((header, index) => (
-                  <th
-                    key={index}
-                    className="px-4 py-3 text-left text-sm font-semibold border-b border-gray-200"
-                  >
-                    {header}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {data.map((row, rowIndex) => (
-                <tr
-                  key={rowIndex}
-                  className={`transition ${
-                    rowIndex % 2 === 0 ? "bg-white" : "bg-white"
-                  } hover:bg-indigo-100`}
-                >
-                  {headers.map((header, colIndex) => (
-                    <td
-                      key={colIndex}
-                      className="px-4 py-3 text-sm text-gray-800 border-b border-gray-200"
-                    >
-                      {row[header]}
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
     </div>
-  );
+
+      );
+        
 };
 
-export default CsvToTable;
+      export default CsvToTable;

@@ -12,14 +12,14 @@ const Button = (props) => {
   const { open, setOpen } = context;
   const location = useLocation();
 
-  function handleOpenOptions() {
-    setOpen(true);
-  }
+  // function handleOpenOptions() {
+  //   setOpen(true);
+  // }
 
   const isActive = props.link && location.pathname === props.link;
 
   const content = (
-    <div className="flex items-center gap-3">
+    <div className="flex items-center gap-2">
       {props.icon && (
         <span
           className={`${
@@ -45,7 +45,7 @@ const Button = (props) => {
     <div className="flex items-center justify-center ">
       {props.icon && (
         <span
-          className={`p-2 rounded-lg ${
+          className={`rounded-lg ${
             isActive ? "bg-white text-[#004aad]" : "border border-white"
           }`}
         >

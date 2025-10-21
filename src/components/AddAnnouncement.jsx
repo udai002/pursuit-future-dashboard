@@ -13,7 +13,7 @@ const AddAnnouncement = ({ onClose, refreshData, editAnnocement }) => {
       setFormData({
         title: editAnnocement.title,
         description: editAnnocement.description,
-        image: null,
+        image: editAnnocement.image,
       });
     }
   }, [editAnnocement]);

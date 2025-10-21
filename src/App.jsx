@@ -37,8 +37,10 @@ import MembersInfo from './pages/Home/MembersInfo'
 import SalesLeadsInfo from './pages/Home/SalesLeadsInfo'
 import EmployeesInfo from './pages/Home/EmployeesInfo'
 import StudentsInfo from './pages/Home/StudentsInfo'
+import TeamEmployees from "./components/Teaminfo/EmployeeTable"
+import AttendanceCalendar  from "./components/Teaminfo/Attendence"
 
-
+import Watermark from './components/watermark'
 const siderBarAvoiders = [
   "/login",
   "/forgotPassword"
@@ -96,6 +98,8 @@ function App() {
       <Route path='/dps' Component={Dps} />
       <Route path="/announcements" Component={Announcements} />
       <Route path="/attendance" Component={AttendenceShow} />
+      <Route path="/teams/:teamId/employees" element={<TeamEmployees />} />
+       <Route path="/employees/:teamId/attendence" element={<AttendanceCalendar />} />
     </Routes>
   }
 
@@ -129,6 +133,15 @@ function App() {
     </Routes>
   }
 
+  //HR Intern routes
+  function HRInternDashboard(){
+    return <Routes>
+      <Route path='/' Component={HROverView}/>
+      <Route path='/addattendance' Component={AddAttendence}/>
+      <Route path='/attendance' Component={AttendenceShow}/>
+      <Route path='/employeeinfo' Component={EmployeesInfo}/>
+    </Routes>
+  }
   //TL routs 
   function TLDashboard() {
     return <Routes>
@@ -236,19 +249,20 @@ function App() {
     <>
           
 
-    <div className='flex'>
+    <div className='flex w-full'>
+      <Watermark opacity={0.2} size={180} rotate={-40} text="pursuit future technologies"/>
+
 
       {!siderBarAvoiders.includes(pathname) && <Sidenavbar />}
-      <div className='flex flex-col'>
-        <div>
-        {!siderBarAvoiders.includes(pathname) &&<TopNavBar/>}
+      <div className='flex flex-col w-full gap-4 '>
         
-      </div>
-    
+        {!siderBarAvoiders.includes(pathname) &&<TopNavBar/>}
+      
 
       {renderRoleBased()}
+      </div>
       <Routes>
-        <Route path='/' Component={Home} />
+        {/* <Route path='/' Component={Home} /> */}
 
         <Route path="/login" Component={Signin} />
         <Route path='/forgotPassword' Component={ForgotPassword} />
@@ -270,7 +284,7 @@ function App() {
           <Teaminformation />
         </RoleBasedAccess>} /> */}
 
-      <Toaster></Toaster>
+      <Toaster/>
       </div>
       
     </div>

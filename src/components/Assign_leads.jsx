@@ -196,12 +196,12 @@ const AssignLeadToMembers = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-5 font-sans">
-      <div className="bg-white rounded-2xl shadow-lg p-10 w-full max-w-4xl border border-gray-200">
-        <h1 className="text-3xl font-normal text-gray-800 mb-10">Assign Lead to Members</h1>
+    <div className="bg-white p-3 relative right-3"> 
+      <div className="bg-white rounded-lg p-6 w-full max-w-xl border border-blue-800"> 
+        <h1 className="text-xl font-normal text-gray-800 mb-4">Assign Lead to Members</h1> 
         
         {message && (
-          <div className={`p-3 rounded-lg mb-5 font-medium ${
+          <div className={`p-2 rounded-lg mb-3 font-medium ${
             messageType === 'success' 
               ? 'bg-green-100 text-green-800 border border-green-200' 
               : 'bg-red-100 text-red-800 border border-red-200'
@@ -210,10 +210,10 @@ const AssignLeadToMembers = () => {
           </div>
         )}
 
-        <div className="flex gap-5 mb-8">
+        <div className="flex gap-3 mb-4"> 
           <div className="flex-1">
             <select
-              className="w-full h-14 px-5 border-2 border-gray-200 rounded-xl text-base text-gray-600 bg-gray-50 appearance-none cursor-pointer transition-all duration-300 focus:outline-none focus:border-blue-600 focus:bg-white focus:text-gray-800 disabled:opacity-60 disabled:cursor-not-allowed"
+              className="w-72 h-14 px-5 border border-blue-500 rounded-xl text-base text-blue-500 bg-gray-50 appearance-none cursor-pointer transition-all duration-300 focus:outline-none focus:border-blue-600 focus:bg-white focus:text-gray-800 disabled:opacity-60 disabled:cursor-not-allowed"
               style={{
                 backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e")`,
                 backgroundPosition: 'right 16px center',
@@ -244,11 +244,11 @@ const AssignLeadToMembers = () => {
             />
             <label 
               htmlFor="csvFileInput" 
-              className={`w-full h-14 flex items-center justify-center gap-2 rounded-xl text-base font-medium cursor-pointer transition-all duration-300 ${
+              className={`w-full h-14 flex items-center justify-center gap-2 rounded-lg text-sm font-medium ${
                 loading ? 'opacity-60 cursor-not-allowed' :
                 csvFile 
                   ? 'bg-green-100 text-green-800 border-2 border-green-300' 
-                  : 'bg-blue-600 text-white hover:bg-blue-700 hover:-translate-y-0.5 hover:shadow-lg'
+                  : 'bg-[#004AAD] text-white hover:bg-blue-700 hover:-translate-y-0.5 hover:shadow-lg'
               }`}
             >
               {csvFile ? (
@@ -265,10 +265,10 @@ const AssignLeadToMembers = () => {
           </div>
         </div>
 
-        <div className="flex gap-5">
+        <div className="flex gap-3"> 
           <div className="flex-[2]">
             <select
-              className="w-full h-14 px-5 border-2 border-gray-200 rounded-xl text-base text-gray-600 bg-gray-50 appearance-none cursor-pointer transition-all duration-300 focus:outline-none focus:border-blue-600 focus:bg-white focus:text-gray-800 disabled:opacity-60 disabled:cursor-not-allowed"
+              className="w-full h-14 px-5 border border-blue-500 rounded-xl text-base text-blue-500 bg-gray-50 appearance-none cursor-pointer transition-all duration-300 focus:outline-none focus:border-blue-600 focus:bg-white focus:text-gray-800 disabled:opacity-60 disabled:cursor-not-allowed"
               style={{
                 backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e")`,
                 backgroundPosition: 'right 16px center',
@@ -290,7 +290,7 @@ const AssignLeadToMembers = () => {
 
           <div className="flex-1">
             <button
-              className="w-full h-14 bg-blue-600 text-white rounded-xl text-lg font-semibold cursor-pointer transition-all duration-300 flex items-center justify-center hover:bg-blue-700 hover:-translate-y-0.5 hover:shadow-lg disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none"
+              className="w-full h-14 bg-[#004AAD] text-white rounded-xl text-lg font-semibold cursor-pointer transition-all duration-300 flex items-center justify-center hover:bg-blue-700 hover:-translate-y-0.5 hover:shadow-lg disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none"
               onClick={csvFile ? handleImportCSV : handleAssign}
               disabled={loading || !selectedLeadType || !selectedMember}
             >

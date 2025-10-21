@@ -8,7 +8,7 @@ const CustomSelect = ({
   name,
   register,
 }) => {
-  // const id = title.toLowerCase().replace(/\s+/g, '-');
+//   const id = title?.toLowerCase().replace(/\s+/g, '-');
   console.log("options ",options)
 
   return (

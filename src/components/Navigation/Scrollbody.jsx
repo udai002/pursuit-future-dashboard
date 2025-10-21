@@ -16,7 +16,7 @@ const OptionsList = [
             "Team Lead" , 
             "Intern" , 
             "Post Sales" , 
-            "Digital Marketing"
+            "Digital Marteking"
          ],
   },
   {
@@ -121,7 +121,7 @@ const OptionsList = [
             // "Team Lead" , 
             // "Intern" , 
             // "Post Sales" , 
-            "Digital Marketing"
+            "Digital Marteking"
 
          ]
   },

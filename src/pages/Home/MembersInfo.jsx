@@ -8,12 +8,13 @@ const MembersInfo = () => {
     const [data, setData] = useState([])
     const { userDetails } = useAuth();
     const token = JSON.parse(localStorage.getItem("session_token"));
+    console.log("from team members",userDetails.team)
     const FetchMembers = async () => {
         console.log("from team lead")
-        const response = await fetch(`http://localhost:3000/employee/team-lead/${userDetails._id}/members`, { headers: { Authorization: `Bearer ${token}` } });
+        const response = await fetch(`http://localhost:3000/team/team/${userDetails.team}`, { headers: { Authorization: `Bearer ${token}` } });
         const data = await response.json();
         setData(data)
-        console.log("from team lead", data.data)
+        console.log("from team lead", data)
     }
     useEffect(() => {
         FetchMembers()

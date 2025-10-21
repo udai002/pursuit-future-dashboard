@@ -52,6 +52,7 @@ const Announcements = () => {
   const handleEdit = (announcement) => {
     setEditAnnouncement(announcement);
     setModalType("edit")
+    
   };
 
   const onClose = () => {
@@ -87,9 +88,14 @@ const Announcements = () => {
         <div className="flex gap-1 text-[#004AAD] "> 
           <button
           onClick={() => {
+            
             if (row.image) {
+              
               setShowImage(row.image);
+              console.log("Image ",row.image)
               setModalType("image");
+              console.log(modalType);
+  
             }
           }}
         >

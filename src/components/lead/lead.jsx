@@ -108,6 +108,8 @@ const CsvToTable = () => {
           <CustomSelect className="h-[]" title="Member" />
         </div>
       </div>
+      </div>
+      </div>
 
       {data.length > 0 && (
         <div className="mt-6 overflow-x-auto bg-white rounded-lg shadow-md">
@@ -147,6 +149,7 @@ const CsvToTable = () => {
         </div>
       )}
     </div>
+   
   );
 };
 

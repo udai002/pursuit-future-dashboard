@@ -283,13 +283,14 @@ function App() {
           <Teaminformation />
         </RoleBasedAccess>} /> */}
 
-        <Toaster />
 
-</div>
+      <Toaster/>
+      </div>
+    
+    </>
+    
+  );
+}
 
-      </>
-
-      );
-    }
 
       export default App;

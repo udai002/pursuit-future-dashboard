@@ -1,34 +1,26 @@
 import React, { useEffect, useState } from "react";
 import CustomSelect from "../button/CustomSelect";
 import CustomInput from '../ui/CustomInput';
+import useFetchEmployees from "../../utils/useFetchEmployeesUtils";
 
 function MarkAttendance() {
+    const { data, loading, error } = useFetchEmployees();
   const [employees, setEmployees] = useState([]);
-  const [loading, setLoading] = useState(true);
+  
+ useEffect(() => {
+    if (data?.users) {
+      const formatted = data.users.map(emp => ({
+        employee: emp._id,
+        empname: emp.username,
+        attendance: "",
+        remark: ""
+      }));
+      setEmployees(formatted);
+    }
+  }, [data]);
 
-  useEffect(() => {
-    const fetchEmployees = async () => {
-      try {
-        const res = await fetch("http://localhost:3000/api/Allusers");
-        const data = await res.json();
-
-        const formatted = data?.users?.map(emp => ({
-          employee: emp._id,
-          empname: emp.username,
-          attendance: "",
-          remark: ""
-        })) || [];
-
-        setEmployees(formatted);
-      } catch (err) {
-        console.error("Error fetching employees", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchEmployees();
-  }, []);
+ 
+  console.log("formated data",employees.users)
 
   const handleChange = (id, field, value) => {
     setEmployees(prev =>
@@ -70,6 +62,7 @@ function MarkAttendance() {
 
 
   if (loading) return <p>Loading employees...</p>;
+  if (error) return <p>Error: {error}</p>;
 
   return (
     <div>
@@ -95,7 +88,7 @@ function MarkAttendance() {
                 type="text"
                 title="Remark"
                 value={emp.remark}
-                onChange={e => handleChange(emp.employee, "remark", e.target.value)}
+                onChange={(e) => handleChange(emp.employee, "remark", e.target.value)}
                 placeholder={emp.attendance === "Absent" ? "Reason for absence" : ""}
               />
             </div>

@@ -23,8 +23,6 @@ const Employees = () => {
                     <div className='flex jusify-center align-center item-center gap-2'>
                         <p className='text-[#004aad]'>{row.username}</p>
                         <img src={arrow} alt="arrow" className='w-3 h-3' />
-
-
                     </div>
                 </button>
             )

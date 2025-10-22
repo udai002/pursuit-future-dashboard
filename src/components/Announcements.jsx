@@ -108,6 +108,7 @@ const Announcements = () => {
               if (row.image) {
 
                 setShowImage(row.image);
+                console.log(row.image)
                 setModalType("image");
 
               }

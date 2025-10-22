@@ -37,6 +37,7 @@ function MarkAttendance() {
   };
 
   const handleSave = async () => {
+
     try {
       const res = await fetch("http://localhost:3000/attendence/attendence", {
         method: "POST",
@@ -49,6 +50,14 @@ function MarkAttendance() {
       if (res.ok) {
         console.log("Attendance saved successfully", data);
         alert("Attendance saved successfully");
+
+        setEmployees(prev =>
+          prev.map(emp => ({
+            ...emp,
+            attendance: "",
+            remark: ""
+          }))
+        );
       } else {
         console.error("Error saving attendance", data);
         alert(data.message || "Error saving attendance");
@@ -58,6 +67,7 @@ function MarkAttendance() {
       alert("Something went wrong while saving");
     }
   };
+
 
   if (loading) return <p>Loading employees...</p>;
 
@@ -76,7 +86,8 @@ function MarkAttendance() {
 
               <CustomSelect
                 title="Attendance"
-                options={["Present", "Absent"]}
+                options={[{ id: "Present", label: "Present" }, { id: "Absent", label: "Absent" }]}
+                value={emp.attendance}
                 onChange={e => handleChange(emp.employee, "attendance", e.target.value)}
               />
 

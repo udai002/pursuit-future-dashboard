@@ -76,7 +76,7 @@ function MarkAttendance() {
 
               <CustomSelect
                 title="Attendance"
-                options={["Present", "Absent"]}
+                options={[{id:"Present",label:"Present"}, {id:"Absent",label:"Absent"}]}
                 onChange={e => handleChange(emp.employee, "attendance", e.target.value)}
               />
 

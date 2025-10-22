@@ -61,7 +61,7 @@ export default function AnnouncementsOverView() {
           <img
             src={`http://localhost:3000${latestAnnouncement.image}`}
             alt="Announcement"
-            className="w-full object-cover h-[300px] rounded-md mt-2"
+            className="w-[30%] object-cover h-[200px] rounded-md mt-2"
           />
 
          

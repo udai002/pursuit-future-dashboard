@@ -41,6 +41,7 @@ import TeamEmployees from "./components/Teaminfo/EmployeeTable"
 import AttendanceCalendar from "./components/Teaminfo/Attendence"
 
 import Watermark from './components/watermark'
+
 const siderBarAvoiders = [
   "/login",
   "/forgotPassword"
@@ -153,6 +154,8 @@ function App() {
       {/* attends  */}
       {/* member info  */}
       <Route path='/membersinfo' Component={MembersInfo} />
+      <Route path='/salesLeadInfo/:id' Component={SalesLeadsInfo} />
+
 
 
 
@@ -248,7 +251,7 @@ function App() {
 
 
       <div className='flex w-full'>
-        
+
         <Watermark opacity={0.2} size={180} rotate={-40} text="pursuit future technologies" />
 
 
@@ -293,4 +296,4 @@ function App() {
 }
 
 
-      export default App;
+export default App;

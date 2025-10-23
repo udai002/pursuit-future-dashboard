@@ -28,7 +28,7 @@ const Signin = () => {
         }
         
         console.log("this is running")
-        await loginUser({username , password})
+        await loginUser({email:username , password})
 
     }
 

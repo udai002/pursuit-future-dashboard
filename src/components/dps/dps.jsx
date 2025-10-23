@@ -75,6 +75,9 @@ const DpsDataPage = ({ onAddDps }) => {
                     "Year",
                     "Course Opted",
                     "Preferred Month",
+                    "Amount Pitched",
+                    "Amount Paid",
+                    "Employee"
                   ].map((head, i) => (
                     <th key={i} className="px-8 py-3 font-medium" >
                       {head}
@@ -94,6 +97,9 @@ const DpsDataPage = ({ onAddDps }) => {
                       <td className="px-11 py-3 border-b border-blue-300">{student.yearOfStudy}</td>
                       <td className="px-11 py-3 border-b border-blue-300">{student.domainCourseOpted}</td>
                       <td className="px-9 py-3 border-b border-blue-300">{student.preferredProgramMonth}</td>
+                       <td className="px-11 py-3 border-b border-blue-300">{student.amountPitched}</td>
+                      <td className="px-9 py-3 border-b border-blue-300">{student.amountPaid}</td>
+                      <td className="px-9 py-3 border-b border-blue-300">{student.employee}</td>
                     </tr>
                   ))
                 ) : (

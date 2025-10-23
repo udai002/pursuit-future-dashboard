@@ -10,10 +10,10 @@ const MembersInfo = () => {
     const { userDetails } = useAuth();
     const navigate = useNavigate()
     const token = JSON.parse(localStorage.getItem("session_token"));
-    console.log("from team members", userDetails.team)
+    console.log("from team members", userDetails.teamId)
     const FetchMembers = async () => {
         console.log("from team lead")
-        const response = await fetch(`http://localhost:3000/team/team/${userDetails.team}`, { headers: { Authorization: `Bearer ${token}` } });
+        const response = await fetch(`http://localhost:3000/team/team/${userDetails.teamId[0]}`, { headers: { Authorization: `Bearer ${token}` } });
         const data = await response.json();
         setData(data.employees)
         console.log("from team lead", data)

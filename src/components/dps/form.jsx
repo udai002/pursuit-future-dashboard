@@ -1,6 +1,14 @@
 import React, { useState } from "react";
+import cross from "../../assets/cross.png";
+import useAuth from "../../context/AuthContext";
 
 const DpsForm = () => {
+  const [showCreate, setShowCreate] = useState(false);
+  const handleOpen = () => setShowCreate(true);
+  const handleClose = () => setShowCreate(false);
+  const { userDetails } = useAuth();
+  const token = JSON.parse(localStorage.getItem("session_token"));
+
   const [formData, setFormData] = useState({
     studentName: "",
     studentEmail: "",
@@ -10,6 +18,9 @@ const DpsForm = () => {
     yearOfStudy: "",
     domainCourse: "",
     preferredMonth: "",
+    amountPitched:0,
+      amountPaid:0,
+      employee:""
   });
 
   const handleChange = (e) => {
@@ -27,6 +38,10 @@ const DpsForm = () => {
       yearOfStudy: "",
       domainCourse: "",
       preferredMonth: "",
+      amountPitched:0,
+      amountPaid:0,
+      employee:""
+
     });
   };
 
@@ -41,6 +56,9 @@ const DpsForm = () => {
       yearOfStudy: formData.yearOfStudy,
       domainCourseOpted: formData.domainCourse,
       preferredProgramMonth: formData.preferredMonth, 
+      amountPitched:formData.amountPitched,
+      amountPaid:formData.amountPaid,
+      employee:userDetails._id
     };
 
     try {
@@ -65,12 +83,15 @@ const DpsForm = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-6 bg-white rounded-xl shadow-md">
+    <div className="max-w-2xl mx-auto p-6 bg-white text-xl rounded-xl ">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-xl font-semibold">Fill DPS Data</h2>
+        <h2 className="text-2xl font-semibold">Fill DPS Data</h2>
+        <button onClick={handleClose}>
+          <img src={cross} alt="Close" className="w-8 h-8 cursor-pointer hover:opacity-80"/>
+        </button>
       </div>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <form onSubmit={handleSubmit} className="space-y-4 bg-white">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 ">
           <input type="text" name="studentName" placeholder="Student Name" value={formData.studentName} onChange={handleChange} className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-200 border-blue-700" />
           <input type="email" name="studentEmail" placeholder="Student Email ID" value={formData.studentEmail} onChange={handleChange} className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-200 border-blue-700"/>
         </div>
@@ -79,7 +100,7 @@ const DpsForm = () => {
           <input type="tel" name="studentWhatsapp" placeholder="Student WhatsApp Number" value={formData.studentWhatsapp} onChange={handleChange} className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-200 border-blue-700"/>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <input type="text" name="studyDepartment" placeholder="Study Department" value={formData.studyDepartment} onChange={handleChange} className="w-full p-2 border placeholder-blue-900 rounded-lg focus:ring focus:ring-blue-200 border-blue-700"/>
+          <input type="text" name="studyDepartment" placeholder="Study Department" value={formData.studyDepartment} onChange={handleChange} className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-200 border-blue-700"/>
           <select name="yearOfStudy"  value={formData.yearOfStudy}  onChange={handleChange} className={`w-full p-2 border rounded-lg focus:ring focus:ring-blue-200 border-blue-700 ${formData.yearOfStudy === "" ? "text-blue-900" : "text-gray-700"}`}>
             <option value="" disabled>Year of Study</option>
             <option value="1">1st Year</option>
@@ -111,6 +132,10 @@ const DpsForm = () => {
             <option value="November">November</option>
             <option value="December">December</option>
           </select>
+        </div>
+         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <input type="number" name="amountPitched" placeholder="Amount Pitched" value={formData.amountPitched} onChange={handleChange} className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-200 border-blue-700"/>
+          <input type="number" name="amountPaid" placeholder="Amount Paid" value={formData.amountPaid} onChange={handleChange} className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-200 border-blue-700"/>
         </div>
         <div className="flex justify-between pt-4">
           <button type="button" onClick={handleReset} className="px-4 py-2 border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50">Reset Form</button>

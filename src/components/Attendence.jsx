@@ -13,14 +13,15 @@ function AttendanceCalendar() {
 
   const currentYear = new Date().getFullYear();
 
+
   const columns = [
+    { id: "sun", header: "Sunday", cell: (row) => <AttendanceCell cell={row.sun} /> },
     { id: "mon", header: "Monday", cell: (row) => <AttendanceCell cell={row.mon} /> },
     { id: "tue", header: "Tuesday", cell: (row) => <AttendanceCell cell={row.tue} /> },
     { id: "wed", header: "Wednesday", cell: (row) => <AttendanceCell cell={row.wed} /> },
     { id: "thu", header: "Thursday", cell: (row) => <AttendanceCell cell={row.thu} /> },
     { id: "fri", header: "Friday", cell: (row) => <AttendanceCell cell={row.fri} /> },
-    { id: "sat", header: "Saturday", cell: (row) => <AttendanceCell cell={row.sat} /> },
-    { id: "sun", header: "Sunday", cell: (row) => <AttendanceCell cell={row.sun} /> },
+    { id: "sat", header: "Saturday", cell: (row) => <AttendanceCell cell={row.sat} /> }, 
   ];
 
   useEffect(() => {

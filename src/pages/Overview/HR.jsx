@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
 import OverviewComp from '../../components/Overview'
 import AnnouncementsOverView from '../../components/AnnouncementsOverView'
 import MarkAttendence from '../../components/Attendence/MarkAttendence'
+import { useState,useEffect } from 'react';
+
 
 export default function HROverView() {
   const [showAttendance, setShowAttendance] = useState(false);
@@ -10,7 +11,9 @@ export default function HROverView() {
   let month=getCurrentDate.getMonth()+1;
   let year=getCurrentDate.getFullYear();
   let currentDate=`${year}-${month}-${day}`;
+
   console.log(currentDate)
+
   const [employeeData,setEmployeeData]=useState({
     totalEmployee:"",
     presentEmployee:"",
@@ -18,14 +21,16 @@ export default function HROverView() {
     absent:""
   })
   const [error,setError]=useState();
+  
   useEffect(()=>{
     const fetchData=async () => {
       try{
-        const response=await fetch()
+        const response=await fetch(`http://localhost:3000/api/Allusers`)
         if(!response.ok){
           throw new Error(`http error! status:${response.status}`)
         }
         const data=response.json();
+        console.log("kpi data use",data)
         setEmployeeData(data)
       }
       catch(error){
@@ -34,9 +39,9 @@ export default function HROverView() {
     }
     fetchData()
   },[])
-  return (
 
-    <div className=' w-[100%]  flex flex-col gap-4 p-4 sm:p-6 sm:w-[100%] md:w-[100%] lg:w-[100%]'>
+  return (
+    <div className=' w-[100%] flex flex-col gap-4 p-4 sm:p-6 sm:w-[100%] md:w-[100%] lg:w-[100%]'>
       <div className=' flex justify-between '>
         <div>
           <h1 className='text-2xl h-full'>Team Name</h1>
@@ -45,8 +50,8 @@ export default function HROverView() {
           <input type="date" name="" id="" className=' h-full p-2 rounded-xl text-white bg-[#004AAD] ' defaultValue={currentDate}/>
         </div>
       </div>
-      <div className='flex  flex-wrap gap-2 sm-grid-1 md:grid-2 lg:grid-4'>
-
+      <div className='flex flex-wrap gap-2 sm-grid-1 md:grid-2 lg:grid-4'>
+  
         <OverviewComp title="Total Employees" revenue={employeeData.totalEmployee} />
         <OverviewComp title="Present Employees" revenue={employeeData.presentEmployee} />
         <OverviewComp title="Employees on Leave" revenue={employeeData.employeeOnLeaves} />

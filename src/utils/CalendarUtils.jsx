@@ -18,10 +18,15 @@ export const buildCalendarData = (records, year, month) => {
   let currentWeek = { sun: "", mon: "", tue: "", wed: "", thu: "", fri: "", sat: "" };
   let day = 1;
 
-  for (let i = startingDay; i < 7; i++) {
+
+  for (let i = 0; i < 7; i++) {
     const weekday = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"][i];
-    currentWeek[weekday] = { day, ...attendanceMap[day] };
-    day++;
+    if (i < startingDay) {
+      currentWeek[weekday] = ""; 
+    } else if (day <= daysInMonth) {
+      currentWeek[weekday] = { day, ...attendanceMap[day] };
+      day++;
+    }
   }
   weeks.push(currentWeek);
 

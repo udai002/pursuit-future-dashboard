@@ -41,6 +41,7 @@ function AuthProvider({children}){
                 setLoadingAuth(false)
                 if(response.ok){
                     setUserDetails(result.data)
+                    console.log("from; auth",result.data)
                     setIsLoggedIn(true)
                 }else{
                     setIsLoggedIn(false)

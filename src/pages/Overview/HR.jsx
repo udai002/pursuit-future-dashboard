@@ -7,8 +7,8 @@ export default function HROverView() {
   const [showAttendance, setShowAttendance] = useState(false);
 
   return (
-    <div className=' w-[100%] flex flex-col gap-4 p-4 sm:p-6'>
-      <div className='flex flex-wrap gap-2'>
+    <div className=' w-[100%] flex flex-col gap-4 p-4 sm:p-6 sm:w-[100%] md:w-[100%] lg:w-[100%]'>
+      <div className='flex flex-wrap gap-2 sm-grid-1 md:grid-2 lg:grid-4'>
 
         <OverviewComp title="Total Employees" revenue="50" />
         <OverviewComp title="Present Employees" revenue="40" />

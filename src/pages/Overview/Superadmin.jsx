@@ -13,7 +13,7 @@ export default function Superadmin() {
   useEffect(() => {
     async function fetchIntern() {
       try {
-        const res = await fetch("http://localhost:3000/user/totalintern");
+        const res = await fetch("http://localhost:3000/api/userintern");
         const data = await res.json();
 
         const multiplyTotal = data.total * 100000;

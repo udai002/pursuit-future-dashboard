@@ -6,13 +6,14 @@ import { useEffect, useState } from 'react';
 import CustomSelect from '../../components/button/CustomSelect';
 
 const EmployeesInfo = () => {
-  const { data, loading, error } = useFetchEmployees();
   const [employees, setEmployees] = useState([]);
+   const [month, setMonth] = useState(() => new Date().getMonth() + 1);
+   const { data, loading, error } = useFetchEmployees(month);
 
   const handleMonthChange = (e) => {
-    const selectedMonth = e.target.value;
+    const selectedMonth=Number(e.target.value);
+    console.log(selectedMonth);
     setMonth(selectedMonth);
-    fetchData(selectedMonth);
   };
 
   useEffect(() => {
@@ -42,9 +43,21 @@ const EmployeesInfo = () => {
 
     { id: "email", header: "Email ID" },
     { id: "phone", header: "Contact Number" },
-    { id: "working", header: "Working Days" },
-    { id: "leave", header: "Leave Day" },
-    { id: "absent", header: "Absent" },
+    { id: "workingCount", header: "Working Days", cell:(row)=>( <div>
+      <p>{row.attendance.workingCount} </p>
+    </div>)
+
+    } ,
+    { id: "leaveCount", header: "Leave Day" , cell:(row)=>(
+      <div>
+        <p>{row.attendance.leaveCount}</p>
+      </div>
+    )},
+    { id: "absentCount", header: "Absent" , cell:(row)=>(
+      <div>
+        <p>{row.attendance.absentCount}</p>
+      </div>
+    )},
   ]
 
   console.log("Employees", employees)
@@ -54,7 +67,7 @@ const EmployeesInfo = () => {
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 md:gap-8 mb-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4 gap-2 ">
           <div className="text-2xl sm:text-3xl text-[#444444] ">Employees Info</div>
-          <CustomSelect title={new Date().toLocaleString('default', { month: 'long' })} onChange={handleMonthChange}
+          <CustomSelect title={new Date().toLocaleString('default', { month: 'long' })} onChange={handleMonthChange} 
             options={[
               { value: 1, label: "January" },
               { value: 2, label: "February" },
@@ -80,5 +93,4 @@ const EmployeesInfo = () => {
     </div>
   );
 }
-
-export default EmployeesInfo
+export default EmployeesInfo;

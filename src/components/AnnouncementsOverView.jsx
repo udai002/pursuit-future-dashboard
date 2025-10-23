@@ -27,7 +27,7 @@ export default function AnnouncementsOverView() {
     } finally {
       setLoading(false);
     }
-  };
+  };  
 
   useEffect(() => {
     fetchImage();

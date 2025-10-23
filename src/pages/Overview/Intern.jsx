@@ -11,30 +11,30 @@ import AnnouncementsOverView from '../../components/AnnouncementsOverView'
 export default function Intern() {
   return (
     <div>
- <div className='p-2 gap-20 grid grid-cols-4 '>
+      <div className='p-2 gap-2 flex'>
 
-                <OverviewComp title="Total Target" revenue="Rs 1,00,000" img={total} className=""></OverviewComp> 
-                <OverviewComp title="Projected Revenue" revenue="Rs 1,00,000" img={total} className=""></OverviewComp> 
-                <OverviewComp title="Revenue Credited " revenue="Rs 1,00,000" img={Credit} className=""></OverviewComp> 
-                <OverviewComp title="Pending Revenue" revenue="Rs 1,00,000" img={pending} className=""></OverviewComp> 
+        <OverviewComp title="Total Target" revenue="Rs 1,00" img={total} className=""></OverviewComp>
+        <OverviewComp title="Projected Revenue" revenue="Rs 1,00" img={total} className=""></OverviewComp>
+        <OverviewComp title="Revenue Credited " revenue="Rs 1,00,000" img={Credit} className=""></OverviewComp>
+        <OverviewComp title="Pending Revenue" revenue="Rs 1,00,000" img={pending} className=""></OverviewComp>
 
 
-        
-    </div>
-    <div className='flex p-2 gap-2' >
+
+      </div>
+      <div className='flex p-2 gap-2' >
         <div className=''>
-            
-                                <OverviewComp title="Pending Revenue" revenue="Rs 1,00,000" img={pending} className=""></OverviewComp> 
-        <Payment></Payment>
+
+          <OverviewComp title="Pending Revenue" revenue="Rs 1,00,000" img={pending} className=""></OverviewComp>
+          <Payment></Payment>
 
         </div>
         <div className='w-screen'>
-            <AnnouncementsOverView></AnnouncementsOverView>
+          <AnnouncementsOverView></AnnouncementsOverView>
 
         </div>
 
+      </div>
     </div>
-    </div>
-   
+
   )
 }

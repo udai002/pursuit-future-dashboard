@@ -10,10 +10,10 @@ export default function AnnouncementsOverView() {
         "http://localhost:3000/announcement/announcement"
       );
       const result = await response.json();
+      console.log(result)
 
       const latest = result.reduce((latest, current) => {
-        if (
-          !latest ||
+        if (!latest ||
           new Date(current.createdAt) > new Date(latest.createdAt)
         ) {
           return current;
@@ -44,15 +44,31 @@ export default function AnnouncementsOverView() {
 
   return (
 
-    <div className="h-full border-[#004AAD] border rounded-md bg-[#004AAD1A] items-center cursor-pointer">
+    <div className="h-[310px] border-[#004AAD] border rounded-md bg-[#004AAD1A] items-center cursor-pointer">
       <div className="p-2 ml-3 ">
         <h1 className="text-[#004AAD] font-bold text-2xl">Announcements</h1>
         {latestAnnouncement && latestAnnouncement.image ? (
+          <>
+
+          <div className="flex gap-2">
+        <h1 className="">{latestAnnouncement.title}</h1>
+      </div>
+
+      <div className="text-[#004AAD]">
+        <h1 className="font-sans text-2xl">{latestAnnouncement.description}</h1>
+      </div>
+      
           <img
             src={`http://localhost:3000${latestAnnouncement.image}`}
             alt="Announcement"
-            className="w-full object-cover h-[300px] rounded-md mt-2"
+            className="w-[30%] object-cover h-[200px] rounded-md mt-2"
           />
+
+         
+            </>
+          
+            
+
         ) : (
           <p className="mt-2 text-gray-600">
             No recent announcement image available.

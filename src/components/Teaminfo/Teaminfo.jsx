@@ -10,7 +10,7 @@ import Edit from '../../assets/Teaminfo/edit.svg';
 import toast, {Toaster} from 'react-hot-toast'
 import { ColorRing } from 'react-loader-spinner';
 
-const Teaminfo = () => {
+const   Teaminfo = () => {
   const [modalType, setModalType] = useState(null);
   const[team,setTeam]=useState([])
     const [loading, setLoading] = useState(true);
@@ -80,7 +80,7 @@ const Teaminfo = () => {
 
   const columns = [ 
     { id: 'name', header: 'Team Name', cell:(row)=>(
-    <button onClick={() => navigate(`/teams/${row.id}/employees`, { state: row })}>
+    <button onClick={() => navigate(`/teams/${row._id}/employees`, { state: row })}>
         <div className='flex jusify-center align-center item-center gap-2'>
         <p className='text-[#004aad]'>{row.name}</p>
         <img src={arrow} alt="arrow" className='w-3 h-3' />

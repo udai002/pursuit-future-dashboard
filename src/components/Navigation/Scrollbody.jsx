@@ -16,7 +16,7 @@ const OptionsList = [
             "Team Lead" , 
             "Intern" , 
             "Post Sales" , 
-            "Digital Marketing"
+            "Digital Marteking"
          ],
   },
   {
@@ -25,7 +25,7 @@ const OptionsList = [
     icon: <FaTruckFast className="h-6 w-6 " />,
     link: "/attendence",
     access:[ 
-            "Admin" ,
+            // "Admin" ,
             "Operations" , 
             "HR" , 
             "Team Lead" , 
@@ -121,7 +121,7 @@ const OptionsList = [
             // "Team Lead" , 
             // "Intern" , 
             // "Post Sales" , 
-            "Digital Marketing"
+            "Digital Marteking"
 
          ]
   },
@@ -180,7 +180,7 @@ function Scrollbody() {
   console.log('this is accress control' , OptionsList[0].access===userDetails?.role)
   return (
     <>
-      <div className="overflow-y-auto h-[50%] md:h-[50%] overflow-scrollbar-hide mt-2 md:p-2 w-72   ">
+      <div className="overflow-y-auto p-2 h-[50%] md:h-[50%] overflow-scrollbar-hide md:p-2 w-72   ">
         {OptionsList.map((item) => item.access.includes(userDetails?.role) && (
           <Button
             className="w-60"

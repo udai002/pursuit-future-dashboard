@@ -1,9 +1,8 @@
-
-
+// utils/useFetchEmployeesUtils.js
 import { useEffect, useState } from "react";
 
-export default function useFetchEmployees(apiUrl = "http://localhost:3000/api/Allusers") {
-  const [data, setData] = useState([]); 
+export default function useFetchEmployees(selectedMonth) {
+  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -11,7 +10,8 @@ export default function useFetchEmployees(apiUrl = "http://localhost:3000/api/Al
     const fetchEmployees = async () => {
       try {
         setLoading(true);
-        const res = await fetch(apiUrl);
+        const res = await fetch(`http://localhost:3000/api/Allusers?month=${selectedMonth}`);
+        console.log("selectedmonth",selectedMonth)
         if (!res.ok) throw new Error("Failed to fetch employees");
         const json = await res.json();
         setData(json);
@@ -23,8 +23,7 @@ export default function useFetchEmployees(apiUrl = "http://localhost:3000/api/Al
     };
 
     fetchEmployees();
-  }, [apiUrl]);
+  }, [selectedMonth]);
 
   return { data, loading, error };
 }
-

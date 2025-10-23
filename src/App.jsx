@@ -217,6 +217,8 @@ function App() {
       {/* attendance  */}
       <Route path="/announcements" Component={Announcements} />
       <Route path='/attendence' Component={AttendenceShow} />
+      
+      
     </Routes>
   }
 

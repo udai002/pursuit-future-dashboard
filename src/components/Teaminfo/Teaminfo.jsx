@@ -89,7 +89,11 @@ const Teaminfo = () => {
       </button>
     )},
 
-    { id: 'No. of Members', header: 'No. of Members' },
+    { id: 'No. of Members', header: 'No. of Members' ,cell:(row)=>(
+<div>
+  {row.employeeCount}
+</div>
+    ) },
     { id: 'contact', header: 'Contact Number' },
     { id: 'Payment Count', header: 'Payment Count' },
     {

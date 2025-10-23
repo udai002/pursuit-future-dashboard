@@ -1,6 +1,11 @@
 import React, { useState } from "react";
+import cross from "../../assets/cross.png";
 
 const DpsForm = () => {
+  const [showCreate, setShowCreate] = useState(false);
+  const handleOpen = () => setShowCreate(true);
+  const handleClose = () => setShowCreate(false);
+
   const [formData, setFormData] = useState({
     studentName: "",
     studentEmail: "",
@@ -65,12 +70,15 @@ const DpsForm = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-6 bg-white rounded-xl shadow-md">
+    <div className="max-w-2xl mx-auto p-6 bg-white text-xl rounded-xl ">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-xl font-semibold">Fill DPS Data</h2>
+        <h2 className="text-2xl font-semibold">Fill DPS Data</h2>
+        <button onClick={handleClose}>
+          <img src={cross} alt="Close" className="w-8 h-8 cursor-pointer hover:opacity-80"/>
+        </button>
       </div>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <form onSubmit={handleSubmit} className="space-y-4 bg-white">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 ">
           <input type="text" name="studentName" placeholder="Student Name" value={formData.studentName} onChange={handleChange} className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-200 border-blue-700" />
           <input type="email" name="studentEmail" placeholder="Student Email ID" value={formData.studentEmail} onChange={handleChange} className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-200 border-blue-700"/>
         </div>
@@ -79,7 +87,7 @@ const DpsForm = () => {
           <input type="tel" name="studentWhatsapp" placeholder="Student WhatsApp Number" value={formData.studentWhatsapp} onChange={handleChange} className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-200 border-blue-700"/>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <input type="text" name="studyDepartment" placeholder="Study Department" value={formData.studyDepartment} onChange={handleChange} className="w-full p-2 border placeholder-blue-900 rounded-lg focus:ring focus:ring-blue-200 border-blue-700"/>
+          <input type="text" name="studyDepartment" placeholder="Study Department" value={formData.studyDepartment} onChange={handleChange} className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-200 border-blue-700"/>
           <select name="yearOfStudy"  value={formData.yearOfStudy}  onChange={handleChange} className={`w-full p-2 border rounded-lg focus:ring focus:ring-blue-200 border-blue-700 ${formData.yearOfStudy === "" ? "text-blue-900" : "text-gray-700"}`}>
             <option value="" disabled>Year of Study</option>
             <option value="1">1st Year</option>

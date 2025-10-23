@@ -5,13 +5,12 @@ import cross from "../../assets/cross.png";
 
 const Dps = () => {
   const [showCreate, setShowCreate] = useState(false);
-
   const handleOpen = () => setShowCreate(true);
   const handleClose = () => setShowCreate(false);
 
   return (
     <div className="">
-     
+    
     <div className="inline w-full">
       <Hello onAddDps={handleOpen} />
       {showCreate && (

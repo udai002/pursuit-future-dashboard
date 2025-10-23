@@ -53,7 +53,7 @@ const AssignLeadToMembers = () => {
         } else {
           console.log('No employees in database, trying fallback...');
           // Fallback to test endpoint that creates sample data
-          response = await fetch('http://localhost:3000/lead-assignment/test/team-members');
+          response = await fetch('http://localhost:3000/lead-assignment/test/employees-all');
           if (response.ok) {
             const fallbackData = await response.json();
             const members = fallbackData || [];
@@ -66,7 +66,7 @@ const AssignLeadToMembers = () => {
       } else {
         console.log('Database endpoint failed, trying fallback...');
         // Fallback to simple endpoint
-        response = await fetch('http://localhost:3000/lead-assignment/test/team-members-simple');
+        response = await fetch('http://localhost:3000/lead-assignment/test/employees-all');
         if (response.ok) {
           const data = await response.json();
           const members = data.teamMembers || [];

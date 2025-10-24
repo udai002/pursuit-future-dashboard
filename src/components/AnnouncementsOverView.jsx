@@ -44,7 +44,7 @@ export default function AnnouncementsOverView() {
 
   return (
 
-    <div className="h-[310px] border-[#004AAD] border rounded-md bg-[#004AAD1A] items-center cursor-pointer">
+    <div className="h-[383px] border-[#004AAD] border rounded-md bg-[#004AAD1A] items-center cursor-pointer">
       <div className="p-2 ml-3 ">
         <h1 className="text-[#004AAD] font-bold text-2xl">Announcements</h1>
         {latestAnnouncement && latestAnnouncement.image ? (

@@ -7,25 +7,45 @@ import toast from "react-hot-toast";
 export default function Studentdata() {
   const [data, setData] = useState([]);
   const [file, setFile] = useState(null);
+  const [search, setSearch] = useState('');
+  const [page, setPage] = useState(1);
+  const [limit] = useState(5);
+  const [totalPages, setTotalPages] = useState(0);
   const [paymentStatus, setPaymentStatus] = useState('')
 
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        const res = await fetch("http://localhost:3000/student/allstudent");
+        const res = await fetch(`http://localhost:3000/student/allstudent?search=${search}&page=${page}&limit=${limit}`);
         if (res.ok) {
           const result = await res.json();
           setData(result.allstudent);
         } else {
           console.error("Failed to fetch student info");
+          setTotalPages(Math.ceil(result.total / limit));
         }
       } catch (error) {
         console.error("Error fetching student info:", error);
       }
     };
     fetchStudents();
-  }, []);
+  }, [search, page, limit]);
 
+  const handleSearch = (e) => {
+    setSearch(e.target.value);
+    setPage(1);
+  }
+
+  const handlePrevious = () => {
+    if (page > 1) {
+      setPage(page - 1);
+    }
+  };
+  const handleNext = () => {
+    if (page < totalPages) {
+      setPage(page + 1);
+    }
+  };
 
   const handleFileChange = async (e) => {
     const selectedFile = e.target.files[0];
@@ -63,7 +83,7 @@ export default function Studentdata() {
       toast.error("Error uploading CSV file");
     }
   };
-  const handleChange = async (e,id) => {
+  const handleChange = async (e, id) => {
     const newStatus = e.target.value;
     setPaymentStatus(newStatus);
 
@@ -82,11 +102,11 @@ export default function Studentdata() {
 
       const data = await update.json();
       console.log("Update successful:", data);
-       fetchStudents();
+      fetchStudents();
     } catch (error) {
       console.error("Failed to update:", error);
     }
-    
+
   };
 
 
@@ -136,10 +156,18 @@ export default function Studentdata() {
         </div>
 
         <div className="flex gap-2 items-center">
-          <div className="border-2 border-[#004AAD] rounded-xl w-[160px] h-[45px] text-[16px] p-2 bg-[#c7dbf5] text-[#004AAD] flex items-center gap-2">
-            <CiSearch className="text-[#004aad]" />
-            Search Here
+          
+          <div className="relative">
+            <CiSearch className="absolute top-3 left-2 text-[#004aad]" />
+            <input
+              type="text"
+              placeholder="Search Here"
+              value={search}
+              onChange={handleSearch}
+              className="border-2 border-[#004AAD] rounded-xl w-[160px] h-[45px] text-[16px] pl-8 bg-[#c7dbf5] text-[#004AAD]"
+            />
           </div>
+
           <input
             type="file"
             accept=".csv"
@@ -160,6 +188,25 @@ export default function Studentdata() {
       <div className="mr-6">
         <Table columns={columns} data={data} />
       </div>
+
+      <div className="flex gap-4 mt-4">
+        <button
+          onClick={handlePrevious}
+          disabled={page === 1}
+          className="px-4 py-2 border border-[#004AAD] rounded">
+          Previous
+        </button>
+        <span>
+          Page {page} of {totalPages}
+        </span>
+        <button
+          onClick={handleNext}
+          disabled={page === totalPages}
+          className="px-4 py-2 border border-[#004AAD] rounded">
+          Next
+        </button>
+      </div>
+
     </>
   );
 }

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Table from '../table';
 import CustomSelect from '../button/CustomSelect';
+import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 
 const SalesLeads = () => {
   const [salesLeadData, setSalesLeadData] = useState([]);
@@ -8,7 +9,7 @@ const SalesLeads = () => {
   const [teamName, setTeamName] = useState('');
   const [username, setUsername] = useState('');
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
+  const [limit, setLimit] = useState(5);
   const [totalPages, setTotalPages] = useState(1);
 
   const [teams, setTeams] = useState([]);
@@ -19,7 +20,7 @@ const SalesLeads = () => {
   useEffect(() => {
     const fetchTeams = async () => {
       try {
-        const res = await fetch('http://localhost:3000/team/team');
+        const res = await fetch('http://localhost:3000/team/page');
         if (!res.ok) throw new Error('Failed to fetch teams');
         const data = await res.json();
    
@@ -104,6 +105,24 @@ const SalesLeads = () => {
     fetchSalesLead();
   }, [month, teamName, username, page, limit]);
 
+  const handlePrevious=()=>
+  {
+    if(page>1)
+    {
+      setPage(page-1);
+    }
+  };
+
+    const handleNext=()=>
+  {
+    if(page<totalPages)
+    {
+      setPage(page+1);
+    }
+  };
+
+  
+
   const columns = [
     { id: "name", header: "Lead Name" },
     { id: "Email", header: "Email ID" },
@@ -170,6 +189,30 @@ const SalesLeads = () => {
 
       <div className='mt-[0.5%]'>
         <Table columns={columns} data={salesLeadData} />
+      </div>
+      <div className="flex justify-center items-center mt-10 gap-4 px-7 mb-5 flex-row">
+        <span className="text-lg flex-1 text-[#444444] font-medium sm:text-base md:text-lg sm:text-left">
+          {" "}
+          Page {page} of {totalPages}
+        </span>
+        <div className="flex gap-2">
+          <button
+            onClick={handlePrevious}
+            disabled={page === 1}
+            className={`p-2 bg-[#004AAD] rounded-full ${page === 1 ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+          >
+            <FaArrowLeftLong className="text-2xl text-white" />
+          </button>
+          <button
+            onClick={handleNext}
+            disabled={page === totalPages}
+            className={`p-2 bg-[#004AAD] rounded-full ${page === totalPages ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+          >
+            <FaArrowRightLong className="text-2xl text-white" />
+          </button>
+        </div>
       </div>
     </div>
   );

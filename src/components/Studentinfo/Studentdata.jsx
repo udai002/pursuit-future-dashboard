@@ -4,6 +4,7 @@ import { CiSearch } from "react-icons/ci";
 import { FaFileCsv } from "react-icons/fa6";
 import toast from "react-hot-toast";
 import CustomSelect from "../button/CustomSelect";
+import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 
 export default function Studentdata() {
   const [data, setData] = useState([]);
@@ -203,24 +204,30 @@ export default function Studentdata() {
         <Table columns={columns} data={data} />
       </div>
 
-      <div className="flex gap-4 mt-4">
-        <button
-          onClick={handlePrevious}
-          disabled={page === 1}
-          className="px-4 py-2 border border-[#004AAD] rounded">
-          Previous
-        </button>
-        <span>
+      <div className="flex justify-center items-center mt-10 gap-4 px-7 mb-5 flex-row">
+        <span className="text-lg flex-1 text-[#444444] font-medium sm:text-base md:text-lg sm:text-left">
+          {" "}
           Page {page} of {totalPages}
         </span>
-        <button
-          onClick={handleNext}
-          disabled={page === totalPages}
-          className="px-4 py-2 border border-[#004AAD] rounded">
-          Next
-        </button>
+        <div className="flex gap-2">
+          <button
+            onClick={handlePrevious}
+            disabled={page === 1}
+            className={`p-2 bg-[#004AAD] rounded-full ${page === 1 ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+          >
+            <FaArrowLeftLong className="text-2xl text-white" />
+          </button>
+          <button
+            onClick={handleNext}
+            disabled={page === totalPages}
+            className={`p-2 bg-[#004AAD] rounded-full ${page === totalPages ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+          >
+            <FaArrowRightLong className="text-2xl text-white" />
+          </button>
+        </div>
       </div>
-
     </>
   );
 }

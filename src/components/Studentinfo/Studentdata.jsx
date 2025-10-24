@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 export default function Studentdata() {
   const [data, setData] = useState([]);
   const [file, setFile] = useState(null);
+  const [paymentStatus, setPaymentStatus] = useState('')
 
   useEffect(() => {
     const fetchStudents = async () => {
@@ -30,7 +31,7 @@ export default function Studentdata() {
     const selectedFile = e.target.files[0];
     if (!selectedFile) return;
     setFile(selectedFile);
-    await handleUpload(selectedFile); 
+    await handleUpload(selectedFile);
   };
 
   const handleUpload = async (selectedFile) => {
@@ -51,7 +52,7 @@ export default function Studentdata() {
 
       if (res.ok) {
         const uploadedData = await res.json();
-        console.log( uploadedData);
+        console.log(uploadedData);
         toast.success("CSV file uploaded successfully");
       } else {
         console.error("Failed to upload CSV file");
@@ -62,6 +63,32 @@ export default function Studentdata() {
       toast.error("Error uploading CSV file");
     }
   };
+  const handleChange = async (e,id) => {
+    const newStatus = e.target.value;
+    setPaymentStatus(newStatus);
+
+    try {
+      const update = await fetch(`http://localhost:3000/student/student/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ paymentStatus: newStatus }),
+      });
+
+      if (!update.ok) {
+        throw new Error("Failed to update status");
+      }
+
+      const data = await update.json();
+      console.log("Update successful:", data);
+       fetchStudents();
+    } catch (error) {
+      console.error("Failed to update:", error);
+    }
+    
+  };
+
 
   const columns = [
     { id: "name", header: "Student Name" },
@@ -73,8 +100,16 @@ export default function Studentdata() {
     {
       header: "Payment Status",
       cell: (row) => (
-        <div className="border rounded-xl border-blue-700 text-center">
-          <h1 className="text-[#00499d]">{row.paymentStatus}</h1>
+        <div className="border rounded-xl text-center">
+          <select
+            value={row.paymentStatus}
+            onChange={(e) => handleChange(e, row._id)}
+            className="border-2 border-blue-700 rounded px-2 py-1 text-[#00499d]"
+          >
+            <option value="Paid">Paid</option>
+            <option value="Not Paid">Not Paid</option>
+          </select>
+
         </div>
       ),
     },
@@ -84,7 +119,7 @@ export default function Studentdata() {
     <>
       <div className="flex gap-10">
         <div className="flex gap-1">
-          <h1 className="font-semibold p-2 text-[20px]">Students Info</h1>
+          <h1 className="flex-1 font-semibold p-2 text-[20px]">Students Info</h1>
 
           <select className="border-2 border-[#004AAD] rounded-xl w-[160px] h-[45px] bg-[#004AAD] text-[#fff]">
             <option value="">Employee Name</option>
@@ -92,12 +127,12 @@ export default function Studentdata() {
           <select className="border-2 border-[#004AAD] rounded-xl w-[160px] h-[45px] bg-[#004AAD] text-[#fff]">
             <option value="">Course</option>
           </select>
-          <select className="border-2 border-[#004AAD] rounded-xl w-[160px] h-[45px] bg-[#004AAD] text-[#fff]">
+          {/* <select className="border-2 border-[#004AAD] rounded-xl w-[160px] h-[45px] bg-[#004AAD] text-[#fff]">
             <option value="">Program Type</option>
           </select>
           <select className="border-2 border-[#004AAD] rounded-xl w-[160px] h-[45px] bg-[#004AAD] text-[#fff]">
             <option value="">August</option>
-          </select>
+          </select> */}
         </div>
 
         <div className="flex gap-2 items-center">

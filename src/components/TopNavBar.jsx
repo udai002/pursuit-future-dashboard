@@ -3,6 +3,7 @@ import useAuth from "../context/AuthContext";
 
 export default function TopNavBar() {
   const { userDetails } = useAuth()
+  console.log(userDetails)
   const [loc, setLoc] = useState("No Location Added")
   return (
     <div className="w-full">

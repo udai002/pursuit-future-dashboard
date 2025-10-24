@@ -85,6 +85,7 @@ function AuthProvider({children}){
                 setUserDetails(()=>result.user)
                 localStorage.setItem("session_token" , JSON.stringify(result.token))
                 navigate("/")
+                console.log("login user is called")
             }else{
                 toast.error(result.msg)
             }

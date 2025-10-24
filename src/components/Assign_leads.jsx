@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import useAuth from '../context/AuthContext';
 
 const AssignLeadToMembers = () => {
   const [leadTypes, setLeadTypes] = useState([]);
@@ -14,6 +15,10 @@ const AssignLeadToMembers = () => {
     fetchLeadTypes();
     fetchTeamMembers();
   }, []);
+
+  const {userDetails} = useAuth()
+
+  console.log(userDetails.teamId[0])
 
   const fetchLeadTypes = async () => {
     try {
@@ -37,48 +42,19 @@ const AssignLeadToMembers = () => {
   };
 
   const fetchTeamMembers = async () => {
-    try {
-      console.log('Fetching team members from database...');
-      // Try real database endpoint first
-      let response = await fetch('http://localhost:3000/lead-assignment/test/employees-all');
-      console.log('Employees response status:', response.status);
-      
-      if (response.ok) {
-        const data = await response.json();
-        console.log('Employees data from database:', data);
+      try{
+        const url = import.meta.env.VITE_BACKEND_URL
+        if(!url) showMessage("Sever Error" , 'error')
         
-        if (data.success && data.employees && data.employees.length > 0) {
-          setTeamMembers(data.employees);
-          showMessage(`${data.employees.length} employees loaded from database`, 'success');
-        } else {
-          console.log('No employees in database, trying fallback...');
-          // Fallback to test endpoint that creates sample data
-          response = await fetch('http://localhost:3000/lead-assignment/test/team-members');
-          if (response.ok) {
-            const fallbackData = await response.json();
-            const members = fallbackData || [];
-            setTeamMembers(Array.isArray(members) ? members : []);
-            showMessage(`${members.length} team members loaded (with sample data)`, 'success');
-          } else {
-            showMessage('Failed to fetch team members', 'error');
-          }
+        const response = await fetch(`${url}/team/team/${userDetails?.teamId[0]}`)
+        if(response.ok){
+          const data = await response.json()
+          setTeamMembers(data.employees)
+          showMessage("Members successfully fetched" , "success")
         }
-      } else {
-        console.log('Database endpoint failed, trying fallback...');
-        // Fallback to simple endpoint
-        response = await fetch('http://localhost:3000/lead-assignment/test/team-members-simple');
-        if (response.ok) {
-          const data = await response.json();
-          const members = data.teamMembers || [];
-          setTeamMembers(Array.isArray(members) ? members : []);
-          showMessage('Team members loaded (hardcoded data)', 'success');
-        } else {
-          showMessage('Failed to fetch team members', 'error');
-        }
-      }
-    } catch (error) {
-      console.error('Error fetching team members:', error);
-      showMessage('Error connecting to server for team members', 'error');
+      } catch (error) {
+      console.error('Error fetching lead types:', error);
+      showMessage('Error connecting to server for lead types', 'error');
     }
   };
 
@@ -282,7 +258,7 @@ const AssignLeadToMembers = () => {
               <option value="">Member Name</option>
               {teamMembers.map((member) => (
                 <option key={member._id} value={member._id}>
-                  {member.empname} - {member.email}
+                  {member.username} - {member.email}
                 </option>
               ))}
             </select>

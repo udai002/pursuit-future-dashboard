@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import useAuth from '../context/AuthContext';
+import Papa from 'papaparse'
 
 const AssignLeadToMembers = () => {
   const [leadTypes, setLeadTypes] = useState([]);
@@ -10,6 +11,7 @@ const AssignLeadToMembers = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
   const [messageType, setMessageType] = useState('');
+  const [uploadData ,setUploadData] = useState([])
 
   useEffect(() => {
     fetchLeadTypes();
@@ -94,31 +96,57 @@ const AssignLeadToMembers = () => {
     console.log('Lead Type:', selectedLeadType);
     console.log('Member:', selectedMember);
 
-    setLoading(true);
-    const formData = new FormData();
-    formData.append('csvFile', csvFile);
-    formData.append('leadType', selectedLeadType);
-    formData.append('assignedTo', selectedMember);
+  Papa.parse(csvFile ,  {header: true, // first line = column headers
+  skipEmptyLines: true,
+  complete: (results) => {
+    console.log('error' , results.errors)
 
-    console.log('FormData created, uploading...');
+    const data = results.data
+
+    const formattedData = data.map(item=>{
+        const objectvalue = Object.values(item)
+        const newObject = {
+          name:objectvalue[0],
+          contactNumber:objectvalue[1] , 
+          whatsappNumber:objectvalue[2] , 
+          branch:objectvalue[3] , 
+          yearOfStudy:objectvalue[4] ,
+          collegaName:objectvalue[5] , 
+          domain1:objectvalue[6] , 
+          domain2:objectvalue[7], 
+          employeeId:selectedMember ,
+          teamId:userDetails?.teamId[0] , 
+          type:selectedLeadType
+        }
+
+        return newObject
+    })
+
+    console.log("this is the file data" , formattedData)
+    setUploadData(()=>formattedData)
+
+  }},)
 
     try {
-      console.log('Making request to: http://localhost:3000/lead-assignment/test/upload-csv');
-      const response = await fetch('http://localhost:3000/lead-assignment/test/upload-csv', {
+      console.log('Making request to: http://localhost:3000/saleslead/assign');
+      const response = await fetch('http://localhost:3000/saleslead/assign', {
         method: 'POST',
-        body: formData,
-        mode: 'cors',
-        // Don't set Content-Type header - let browser set it with boundary for multipart/form-data
+        headers:{
+          'Content-Type':"application/json"
+        },
+        body: JSON.stringify(uploadData),
       });
 
       console.log('Upload response status:', response.status);
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
+
       
       const data = await response.json();
+      
       console.log('Upload response data:', data);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${data}`);
+      }
+      
 
       if (data.success) {
         showMessage(`CSV processed successfully! ${data.leadsCount} leads assigned to ${data.assignedTo}`, 'success');
@@ -127,7 +155,7 @@ const AssignLeadToMembers = () => {
         showMessage(data.message || 'Failed to upload CSV', 'error');
       }
     } catch (error) {
-      console.error('Error uploading CSV:', error);
+      
       if (error.name === 'TypeError' && error.message.includes('fetch')) {
         showMessage('Cannot connect to server. Please check if the backend is running.', 'error');
       } else if (error.message.includes('HTTP error')) {

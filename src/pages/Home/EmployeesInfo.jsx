@@ -25,7 +25,8 @@ const EmployeesInfo = () => {
   }, [data]);
 
   if (loading) return <p>Loading employees...</p>;
-  if (error) return <p>Error: {error}</p>;
+  if (error === "No data available") return <p className="text-center text-gray-500">No data available for the selected month.</p>;
+  if (error) return <p className="text-center text-red-500">Error: {error}</p>;
 
   const columns = [
     {

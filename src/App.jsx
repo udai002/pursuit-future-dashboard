@@ -41,6 +41,7 @@ import TeamEmployees from "./components/Teaminfo/EmployeeTable"
 import AttendanceCalendar from "./components/Teaminfo/Attendence"
 
 import Watermark from './components/watermark'
+import OperationOverview from "./pages/Overview/Operations"
 
 const siderBarAvoiders = [
   "/login",
@@ -113,6 +114,8 @@ function App() {
       <Route path='/pay' Component={Payment} />
       <Route path='/dps' Component={Dps} />
       <Route path='/attendence' Component={AttendenceShow} />
+      <Route path='/' Component={OperationOverview} />
+      
 
 
 

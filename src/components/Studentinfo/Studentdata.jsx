@@ -15,7 +15,7 @@ export default function Studentdata() {
         const res = await fetch("http://localhost:3000/student/allstudent");
         if (res.ok) {
           const result = await res.json();
-          setData(result);
+          setData(result.allstudent);
         } else {
           console.error("Failed to fetch student info");
         }

@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function Payment() {
+export default function Payment({creditedCount,pendingCount,}) {
 
 
   return (
@@ -13,7 +13,7 @@ export default function Payment() {
         </div>
 
         <div>
-            <h1 className='text-[#004AAD] font-bold text-2xl '>50</h1>
+            <h1 className='text-[#004AAD] font-bold text-2xl '>{creditedCount}</h1>
         </div>
         
     </div>
@@ -39,7 +39,7 @@ export default function Payment() {
         </div>
 
         <div className='text-[#004AAD] font-bold '>
-            <h1 className='text-2xl' >50</h1>
+            <h1 className='text-2xl' >{pendingCount}</h1>
         </div>
         
     </div>

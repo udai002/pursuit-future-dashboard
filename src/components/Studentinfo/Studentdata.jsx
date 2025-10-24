@@ -3,6 +3,7 @@ import Table from "../../components/table";
 import { CiSearch } from "react-icons/ci";
 import { FaFileCsv } from "react-icons/fa6";
 import toast from "react-hot-toast";
+import CustomSelect from "../button/CustomSelect";
 
 export default function Studentdata() {
   const [data, setData] = useState([]);
@@ -12,11 +13,12 @@ export default function Studentdata() {
   const [limit] = useState(5);
   const [totalPages, setTotalPages] = useState(0);
   const [paymentStatus, setPaymentStatus] = useState('')
+  const [course, setCourse] = useState('');
 
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        const res = await fetch(`http://localhost:3000/student/allstudent?search=${search}&page=${page}&limit=${limit}`);
+        const res = await fetch(`http://localhost:3000/student/allstudent?search=${search}&course=${course}&page=${page}&limit=${limit}`);
         if (res.ok) {
           const result = await res.json();
           setData(result.allstudent);
@@ -29,7 +31,7 @@ export default function Studentdata() {
       }
     };
     fetchStudents();
-  }, [search, page, limit]);
+  }, [search, course, page, limit]);
 
   const handleSearch = (e) => {
     setSearch(e.target.value);
@@ -144,9 +146,21 @@ export default function Studentdata() {
           <select className="border-2 border-[#004AAD] rounded-xl w-[160px] h-[45px] bg-[#004AAD] text-[#fff]">
             <option value="">Employee Name</option>
           </select>
-          <select className="border-2 border-[#004AAD] rounded-xl w-[160px] h-[45px] bg-[#004AAD] text-[#fff]">
-            <option value="">Course</option>
-          </select>
+          <CustomSelect
+            title="Course"
+            options={[
+              { id: "Artificial Intelligence", label: "Artificial Intelligence" },
+              { id: "Web Development", label: "Web Development" },
+              { id: "Machine Learning", label: "Machine Learning" },
+              { id: "Data Science", label: "Data Science" },
+              { id: "Digital Marketing", label: "Digital Marketing" },
+              { id: "UI/UX Design", label: "JanUI/UX Designuary" },
+              { id: "Cybersecurity", label: "Cybersecurity" },
+              { id: "Cloud Computing", label: "Cloud Computing" },
+            ]}
+            value={course}
+            onChange={e => setCourse(e.target.value)}
+          />
           {/* <select className="border-2 border-[#004AAD] rounded-xl w-[160px] h-[45px] bg-[#004AAD] text-[#fff]">
             <option value="">Program Type</option>
           </select>
@@ -156,7 +170,7 @@ export default function Studentdata() {
         </div>
 
         <div className="flex gap-2 items-center">
-          
+
           <div className="relative">
             <CiSearch className="absolute top-3 left-2 text-[#004aad]" />
             <input

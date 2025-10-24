@@ -4,7 +4,6 @@ import Payment from '../../components/Payment'
 import AnnouncementsOverView from '../../components/AnnouncementsOverView'
 import { useGetProjectedRevenueQuery } from '../../Slice/OverviewSlice';
 
-import useFetchTotal from '../../utils/useFetchTotal'
 
 export default function Operations() {
     const { data, isLoading, error } = useGetProjectedRevenueQuery();

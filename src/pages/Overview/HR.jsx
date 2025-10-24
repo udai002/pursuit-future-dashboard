@@ -13,9 +13,8 @@ export default function HROverView() {
   let currentDate=`${year}-${month}-${day}`;
 
   console.log(currentDate)
-
+  const [totalEmployee,setTotal]=useState(0);
   const [employeeData,setEmployeeData]=useState({
-    totalEmployee:"",
     presentEmployee:"",
     employeeOnLeaves:"",
     absent:""
@@ -25,13 +24,12 @@ export default function HROverView() {
   useEffect(()=>{
     const fetchData=async () => {
       try{
-        const response=await fetch(`http://localhost:3000/api/Allusers`)
+        const response=await fetch(`http://localhost:3000/api/totalEmployeeCount`)
         if(!response.ok){
           throw new Error(`http error! status:${response.status}`)
         }
-        const data=response.json();
-        console.log("kpi data use",data)
-        setEmployeeData(data)
+        const data= await response.json();
+        setTotal(data.totalEmployee);
       }
       catch(error){
         setError(error)
@@ -52,7 +50,7 @@ export default function HROverView() {
       </div>
       <div className='flex flex-wrap gap-2 sm-grid-1 md:grid-2 lg:grid-4'>
   
-        <OverviewComp title="Total Employees" revenue={employeeData.totalEmployee} />
+        <OverviewComp title="Total Employees" revenue={totalEmployee} />
         <OverviewComp title="Present Employees" revenue={employeeData.presentEmployee} />
         <OverviewComp title="Employees on Leave" revenue={employeeData.employeeOnLeaves} />
         <OverviewComp title="Absent" revenue={employeeData.absent} />

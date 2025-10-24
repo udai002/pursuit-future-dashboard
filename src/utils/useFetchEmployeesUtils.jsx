@@ -8,7 +8,7 @@ export default function useFetchEmployees(selectedMonth) {
 
   useEffect(() => {
     const fetchEmployees = async () => {
-      try {
+      try { 
         setLoading(true);
         const res = await fetch(`http://localhost:3000/api/Allusers?month=${selectedMonth}`);
         console.log("Fetching employees for month:", selectedMonth);

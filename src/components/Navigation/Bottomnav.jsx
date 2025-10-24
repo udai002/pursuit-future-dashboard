@@ -17,12 +17,6 @@ export const Bottomnav = () => {
       <Button
         className="bg-[#004aad]"
         onclick={() => {}}
-        title="Settings"
-        icon={<IoSettingsOutline className="h-7 w-7" />}
-      />
-      <Button
-        className="bg-[#004aad]"
-        onclick={() => {}}
         title="Support"
         icon={<MdOutlineSupportAgent className="h-7 w-7" />}
       />

@@ -254,7 +254,7 @@ function App() {
 
       <div className='flex w-full'>
 
-        <Watermark opacity={0.2} size={180} rotate={-40} text={userDetails.username ?? "Pursuit future technologies"} />
+        <Watermark opacity={0.2} size={180} rotate={-40} text={userDetails?.username ?? "Pursuit future technologies"} />
 
 
         {!siderBarAvoiders.includes(pathname) && <Sidenavbar />}

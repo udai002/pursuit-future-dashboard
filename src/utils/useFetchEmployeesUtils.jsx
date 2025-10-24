@@ -11,10 +11,17 @@ export default function useFetchEmployees(selectedMonth) {
       try {
         setLoading(true);
         const res = await fetch(`http://localhost:3000/api/Allusers?month=${selectedMonth}`);
-        console.log("selectedmonth",selectedMonth)
+        console.log("Fetching employees for month:", selectedMonth);
+
         if (!res.ok) throw new Error("Failed to fetch employees");
         const json = await res.json();
-        setData(json);
+        
+        if (!json || !json.users || json.users.length === 0) {
+          setData([]);
+          setError("No data available");
+        } else {
+          setData(json);
+        }
       } catch (err) {
         setError(err.message);
       } finally {

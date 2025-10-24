@@ -37,9 +37,12 @@ const Announcements = () => {
       setLoading(false);
     }
   };
+
+
   useEffect(() => {
     fetchData(month);
-  }, []);
+  }, [month]); // re-fetch when month changes
+
 
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete?")) {
@@ -64,10 +67,10 @@ const Announcements = () => {
   };
 
   const handleMonthChange = (e) => {
-    const selectedMonth = e.target.value;
+    const selectedMonth = parseInt(e.target.value);
     setMonth(selectedMonth);
-    fetchData(selectedMonth);
   };
+
 
   const onClose = () => {
     setModalType(null);
@@ -140,22 +143,26 @@ const Announcements = () => {
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 md:gap-8">
         <div className="flex flex-col sm:flex-row sm:items-center gap-3">
           <div className="text-2xl text-[#444444] ">Announcements</div>
-          <CustomSelect title={new Date().toLocaleString('default', { month: 'long' })} onChange={handleMonthChange}
+          <CustomSelect
+            title="Select Month"
+            value={month}
+            onChange={handleMonthChange}
             options={[
-              { value: 1, label: "January" },
-              { value: 2, label: "February" },
-              { value: 3, label: "March" },
-              { value: 4, label: "April" },
-              { value: 5, label: "May" },
-              { value: 6, label: "June" },
-              { value: 7, label: "July" },
-              { value: 8, label: "August" },
-              { value: 9, label: "September" },
-              { value: 10, label: "October" },
-              { value: 11, label: "November" },
-              { value: 12, label: "December" },
+              { id: 1, label: "January" },
+              { id: 2, label: "February" },
+              { id: 3, label: "March" },
+              { id: 4, label: "April" },
+              { id: 5, label: "May" },
+              { id: 6, label: "June" },
+              { id: 7, label: "July" },
+              { id: 8, label: "August" },
+              { id: 9, label: "September" },
+              { id: 10, label: "October" },
+              { id: 11, label: "November" },
+              { id: 12, label: "December" },
             ]}
           />
+
         </div>
 
         <div className="pr-4">

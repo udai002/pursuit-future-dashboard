@@ -11,7 +11,7 @@ import AnnouncementsOverView from '../../components/AnnouncementsOverView'
 
 export default function Teamlead() {
   return (
-    <div>
+    <div className='overflow-y-auto h-[80vh] no-scrollbar '>
     <div className=''>
 
       <div className='flex gap-2'>

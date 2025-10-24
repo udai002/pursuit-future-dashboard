@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import OverviewComp from '../../components/Overview'
 import Payment from '../../components/Payment'
 import AnnouncementsOverView from '../../components/AnnouncementsOverView'
 import { useGetProjectedRevenueQuery } from '../../Slice/OverviewSlice';
+
+import useFetchTotal from '../../utils/useFetchTotal'
 
 export default function Operations() {
     const { data, isLoading, error } = useGetProjectedRevenueQuery();
@@ -18,14 +20,14 @@ export default function Operations() {
        } = data || {};
      
   return (
-    <div className='flex flex-row'>
+    <div className='flex flex-row gap-4'>
       <div className=''>
         <OverviewComp title="Total Payment counts" revenue={totalStudents}/>
            <Payment creditedCount={creditedCount} pendingCount={pendingCount}/>
 
 
       </div>
-      <div className='w-screen '>
+      <div className='w-[74%] '>
         <AnnouncementsOverView/>
      
       </div>

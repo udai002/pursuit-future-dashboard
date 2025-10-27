@@ -13,7 +13,6 @@ function AttendanceCalendar() {
 
   const currentYear = new Date().getFullYear();
 
-
   const columns = [
     { id: "sun", header: "Sunday", cell: (row) => <AttendanceCell cell={row.sun} /> },
     { id: "mon", header: "Monday", cell: (row) => <AttendanceCell cell={row.mon} /> },

@@ -28,22 +28,25 @@ const SalesInt = () => {
   useEffect(() => {
     const fetchTeams = async () => {
       try {
-        console.log("user id is ",userDetails._id)
-        const res = await fetch(`http://localhost:3000/saleslead/salelead/employee/${userDetails._id}`);
+        console.log("user id is ",userDetails._id);
+        console.log("page number is", page);
+        const res = await fetch(`http://localhost:3000/saleslead/salelead/employee/${userDetails._id}?page=${page}`);
         if (!res.ok) throw new Error('Failed to fetch teams');
         const data = await res.json();
-                console.log("........data salint",data)
-
-   
+        console.log("........data salint",data)
+ 
         // const formattedTeams = data.map(team => ({ id: team.name, label: team.name, _id: team._id }));
-        setSalesLeadData(data);
+
+        setSalesLeadData(data.data);
+        setTotalPages(data.data.pages);
+
       } catch (error) {
         console.error(error);
       }
     };
 
     fetchTeams();
-  }, []);
+  }, [page]);
 
   console.log("the data is.......",teams)
 
@@ -64,6 +67,7 @@ const SalesInt = () => {
 
     const fetchTeamMembers = async () => {
       try {
+
        
         const res = await fetch(`http://localhost:3000/team/team/${selectedTeam._id}`);
         if (!res.ok) throw new Error('Failed to fetch team members');
@@ -120,6 +124,7 @@ const SalesInt = () => {
 
   const handlePrevious=()=>
   {
+    console.log("page is ...... ",page)
     if(page>1)
     {
       setPage(page-1);
@@ -128,10 +133,13 @@ const SalesInt = () => {
 
     const handleNext=()=>
   {
-    if(page<totalPages)
-    {
-      setPage(page+1);
-    }
+    console.log("page is next...... ",page)
+     setPage(page+1);
+    
+    // if(page<totalPages)
+    // {
+     
+    // }
   };
 
   
@@ -219,10 +227,9 @@ const SalesInt = () => {
             <FaArrowLeftLong className="text-2xl text-white" />
           </button>
           <button
-            onClick={handleNext}
-            disabled={page === totalPages}
-            className={`p-2 bg-[#004AAD] rounded-full ${page === totalPages ? "opacity-50 cursor-not-allowed" : ""
-              }`}
+          onClick={handleNext}
+          disabled={page === totalPages}
+          className={`p-2 bg-[#004AAD] rounded-full ${page === totalPages ? "opacity-50 cursor-not-allowed" :""}`}
           >
             <FaArrowRightLong className="text-2xl text-white" />
           </button>

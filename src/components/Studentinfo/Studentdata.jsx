@@ -284,7 +284,8 @@ export default function Studentdata() {
           const res = await fetch("http://localhost:3000/employee/all");
           if (res.ok) {
             const result = await res.json();
-            setEmployeeList(result.employees || []);
+          // console.log('this is the res',result);       
+            setEmployeeList(result || []);
           }
         } catch (error) {
           console.error("Failed to fetch employees:", error);
@@ -294,6 +295,8 @@ export default function Studentdata() {
     }
   }, [roleNorm]);
 
+  console.log('this is the employee list',employeeList);
+  
   const handleSearch = (e) => {
     setSearch(e.target.value);
     setPage(1);
@@ -387,6 +390,8 @@ export default function Studentdata() {
     },
   ];
 
+  console.log('this is the selected employee',selectedEmployee);
+  
   return (
     <>
       <div className="flex gap-10">

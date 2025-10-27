@@ -30,7 +30,7 @@ import Lead from './pages/Home/lead';
 import ForgotPassword from './pages/Home/Authentication/ForgotPassword'
 import { Sidenavbar } from './components/Navigation/Sidenavbar'
 import useAuth from './context/AuthContext'
-
+import LeadInt from './components/lead/leadInt'
 import TopNavBar from './components/TopNavBar'
 
 import MembersInfo from './pages/Home/MembersInfo'
@@ -96,7 +96,7 @@ function App() {
       <Route path="/" Component={Superadmin} />
       <Route path="/teaminfo" Component={Teaminformation} />
       <Route path='/salesLeadInfo' Component={SalesLeadsInfo} />
-      <Route path='/lead' Component={Lead} />
+      <Route path='/lead' Component={LeadInt} />
       <Route path='/pay' Component={Payment} />
       <Route path='/dps' Component={Dps} />
       <Route path="/announcements" Component={Announcements} />
@@ -175,18 +175,18 @@ function App() {
   function InterDashboard() {
     return <Routes>
       <Route path="/" Component={Intern} />
-            <Route path='/int' Component={SalesInt} />
+            {/* <Route path='/int' Component={SalesInt} /> */}
 
 
       {/* student info  */}
       {/* sales lead info  */}
 
       <Route path='/studentsinfo' Component={StudentsInfo} />
-      <Route path='/salesLeadInfo' Component={SalesLeadsInfo} />
+      <Route path='/salesLeadInfo' Component={SalesInt} />
 
 
 
-      <Route path='/lead' Component={Lead} />
+      <Route path='/lead' Component={LeadInt} />
       <Route path='/pay' Component={Payment} />
       <Route path='/dps' Component={Dps} />
 

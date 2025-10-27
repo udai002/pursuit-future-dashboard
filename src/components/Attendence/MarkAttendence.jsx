@@ -9,6 +9,7 @@ function MarkAttendance() {
   
  useEffect(() => {
     if (data?.users) {
+      console.log("form data" , data)
       const formatted = data.users.map(emp => ({
         employee: emp._id,
         empname: emp.username,
@@ -20,7 +21,8 @@ function MarkAttendance() {
   }, [data]);
 
  
-  console.log("formated data",employees.users)
+ console.log("formatted data", employees);
+
 
   const handleChange = (id, field, value) => {
     setEmployees(prev =>

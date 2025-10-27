@@ -17,7 +17,7 @@ function AttendanceCalendar() {
   const currentYear = new Date().getFullYear();
 
   const columns = [
-        { id: "sun", header: "Sunday", cell: (row) => <AttendanceCell cell={row.sun} /> },
+    { id: "sun", header: "Sunday", cell: (row) => <AttendanceCell cell={row.sun} /> },
     { id: "mon", header: "Monday", cell: (row) => <AttendanceCell cell={row.mon} /> },
     { id: "tue", header: "Tuesday", cell: (row) => <AttendanceCell cell={row.tue} /> },
     { id: "wed", header: "Wednesday", cell: (row) => <AttendanceCell cell={row.wed} /> },
@@ -58,7 +58,7 @@ function AttendanceCalendar() {
     <div className="p-4 flex-1">
       <div className="flex">
         <h2 className="flex-1 text-2xl font-semibold mb-4">
-          Attendance: {employee?.username || "Employee"}
+         {employee?.username || "Employee"}
         </h2>
         <div className="flex justify-end items-center mb-4 gap-4">
           <select
@@ -75,7 +75,7 @@ function AttendanceCalendar() {
         </div>
       </div>
 
-      <Table data={rows} columns={columns} emptyMessage="No attendance data." />
+      <Table data={rows} columns={columns} emptyMessage="No attendance data ." />
     </div>
   );
 }

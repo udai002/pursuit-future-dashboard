@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import useAuth from '../context/AuthContext';
+import Papa from 'papaparse'
 
 const AssignLeadToMembers = () => {
   const [leadTypes, setLeadTypes] = useState([]);
@@ -9,11 +11,16 @@ const AssignLeadToMembers = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
   const [messageType, setMessageType] = useState('');
+  const [uploadData ,setUploadData] = useState([])
 
   useEffect(() => {
     fetchLeadTypes();
     fetchTeamMembers();
   }, []);
+
+  const {userDetails} = useAuth()
+
+  console.log(userDetails.teamId[0])
 
   const fetchLeadTypes = async () => {
     try {
@@ -37,48 +44,19 @@ const AssignLeadToMembers = () => {
   };
 
   const fetchTeamMembers = async () => {
-    try {
-      console.log('Fetching team members from database...');
-      // Try real database endpoint first
-      let response = await fetch('http://localhost:3000/lead-assignment/test/employees-all');
-      console.log('Employees response status:', response.status);
-      
-      if (response.ok) {
-        const data = await response.json();
-        console.log('Employees data from database:', data);
+      try{
+        const url = import.meta.env.VITE_BACKEND_URL
+        if(!url) showMessage("Sever Error" , 'error')
         
-        if (data.success && data.employees && data.employees.length > 0) {
-          setTeamMembers(data.employees);
-          showMessage(`${data.employees.length} employees loaded from database`, 'success');
-        } else {
-          console.log('No employees in database, trying fallback...');
-          // Fallback to test endpoint that creates sample data
-          response = await fetch('http://localhost:3000/lead-assignment/test/team-members');
-          if (response.ok) {
-            const fallbackData = await response.json();
-            const members = fallbackData || [];
-            setTeamMembers(Array.isArray(members) ? members : []);
-            showMessage(`${members.length} team members loaded (with sample data)`, 'success');
-          } else {
-            showMessage('Failed to fetch team members', 'error');
-          }
+        const response = await fetch(`${url}/team/team/${userDetails?.teamId[0]}`)
+        if(response.ok){
+          const data = await response.json()
+          setTeamMembers(data.employees)
+          showMessage("Members successfully fetched" , "success")
         }
-      } else {
-        console.log('Database endpoint failed, trying fallback...');
-        // Fallback to simple endpoint
-        response = await fetch('http://localhost:3000/lead-assignment/test/team-members-simple');
-        if (response.ok) {
-          const data = await response.json();
-          const members = data.teamMembers || [];
-          setTeamMembers(Array.isArray(members) ? members : []);
-          showMessage('Team members loaded (hardcoded data)', 'success');
-        } else {
-          showMessage('Failed to fetch team members', 'error');
-        }
-      }
-    } catch (error) {
-      console.error('Error fetching team members:', error);
-      showMessage('Error connecting to server for team members', 'error');
+      } catch (error) {
+      console.error('Error fetching lead types:', error);
+      showMessage('Error connecting to server for lead types', 'error');
     }
   };
 
@@ -118,31 +96,57 @@ const AssignLeadToMembers = () => {
     console.log('Lead Type:', selectedLeadType);
     console.log('Member:', selectedMember);
 
-    setLoading(true);
-    const formData = new FormData();
-    formData.append('csvFile', csvFile);
-    formData.append('leadType', selectedLeadType);
-    formData.append('assignedTo', selectedMember);
+  Papa.parse(csvFile ,  {header: true, // first line = column headers
+  skipEmptyLines: true,
+  complete: (results) => {
+    console.log('error' , results.errors)
 
-    console.log('FormData created, uploading...');
+    const data = results.data
+
+    const formattedData = data.map(item=>{
+        const objectvalue = Object.values(item)
+        const newObject = {
+          name:objectvalue[0],
+          contactNumber:objectvalue[1] , 
+          whatsappNumber:objectvalue[2] , 
+          branch:objectvalue[3] , 
+          yearOfStudy:objectvalue[4] ,
+          collegaName:objectvalue[5] , 
+          domain1:objectvalue[6] , 
+          domain2:objectvalue[7], 
+          employeeId:selectedMember ,
+          teamId:userDetails?.teamId[0] , 
+          type:selectedLeadType
+        }
+
+        return newObject
+    })
+
+    console.log("this is the file data" , formattedData)
+    setUploadData(()=>formattedData)
+
+  }},)
 
     try {
-      console.log('Making request to: http://localhost:3000/lead-assignment/test/upload-csv');
-      const response = await fetch('http://localhost:3000/lead-assignment/test/upload-csv', {
+      console.log('Making request to: http://localhost:3000/saleslead/assign');
+      const response = await fetch('http://localhost:3000/saleslead/assign', {
         method: 'POST',
-        body: formData,
-        mode: 'cors',
-        // Don't set Content-Type header - let browser set it with boundary for multipart/form-data
+        headers:{
+          'Content-Type':"application/json"
+        },
+        body: JSON.stringify(uploadData),
       });
 
       console.log('Upload response status:', response.status);
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
+
       
       const data = await response.json();
+      
       console.log('Upload response data:', data);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${data}`);
+      }
+      
 
       if (data.success) {
         showMessage(`CSV processed successfully! ${data.leadsCount} leads assigned to ${data.assignedTo}`, 'success');
@@ -151,7 +155,7 @@ const AssignLeadToMembers = () => {
         showMessage(data.message || 'Failed to upload CSV', 'error');
       }
     } catch (error) {
-      console.error('Error uploading CSV:', error);
+      
       if (error.name === 'TypeError' && error.message.includes('fetch')) {
         showMessage('Cannot connect to server. Please check if the backend is running.', 'error');
       } else if (error.message.includes('HTTP error')) {
@@ -282,7 +286,7 @@ const AssignLeadToMembers = () => {
               <option value="">Member Name</option>
               {teamMembers.map((member) => (
                 <option key={member._id} value={member._id}>
-                  {member.empname} - {member.email}
+                  {member.username} - {member.email}
                 </option>
               ))}
             </select>

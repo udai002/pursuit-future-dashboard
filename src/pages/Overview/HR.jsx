@@ -1,7 +1,7 @@
 import OverviewComp from '../../components/Overview'
 import AnnouncementsOverView from '../../components/AnnouncementsOverView'
 import MarkAttendence from '../../components/Attendence/MarkAttendence'
-import { useState,useEffect } from 'react';
+import { useState,useEffect, useRef } from 'react';
 
 
 export default function HROverView() {
@@ -13,25 +13,23 @@ export default function HROverView() {
   let currentDate=`${year}-${month}-${day}`;
 
   console.log(currentDate)
-
+  const [totalEmployee,setTotal]=useState(0);
   const [employeeData,setEmployeeData]=useState({
-    totalEmployee:"",
-    presentEmployee:"",
-    employeeOnLeaves:"",
-    absent:""
+    presentCount:"0",
+    leaveCount:"0",
+    absentCount:"0"
   })
   const [error,setError]=useState();
   
   useEffect(()=>{
     const fetchData=async () => {
       try{
-        const response=await fetch(`http://localhost:3000/api/Allusers`)
+        const response=await fetch(`http://localhost:3000/api/totalEmployeeCount`)
         if(!response.ok){
           throw new Error(`http error! status:${response.status}`)
         }
-        const data=response.json();
-        console.log("kpi data use",data)
-        setEmployeeData(data)
+        const data= await response.json();
+        setTotal(data.totalEmployee);
       }
       catch(error){
         setError(error)
@@ -39,7 +37,26 @@ export default function HROverView() {
     }
     fetchData()
   },[])
+  const selectedDate=useRef()
+  const handleDateChange=async()=>{
 
+          try{
+        const response=await fetch(`http://localhost:3000/api/attendanceStatusByDate?date=${selectedDate.current.value}`)
+        if(!response.ok){
+          throw new Error(`http error! status:${response.status}`)
+        }
+        const attendence=await response.json()
+        setEmployeeData(attendence)
+        console.log("Users",attendence)
+        console.log("Attendence Data",selectedDate.current.value)
+      }
+      catch(error){
+        console.log(error.message)
+      }
+  }
+
+
+  
   return (
     <div className=' w-[100%] flex flex-col gap-4 p-4 sm:p-6 sm:w-[100%] md:w-[100%] lg:w-[100%]'>
       <div className=' flex justify-between '>
@@ -47,15 +64,15 @@ export default function HROverView() {
           <h1 className='text-2xl h-full'>Team Name</h1>
         </div>
         <div>
-          <input type="date" name="" id="" className=' h-full p-2 rounded-xl text-white bg-[#004AAD] ' defaultValue={currentDate}/>
+          <input type="date" name="" id="" className=' h-full p-2 rounded-xl text-white bg-[#004AAD] ' ref={selectedDate} defaultValue={currentDate} onChange={handleDateChange}/>
         </div>
       </div>
       <div className='flex flex-wrap gap-2 sm-grid-1 md:grid-2 lg:grid-4'>
   
-        <OverviewComp title="Total Employees" revenue={employeeData.totalEmployee} />
-        <OverviewComp title="Present Employees" revenue={employeeData.presentEmployee} />
-        <OverviewComp title="Employees on Leave" revenue={employeeData.employeeOnLeaves} />
-        <OverviewComp title="Absent" revenue={employeeData.absent} />
+        <OverviewComp title="Total Employees" revenue={totalEmployee} />
+        <OverviewComp title="Present Employees" revenue={employeeData.presentCount} />
+        <OverviewComp title="Employees on Leave" revenue={employeeData.leaveCount} />
+        <OverviewComp title="Absent" revenue={employeeData.absentCount} />
 
         <div className="p-5 border-[#004AAD] flex-grow bg-[#004AAD] text-white  w-64  rounded-md border  items-center " onClick={() => setShowAttendance(true)}>
           <div className="flex gap-3">

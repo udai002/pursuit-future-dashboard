@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import toast, {Toaster} from 'react-hot-toast'
 import { FaRegUserCircle } from "react-icons/fa";
 import CustomInput from '../../../components/ui/CustomInput';
@@ -17,8 +17,15 @@ const Signin = () => {
     const [password , setPassword] = useState("")
     const [isDisabled , setIsDisabled] = useState(true)
 
-    const {loginUser , loading} = useAuth()
+    const {loginUser , loading , isLoggedIn , loadingAuth} = useAuth()
     const navigate = useNavigate()
+
+
+     useEffect(() => {
+    if (!loadingAuth && isLoggedIn) {
+      navigate("/"); // redirect to home if already logged in
+    }
+  }, [isLoggedIn, loadingAuth, navigate]);
 
     async function  onSubmitLogin(e){
         e.preventDefault()

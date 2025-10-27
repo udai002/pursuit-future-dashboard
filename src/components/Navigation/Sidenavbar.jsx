@@ -12,16 +12,17 @@ const {open,setOpen}=useContext(Store)
   function handleToggle() {
     setOpen(!open);
   }
+
   return (
-    <div className="flex flex-row h-screen">
+    <div className="flex h-screen ">
       <div
 
-        className={`bg-[#004aad] ml-2 my-2 pt-4 rounded-[20px] transition-all duration-300 ease-in-out
-        ${open ? "w-73 p-4" : "w-16"} overflow-hidden`}
+        className={`bg-[#004aad] ml-1 my-2 pt-2 rounded-[20px] transition-all duration-300 ease-in-out
+        ${open ? "w-76 pl-3" : "w-20 p-2"} overflow-hidden`}
       >
        <Navheader/>
        <Scrollbody/>
-       <Bottomnav />
+       <Bottomnav />  
        
       </div>
 

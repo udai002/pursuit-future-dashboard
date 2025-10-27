@@ -13,7 +13,7 @@ const AddAnnouncement = ({ onClose, refreshData, editAnnocement }) => {
       setFormData({
         title: editAnnocement.title,
         description: editAnnocement.description,
-        image: null,
+        image: editAnnocement.image,
       });
     }
   }, [editAnnocement]);
@@ -42,6 +42,7 @@ const AddAnnouncement = ({ onClose, refreshData, editAnnocement }) => {
      const url = editAnnocement
        ? `http://localhost:3000/announcement/announcement/${editAnnocement._id}`
        : "http://localhost:3000/announcement/announcement";
+       
 
      const response = await fetch(url, {
        method,

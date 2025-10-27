@@ -31,13 +31,13 @@ const DpsDataPage = ({ onAddDps }) => {
 
   return (
     <div className="flex h-screen">
-      <main className="flex-1 flex flex-col p-8">
-        <div className="flex items-center justify-between mb-6">
+      <main className="flex-1 flex pb-5 flex-col">
+        <div className="flex items-center pb-5 justify-between">
           <h1 className="text-xl font-semibold text-gray-800">
             DPS Student Data
           </h1>
 
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center gap-3">
             <select value={preferredMonth}
               onChange={(e) => {
                 setPreferredMonth(e.target.value);
@@ -59,13 +59,13 @@ const DpsDataPage = ({ onAddDps }) => {
             </button>
           </div>
         </div>
-        <div className="overflow-x-auto bg-white rounded-xl shadow-md border border-gray-200">
+        <div className="bg-white border-b-2 border-blue-200">
           {loading ? (
             <p className="text-center text-gray-600 py-6">Loading...</p>
           ) : (
             <table className="min-w-full text-sm text-gray-700">
               <thead>
-                <tr className="bg-[#004AAD] text-white text-left">
+                <tr className="bg-[#004AAD1A] border-b-2 border-blue-300 text-black text-left">
                   {[
                     "Student Name",
                     "Email",
@@ -75,8 +75,11 @@ const DpsDataPage = ({ onAddDps }) => {
                     "Year",
                     "Course Opted",
                     "Preferred Month",
+                    "Amount Pitched",
+                    "Amount Paid",
+                    // "Employee"
                   ].map((head, i) => (
-                    <th key={i} className="px-4 py-3 font-medium" >
+                    <th key={i} className="px-1 py-3 font-medium" >
                       {head}
                     </th>
                   ))}
@@ -85,15 +88,18 @@ const DpsDataPage = ({ onAddDps }) => {
               <tbody>
                 {data.length > 0 ? (
                   data.map((student, index) => (
-                    <tr key={index} className={`hover:bg-blue-50 transition ${ index % 2 === 0 ? "bg-white" : "bg-gray-50"}`}>
-                      <td className="px-4 py-3">{student.studentName}</td>
-                      <td className="px-4 py-3">{student.studentEmail}</td>
-                      <td className="px-4 py-3">{student.studentContactNo}</td>
-                      <td className="px-4 py-3">{student.studentWhatsAppNo}</td>
-                      <td className="px-4 py-3">{student.studyDepartment}</td>
-                      <td className="px-4 py-3">{student.yearOfStudy}</td>
-                      <td className="px-4 py-3">{student.domainCourseOpted}</td>
-                      <td className="px-4 py-3">{student.preferredProgramMonth}</td>
+                    <tr key={index} className={`hover:bg-blue-50 transition ${ index % 2 === 0 ? "bg-white" : "bg-white"}`}>
+                      <td className=" py-2 border-b border-blue-300">{student.studentName}</td>
+                      <td className="py-2 border-b border-blue-300">{student.studentEmail}</td>
+                      <td className="py-2 border-b border-blue-300">{student.studentContactNo}</td>
+                      <td className="py-2 border-b border-blue-300">{student.studentWhatsAppNo}</td>
+                      <td className="py-2 border-b border-blue-300">{student.studyDepartment}</td>
+                      <td className="py-2 border-b border-blue-300">{student.yearOfStudy}</td>
+                      <td className="py-2 border-b border-blue-300">{student.domainCourseOpted}</td>
+                      <td className="py-2 border-b border-blue-300">{student.preferredProgramMonth}</td>
+                       <td className="py-2 border-b border-blue-300">{student.amountPitched}</td>
+                      <td className="py-2 border-b border-blue-300">{student.amountPaid}</td>
+                      {/* <td className="py-2 border-b border-blue-300">{student.employee}</td> */}
                     </tr>
                   ))
                 ) : (

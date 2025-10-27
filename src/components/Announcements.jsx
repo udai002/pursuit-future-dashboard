@@ -4,6 +4,9 @@ import AddAnnouncement from "./AddAnnouncement";
 import Table from "./table";
 import Delete from "../assets/delete.png";
 import Edit from "../assets/edit.png";
+import { RxCaretDown } from "react-icons/rx";
+import { GoArrowUpRight } from "react-icons/go";
+import CustomSelect from "./button/CustomSelect";
 
 const Announcements = () => {
   const [modalType, setModalType] = useState(null);
@@ -11,33 +14,44 @@ const Announcements = () => {
   const [loading, setLoading] = useState(true);
   const [showImage, setShowImage] = useState(null);
   const [editAnnocement, setEditAnnouncement] = useState(null);
+  const [month, setMonth] = useState(() => new Date().getMonth() + 1);
+  const [announcements, setAnnouncements] = useState([]);
 
-  const fetchData = async () => {
+  const fetchData = async (selectedMonth = month) => {
     try {
-      const response = await fetch(
-        "http://localhost:3000/announcement/announcement"
-      );
+      setLoading(true);
+      const url = `http://localhost:3000/announcement/announcement?month=${selectedMonth}`
+
+
+      const response = await fetch(url);
       const result = await response.json();
-      setData(result);
+
+      if (Array.isArray(result)) {
+        setData(result);
+      } else {
+        setData([]);
+      }
     } catch (error) {
-      console.log("error", error);
+      console.log("Error fetching announcements:", error);
     } finally {
       setLoading(false);
     }
   };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
 
-  const handleDelete = async (id)=>{
-    if(window.confirm("Are you sure you want to delete?")){
+  useEffect(() => {
+    fetchData(month);
+  }, [month]); // re-fetch when month changes
+
+
+  const handleDelete = async (id) => {
+    if (window.confirm("Are you sure you want to delete?")) {
       try {
         const response = await fetch(
           `http://localhost:3000/announcement/announcement/${id}`,
           { method: "DELETE" }
         );
-        if(!response.ok){
+        if (!response.ok) {
           throw new Error("failed to delete announcement")
         }
         fetchData()
@@ -49,7 +63,14 @@ const Announcements = () => {
   const handleEdit = (announcement) => {
     setEditAnnouncement(announcement);
     setModalType("edit")
+
   };
+
+  const handleMonthChange = (e) => {
+    const selectedMonth = parseInt(e.target.value);
+    setMonth(selectedMonth);
+  };
+
 
   const onClose = () => {
     setModalType(null);
@@ -57,51 +78,61 @@ const Announcements = () => {
   };
 
   const columns = [
-    { id: "announcementId", header: "Announcement ID",
+    {
+      id: "announcementId", header: "Announcement ID",
       cell: (row) => {
-      return row.announcementId.toUpperCase(); 
- }
-},
+        return row.announcementId.toUpperCase();
+      }
+    },
     { id: "title", header: "Title" },
-    { id: "createdAt", header: "Publish Date",
-      cell:(row)=>{
+    {
+      id: "createdAt", header: "Publish Date",
+      cell: (row) => {
         const date = new Date(row.createdAt);
         const options = {
           year: "numeric",
           month: "short",
           day: "numeric",
         };
-       return date.toLocaleDateString(undefined, options);
+        return date.toLocaleDateString(undefined, options);
 
       }
 
-     },
+    },
     { id: "description", header: "Description" },
     {
       id: "image",
       header: "Image",
       cell: (row) => (
-        <button
-          className="text-[#004AAD]"
-          onClick={() => {
-            if (row.image) {
-              setShowImage(row.image);
-              setModalType("image");
-            }
-          }}
-        >
-          View Image
-        </button>
+        <div className="flex gap-1 text-[#004AAD] ">
+          <button
+            onClick={() => {
+
+              if (row.image) {
+
+                setShowImage(row.image);
+                console.log(row.image)
+                setModalType("image");
+
+              }
+            }}
+          >
+            View Image
+          </button>
+          <div className="mt-1.5"><GoArrowUpRight size={16} /></div>
+
+        </div>
+
       ),
     },
     {
       id: "action",
-      header: "Actions",
+      header: "Action",
       cell: (row) => (
         <div className="flex gap-3">
-          <img src={Delete} alt="" onClick={()=>handleDelete(row._id)}
-           className="w-6 h-7 cursor-pointer" />
-          <img src={Edit} alt="" onClick={()=>{handleEdit(row)}} className="w-6 h-7 cursor-pointer" />
+          <img src={Delete} alt="" onClick={() => handleDelete(row._id)}
+            className="w-6 h-7 cursor-pointer" />
+          <img src={Edit} alt="" onClick={() => { handleEdit(row) }} className="w-6 h-7 cursor-pointer " />
         </div>
       ),
     },
@@ -109,17 +140,41 @@ const Announcements = () => {
 
   return (
     <div>
-      <div className="flex justify-between">
-        <p>Announcements</p>
-        <button
-          className="bg-[#004AAD] text-white p-2 rounded-lg"
-          onClick={() => setModalType("add")}
-        >
-          Create Announcement
-        </button>
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 md:gap-8">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+          <div className="text-2xl text-[#444444] ">Announcements</div>
+          <CustomSelect
+            title="Select Month"
+            value={month}
+            onChange={handleMonthChange}
+            options={[
+              { id: 1, label: "January" },
+              { id: 2, label: "February" },
+              { id: 3, label: "March" },
+              { id: 4, label: "April" },
+              { id: 5, label: "May" },
+              { id: 6, label: "June" },
+              { id: 7, label: "July" },
+              { id: 8, label: "August" },
+              { id: 9, label: "September" },
+              { id: 10, label: "October" },
+              { id: 11, label: "November" },
+              { id: 12, label: "December" },
+            ]}
+          />
+
+        </div>
+
+        <div className="pr-4">
+          <button
+            className="bg-[#004AAD] text-white  px-4 py-2   rounded-lg  hover:bg-[#00a99D] duration-200  w-full sm:w-auto"
+            onClick={() => setModalType("add")}>Create Announcement
+          </button>
+        </div>
       </div>
 
-      <div>
+
+      <div className="pr-4">
         {loading ? <p>Loading...</p> : <Table data={data} columns={columns} />}
       </div>
 

@@ -19,10 +19,9 @@ const SalesLeads = () => {
   const [teamMembers, setTeamMembers] = useState([]);
   const [filteredMembers, setFilteredMembers] = useState([]);
 
-  // ✅ status per-row storage
   const [statusMap, setStatusMap] = useState({});
 
-  // ✅ Fetch Teams
+
   useEffect(() => {
     const fetchTeams = async () => {
       try {
@@ -44,7 +43,6 @@ const SalesLeads = () => {
     fetchTeams();
   }, []);
 
-  // ✅ Fetch team members when team changes
   useEffect(() => {
     if (!teamName) {
       setTeamMembers([]);
@@ -76,13 +74,13 @@ const SalesLeads = () => {
     fetchTeamMembers();
   }, [teamName, teams]);
 
-  // ✅ Filter dropdown members based on selected member
+  
   useEffect(() => {
     setFilteredMembers(teamMembers);
     if (!teamMembers.find(m => m.id === username)) setUsername('');
   }, [teamMembers, username]);
 
-  // ✅ Fetch Sales Leads
+ 
   const fetchSalesLead = async () => {
     try {
       const params = new URLSearchParams();
@@ -101,7 +99,7 @@ const SalesLeads = () => {
       setSalesLeadData(data.salesLeads);
       setTotalPages(data.pages);
 
-      // ✅ initialize statusMap from fetched data
+
       const initialStatus = {};
       data.salesLeads.forEach(item => {
         initialStatus[item._id] = item.status;
@@ -117,9 +115,9 @@ const SalesLeads = () => {
     fetchSalesLead();
   }, [month, teamName, username, page, limit]);
 
-  // ✅ Update Status
+ 
   async function handleStatusChange(value, id) {
-    // instant UI update
+  
     setStatusMap(prev => ({ ...prev, [id]: value }));
 
     try {
@@ -170,7 +168,7 @@ const SalesLeads = () => {
     },
   ];
 
-  // ✅ UI Rendering
+
   return (
     <div className="mt-6 px-6">
       <div className="flex items-center justify-between mb-4">

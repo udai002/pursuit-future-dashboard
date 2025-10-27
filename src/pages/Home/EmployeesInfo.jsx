@@ -11,8 +11,7 @@ const EmployeesInfo = () => {
   const [page, setPage] = useState(1);
   const [pageSize] = useState(9);
 
-  const { data, loading, message } = useFetchEmployees(month);
-
+  const { data, loading, error } = useFetchEmployees(month);
 
   const handleMonthChange = (e) => {
     setMonth(Number(e.target.value));
@@ -100,12 +99,16 @@ const EmployeesInfo = () => {
 
       <div className="mt-4">
         {loading ? (
-  <p className="text-center text-gray-500">Loading employees...</p>
-) : message ? (
-  <p className="text-center text-gray-500">{message}</p>
-) : (
-  <Table data={paginatedEmployees} columns={columns} />
-)}
+          <p className="text-center text-gray-500">Loading employees...</p>
+        ) : error ? (
+          <p className="text-center text-red-500">Error: {error}</p>
+        ) : paginatedEmployees.length === 0 ? (
+          <p className="text-center text-gray-500">
+            No data available for the selected month.
+          </p>
+        ) : (
+          <Table data={paginatedEmployees} columns={columns} />
+        )}
 
         
         {employees.length > 0 && (

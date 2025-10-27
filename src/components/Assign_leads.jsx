@@ -1,5 +1,8 @@
+
+
 import React, { useState, useEffect } from 'react';
 import useAuth from '../context/AuthContext';
+import Papa from 'papaparse';
 import Papa from 'papaparse';
 
 const AssignLeadToMembers = () => {
@@ -65,6 +68,7 @@ const AssignLeadToMembers = () => {
       return;
     }
 
+    setLoading(true);
     setLoading(true);
 
     Papa.parse(csvFile, {
@@ -149,6 +153,10 @@ const AssignLeadToMembers = () => {
       <div className="bg-white rounded-lg p-6 w-full max-w-xl border border-blue-800">
         <h1 className="text-xl font-normal text-gray-800 mb-4">Assign Lead to Members</h1>
 
+    <div className="bg-white p-3 relative right-3">
+      <div className="bg-white rounded-lg p-6 w-full max-w-xl border border-blue-800">
+        <h1 className="text-xl font-normal text-gray-800 mb-4">Assign Lead to Members</h1>
+
         {message && (
           <div
             className={`p-2 rounded-lg mb-3 font-medium ${
@@ -161,6 +169,7 @@ const AssignLeadToMembers = () => {
           </div>
         )}
 
+        <div className="flex gap-3 mb-4">
         <div className="flex gap-3 mb-4">
           <div className="flex-1">
             <select
@@ -196,6 +205,7 @@ const AssignLeadToMembers = () => {
           </div>
         </div>
 
+        <div className="flex gap-3">
         <div className="flex gap-3">
           <div className="flex-[2]">
             <select

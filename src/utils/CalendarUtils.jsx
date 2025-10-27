@@ -22,7 +22,7 @@ export const buildCalendarData = (records, year, month) => {
   for (let i = 0; i < 7; i++) {
     const weekday = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"][i];
     if (i < startingDay) {
-      currentWeek[weekday] = ""; 
+      currentWeek[weekday] = "";
     } else if (day <= daysInMonth) {
       currentWeek[weekday] = { day, ...attendanceMap[day] };
       day++;

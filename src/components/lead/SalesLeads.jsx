@@ -179,7 +179,6 @@
 import React, { useState, useEffect } from 'react';
 import Table from '../table';
 import CustomSelect from '../button/CustomSelect';
-import useAuth from '../../context/AuthContext';
 
 const SalesLeads = () => {
   const { userDetails } = useAuth();
@@ -188,37 +187,66 @@ const SalesLeads = () => {
   const [teamName, setTeamName] = useState('');
   const [username, setUsername] = useState('');
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
+  const [limit, setLimit] = useState(5);
   const [totalPages, setTotalPages] = useState(1);
 
   const [teams, setTeams] = useState([]);
   const [teamMembers, setTeamMembers] = useState([]);
   const [filteredMembers, setFilteredMembers] = useState([]);
 
-  // fetch teams for dropdown (only admin / TL)
-  useEffect(()=>{
-    if(userDetails.role==="Admin" || userDetails.role==="Team Lead"){
-      fetch('http://localhost:3000/team/team')
-        .then(res=>res.json())
-        .then(data=>{
-          const formattedTeams = data.map(t=>({ id:t.name,label:t.name,_id:t._id }));
-          setTeams(formattedTeams);
-        }).catch(console.error);
-    }
-  },[userDetails.role]);
 
-  // fetch team members for selected team
-  useEffect(()=>{
-    if(!teamName) return setTeamMembers([]);
-    const selectedTeam = teams.find(t=>t.id===teamName);
-    if(!selectedTeam) return setTeamMembers([]);
-    fetch(`http://localhost:3000/team/team/${selectedTeam._id}`)
-      .then(res=>res.json())
-      .then(data=>{
-        const members = data.employees.map(m=>({ id:m._id,label:m.username }));
-        setTeamMembers(members);
-      }).catch(console.error);
-  },[teamName, teams]);
+  useEffect(() => {
+    const fetchTeams = async () => {
+      try {
+        const res = await fetch('http://localhost:3000/team/team');
+        if (!res.ok) throw new Error('Failed to fetch teams');
+        const data = await res.json();
+   
+        const formattedTeams = data.map(team => ({ id: team.name, label: team.name, _id: team._id }));
+        setTeams(formattedTeams);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchTeams();
+  }, []);
+
+  
+  useEffect(() => {
+   
+    if (!teamName) {
+      setTeamMembers([]);
+      return;
+    }
+
+    const selectedTeam = teams.find(t => t.id === teamName);
+    console.log("selectedTeam",selectedTeam._id)
+    if (!selectedTeam) {
+      setTeamMembers([]);
+      return;
+    }
+
+    const fetchTeamMembers = async () => {
+      try {
+       
+        const res = await fetch(`http://localhost:3000/team/team/${selectedTeam._id}`);
+        if (!res.ok) throw new Error('Failed to fetch team members');
+        const data = await res.json();
+       
+        const formattedMembers = data?.employees.map(member => ({
+          id: member._id, 
+          label: member.username, 
+        }));
+        setTeamMembers(formattedMembers);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchTeamMembers();
+
+  }, [teamName, teams]);
 
   useEffect(()=>{
     setFilteredMembers(teamMembers);
@@ -239,7 +267,9 @@ const SalesLeads = () => {
     setTotalPages(data.pages);
   };
 
-  useEffect(()=>{ fetchSalesLead() }, [month, teamName, username, page, limit]);
+  useEffect(() => {
+    fetchSalesLead();
+  }, [month, teamName, username, page, limit]);
 
   const columns = [
     { id: "name", header: "Lead Name" },
@@ -277,7 +307,9 @@ const SalesLeads = () => {
         </div>
       </div>
 
-      <Table columns={columns} data={salesLeadData} />
+      <div className='mt-[0.5%]'>
+        <Table columns={columns} data={salesLeadData} />
+      </div>
     </div>
   );
 };

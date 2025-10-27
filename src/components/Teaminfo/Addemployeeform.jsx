@@ -30,6 +30,7 @@ const Addemployeeform = ({ teamsInfo, handleCloseModal }) => {
     const [officeLocation, setOfficeLocation] = useState("Hyderabad")
     const [openTeam , setOpenTeam] = useState(false)
     const [team, setTeam] = useState([]);
+    const [employeeId , setEmployeeId] = useState("") 
 
     const options = teamsInfo.map(item => ({
         value: item._id,
@@ -56,7 +57,7 @@ const Addemployeeform = ({ teamsInfo, handleCloseModal }) => {
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({ username, email, phone, password, officeLocation, whatsappNumber, role, teamId: team })
+                body: JSON.stringify({ username, email, phone, password, officeLocation, whatsappNumber, role, teamId: team  , employeeId })
             }
             const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/user`, options)
             const result = await response.json()
@@ -71,6 +72,7 @@ const Addemployeeform = ({ teamsInfo, handleCloseModal }) => {
                 setWhatsappNumber("")
                 setRole("Intern")
                 setPhone("")
+                setEmployeeId("")
                 handleCloseModal()
             } else {
                 toast.error(result.msg)
@@ -127,6 +129,11 @@ const Addemployeeform = ({ teamsInfo, handleCloseModal }) => {
                             <div className='flex gap-3 p-2'>
 
                                 <input type="text" placeholder='Employee Email ID' className='border-2 border-[#004AAD] p-3 rounded-2xl w-full placeholder:text-lg' value={email} onChange={(e) => setEmail(e.target.value)} />
+
+                            </div>
+                             <div className='flex gap-3 p-2'>
+
+                                <input type="text" placeholder='Employee ID' className='border-2 border-[#004AAD] p-3 rounded-2xl w-full placeholder:text-lg' value={employeeId} onChange={(e) => setEmployeeId(e.target.value)} />
 
                             </div>
                         </div>

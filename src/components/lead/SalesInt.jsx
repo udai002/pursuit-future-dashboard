@@ -9,7 +9,7 @@ const SalesInt = () => {
 
   const [salesLeadData, setSalesLeadData] = useState([]);
   const [page, setPage] = useState(1);
-  const [limit] = useState(5);
+  const [limit] = useState(8);
   const [totalPages, setTotalPages] = useState(1);
   const [statusMap, setStatusMap] = useState({});
 
@@ -31,8 +31,10 @@ const SalesInt = () => {
         const data = await res.json();
         const leads = data.salesLeads || data.data || [];
 
-        setSalesLeadData(leads);
-        setTotalPages(data.pages || 1);
+        console.log("this is data from leads ..." , data)
+
+        setSalesLeadData(data.data);
+        setTotalPages(data.total || 1);
 
         const initialStatus = {};
         leads.forEach(item => {
@@ -94,12 +96,14 @@ const SalesInt = () => {
   ];
 
   return (
-    <div className="mt-6 px-6">
+    <div className=" px-6">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-sans">Sales Lead Info</h2>
       </div>
 
-      <Table columns={columns} data={salesLeadData} />
+      <div className="mt-[0.1%]">
+        <Table columns={columns} data={salesLeadData} />
+      </div>
 
       <div className="flex justify-center items-center mt-10 gap-4 px-7 mb-5 flex-row">
         <span className="text-lg flex-1 text-[#444444] font-medium">

@@ -115,7 +115,7 @@ function App() {
       <Route path='/dps' Component={Dps} />
       <Route path='/attendence' Component={AttendenceShow} />
       <Route path='/' Component={OperationOverview} />
-      
+
 
 
 
@@ -130,7 +130,7 @@ function App() {
       <Route path='/attendence' Component={AttendenceShow} />
 
       <Route path='/employeeinfo' Component={EmployeesInfo} />
-
+      <Route path="/employeeinfo/attendence" element={<AttendenceShow />} />
 
 
       {/* attends  */}
@@ -220,8 +220,8 @@ function App() {
       {/* attendance  */}
       <Route path="/announcements" Component={Announcements} />
       <Route path='/attendence' Component={AttendenceShow} />
-      
-      
+
+
     </Routes>
   }
 
@@ -292,11 +292,11 @@ function App() {
         </RoleBasedAccess>} /> */}
 
 
-      <Toaster/>
+        <Toaster />
       </div>
-    
+
     </>
-    
+
   );
 }
 

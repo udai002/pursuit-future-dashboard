@@ -69,6 +69,7 @@ useEffect(()=>{
     totalPendingRevenue,
     creditedCount,
     pendingCount,
+    partialPaymentCount,
     perStudent = [],
   } = data || {};
 
@@ -85,8 +86,8 @@ useEffect(()=>{
       <div className='flex  mt-3 gap-3'>
         <div className='flex-col'>
           <OverviewComp title="Total Payment counts" revenue={totalStudents}
- />
-          <Payment  creditedCount={creditedCount} pendingCount={pendingCount} />
+ />   
+          <Payment  creditedCount={creditedCount} pendingCount={pendingCount}  partialPaymentCount={partialPaymentCount}/>
 
         </div>
         <div className='w-full'>

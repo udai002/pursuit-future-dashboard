@@ -42,6 +42,7 @@ import AttendanceCalendar from "./components/Teaminfo/Attendence"
 
 import Watermark from './components/watermark'
 import OperationOverview from "./pages/Overview/Operations"
+import SalesInt from './components/lead/SalesInt'
 
 const siderBarAvoiders = [
   "/login",
@@ -174,6 +175,8 @@ function App() {
   function InterDashboard() {
     return <Routes>
       <Route path="/" Component={Intern} />
+            <Route path='/int' Component={SalesInt} />
+
 
       {/* student info  */}
       {/* sales lead info  */}

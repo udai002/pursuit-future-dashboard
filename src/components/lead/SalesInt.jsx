@@ -13,7 +13,7 @@ const SalesInt = () => {
   const [teamName, setTeamName] = useState('');
   const [username, setUsername] = useState('');
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(5);
+  const [limit, setLimit] = useState(8);
   const [totalPages, setTotalPages] = useState(1);
 
   const [teams, setTeams] = useState([]);
@@ -31,8 +31,10 @@ const SalesInt = () => {
         if (!res.ok) throw new Error('Failed to fetch leads');
         const data = await res.json();
 
+        console.log("this is data from leads ..." , data)
+
         setSalesLeadData(data.data);
-        setTotalPages(data.pages || 1);
+        setTotalPages(data.total || 1);
 
         // initialize statusMap
         const initialStatus = {};
@@ -110,7 +112,7 @@ const SalesInt = () => {
 
   // ✅ UI
   return (
-    <div className="mt-6 px-6">
+    <div className=" px-6">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-sans">Leads Info</h2>
         <div className="flex gap-3">
@@ -136,7 +138,7 @@ const SalesInt = () => {
         </div>
       </div>
 
-      <div className="mt-[0.5%]">
+      <div className="mt-[0.1%]">
         <Table columns={columns} data={salesLeadData} />
       </div>
 

@@ -16,9 +16,9 @@ export default function HROverView() {
   const [totalEmployee, setTotal] = useState(0);
 
   const [employeeData, setEmployeeData] = useState({
-    presentCount: "",
-    leaveCount: "",
-    absentCount: ""
+    presentCount: "0",
+    leaveCount: "0",
+    absentCount: "0"
   })
   const [error, setError] = useState();
     const today = new Date();

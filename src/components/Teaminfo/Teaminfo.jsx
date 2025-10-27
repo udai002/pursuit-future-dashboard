@@ -37,6 +37,7 @@ const   Teaminfo = () => {
     const data = await fetch(`${import.meta.env.VITE_BACKEND_URL}/team/team`)
     const response = await data.json()
     setTeam(response)
+    console.log("team",response)
     }
     catch(error){
       console.log("error occured",error)
@@ -80,7 +81,7 @@ const   Teaminfo = () => {
 
   const columns = [ 
     { id: 'name', header: 'Team Name', cell:(row)=>(
-    <button onClick={() => navigate(`/teams/${row._id}/employees`, { state: row })}>
+    <button onClick={() => navigate(`/teams/${row._id}/employees`, { state: row._id})}>
         <div className='flex jusify-center align-center item-center gap-2'>
         <p className='text-[#004aad]'>{row.name}</p>
         <img src={arrow} alt="arrow" className='w-3 h-3' />

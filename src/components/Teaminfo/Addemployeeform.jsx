@@ -3,7 +3,7 @@ import Teaminfo from './Teaminfo'
 import toast from 'react-hot-toast'
 import uploadProfile from '../../assets/Teaminfo/uploadProfile.png'
 import { useRef } from 'react'
-import Select from 'react-select/base'
+// import Select from 'react-select/base'
 
 const Addemployeeform = ({ teamsInfo, handleCloseModal }) => {
 

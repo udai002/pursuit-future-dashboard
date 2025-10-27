@@ -86,9 +86,9 @@ const DpsForm = () => {
     <div className="max-w-2xl mx-auto p-6 bg-white text-xl rounded-xl ">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-semibold">Fill DPS Data</h2>
-        <button onClick={handleClose}>
+        {/* <button onClick={handleClose}>
           <img src={cross} alt="Close" className="w-8 h-8 cursor-pointer hover:opacity-80"/>
-        </button>
+        </button> */}
       </div>
       <form onSubmit={handleSubmit} className="space-y-4 bg-white">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 ">

@@ -28,8 +28,9 @@ const LeadInt = () => {
   useEffect(() => {
     const fetchTeams = async () => {
       try {
-        console.log("user id is ",userDetails._id)
-        const res = await fetch(`http://localhost:3000/leadgen/leadgen/employee/${userDetails._id}`);
+        console.log("user id is ",userDetails._id);
+        console.log("Page number is", page);
+        const res = await fetch(`http://localhost:3000/leadgen/leadgen/employee/${userDetails._id}?page=${page}`);
         if (!res.ok) throw new Error('Failed to fetch teams');
         const data = await res.json();
                 console.log("........data salint",data)
@@ -37,13 +38,14 @@ const LeadInt = () => {
    
         // const formattedTeams = data.map(team => ({ id: team.name, label: team.name, _id: team._id }));
         setLeadData(data);
+        setTotalPages(data.data.page)
       } catch (error) {
         console.error(error);
       }
     };
 
     fetchTeams();
-  }, []);
+  }, [page]);
 
   console.log("the data is.......",teams)
 

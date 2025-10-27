@@ -18,7 +18,7 @@ const SalesInt = () => {
   const [username, setUsername] = useState('');
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(5);
-  const [totalPages, setTotalPages] = useState(1);
+  const [totalPages, setTotalPages] = useState(10);
 
   const [teams, setTeams] = useState([]);
   const [teamMembers, setTeamMembers] = useState([]);
@@ -34,11 +34,17 @@ const SalesInt = () => {
         if (!res.ok) throw new Error('Failed to fetch teams');
         const data = await res.json();
         console.log("........data salint",data)
+        //  setTotalPages(Math.ceil(data.total / limit));
+                console.log("........data total ",data.total/limit)
+                         setTotalPages(Math.ceil(data.total / limit));
+
+
+
  
         // const formattedTeams = data.map(team => ({ id: team.name, label: team.name, _id: team._id }));
 
         setSalesLeadData(data.data);
-        setTotalPages(data.data.pages);
+        // setTotalPages(data.data.pages);
 
       } catch (error) {
         console.error(error);
@@ -111,8 +117,9 @@ const SalesInt = () => {
       const response = await fetch(`http://localhost:3000/saleslead/salelead?page=${page}&limit=${limit}&${params.toString()}`);
       if (!response.ok) throw new Error('Failed to fetch leads');
       const data = await response.json();
+       setTotalPages(Math.ceil(data.total / limit));
       salesLeadData(data.salesLeads);
-      setTotalPages(data.pages);
+      // setTotalPages(data.pages);
     } catch (error) {
       console.error(error);
     }
@@ -192,7 +199,7 @@ const SalesInt = () => {
             onChange={e => setMonth(e.target.value)}
           />
 
-          <CustomSelect
+          {/* <CustomSelect
             title="Team Name"
             options={teams}
             value={teamName}
@@ -205,7 +212,7 @@ const SalesInt = () => {
             value={username}
             onChange={e => setUsername(e.target.value)}
             disabled={!teamName}
-          />
+          /> */}
         </div>
       </div>
 

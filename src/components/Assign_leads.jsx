@@ -1,6 +1,8 @@
+
+
 import React, { useState, useEffect } from 'react';
 import useAuth from '../context/AuthContext';
-import Papa from 'papaparse'
+import Papa from 'papaparse';
 
 const AssignLeadToMembers = () => {
   const [leadTypes, setLeadTypes] = useState([]);
@@ -11,30 +13,23 @@ const AssignLeadToMembers = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
   const [messageType, setMessageType] = useState('');
-  const [uploadData ,setUploadData] = useState([])
+  const [uploadData, setUploadData] = useState([]);
+
+  const { userDetails } = useAuth();
 
   useEffect(() => {
     fetchLeadTypes();
     fetchTeamMembers();
   }, []);
 
-  const {userDetails} = useAuth()
-
-  console.log(userDetails.teamId[0])
-
   const fetchLeadTypes = async () => {
     try {
-      console.log('Fetching lead types...');
       const response = await fetch('http://localhost:3000/lead-assignment/test/lead-types-simple');
-      console.log('Lead types response status:', response.status);
-      
       if (response.ok) {
         const data = await response.json();
-        console.log('Lead types data:', data);
         setLeadTypes(data.leadTypes || []);
         showMessage('Lead types loaded successfully', 'success');
       } else {
-        console.error('Failed to fetch lead types, status:', response.status);
         showMessage('Failed to fetch lead types', 'error');
       }
     } catch (error) {
@@ -44,19 +39,19 @@ const AssignLeadToMembers = () => {
   };
 
   const fetchTeamMembers = async () => {
-      try{
-        const url = import.meta.env.VITE_BACKEND_URL
-        if(!url) showMessage("Sever Error" , 'error')
-        
-        const response = await fetch(`${url}/team/team/${userDetails?.teamId[0]}`)
-        if(response.ok){
-          const data = await response.json()
-          setTeamMembers(data.employees)
-          showMessage("Members successfully fetched" , "success")
-        }
-      } catch (error) {
-      console.error('Error fetching lead types:', error);
-      showMessage('Error connecting to server for lead types', 'error');
+    try {
+      const url = import.meta.env.VITE_BACKEND_URL;
+      if (!url) return showMessage('Server Error', 'error');
+
+      const response = await fetch(`${url}/team/team/${userDetails?.teamId?.[0]}`);
+      if (response.ok) {
+        const data = await response.json();
+        setTeamMembers(data.employees || []);
+        showMessage('Members successfully fetched', 'success');
+      }
+    } catch (error) {
+      console.error('Error fetching team members:', error);
+      showMessage('Error connecting to server for team members', 'error');
     }
   };
 
@@ -71,8 +66,6 @@ const AssignLeadToMembers = () => {
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
-    console.log('File selected:', file);
-    
     if (file) {
       if (file.type === 'text/csv' || file.name.toLowerCase().endsWith('.csv')) {
         setCsvFile(file);
@@ -80,7 +73,7 @@ const AssignLeadToMembers = () => {
       } else {
         showMessage('Please select a valid CSV file', 'error');
         setCsvFile(null);
-        event.target.value = ''; // Clear the input
+        event.target.value = '';
       }
     }
   };
@@ -91,81 +84,64 @@ const AssignLeadToMembers = () => {
       return;
     }
 
-    console.log('Starting CSV upload...');
-    console.log('File:', csvFile);
-    console.log('Lead Type:', selectedLeadType);
-    console.log('Member:', selectedMember);
+    setLoading(true);
 
-  Papa.parse(csvFile ,  {header: true, // first line = column headers
-  skipEmptyLines: true,
-  complete: (results) => {
-    console.log('error' , results.errors)
+    Papa.parse(csvFile, {
+      header: true,
+      skipEmptyLines: true,
+      complete: async (results) => {
+        const data = results.data.filter(row => Object.values(row).some(val => val));
 
-    const data = results.data
+        const formattedData = data.map(item => {
+          const objectvalue = Object.values(item);
+          return {
+            name: objectvalue[0] || '',
+            contactNumber: objectvalue[1] || '',
+            whatsappNumber: objectvalue[2] || '',
+            branch: objectvalue[3] || '',
+            yearOfStudy: objectvalue[4] || '',
+            collegaName: objectvalue[5] || '',
+            domain1: objectvalue[6] || '',
+            domain2: objectvalue[7] || '',
+            employeeId: selectedMember,
+            teamId: userDetails?.teamId?.[0] || '',
+            type: selectedLeadType
+          };
+        });
 
-    const formattedData = data.map(item=>{
-        const objectvalue = Object.values(item)
-        const newObject = {
-          name:objectvalue[0],
-          contactNumber:objectvalue[1] , 
-          whatsappNumber:objectvalue[2] , 
-          branch:objectvalue[3] , 
-          yearOfStudy:objectvalue[4] ,
-          collegaName:objectvalue[5] , 
-          domain1:objectvalue[6] , 
-          domain2:objectvalue[7], 
-          employeeId:selectedMember ,
-          teamId:userDetails?.teamId[0] , 
-          type:selectedLeadType
+        setUploadData(formattedData);
+
+        try {
+          const response = await fetch('http://localhost:3000/saleslead/assign', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formattedData),
+          });
+
+          const responseData = await response.json();
+
+          if (!response.ok) {
+            console.error('Upload failed:', responseData);
+            showMessage(responseData.message || 'Failed to upload CSV', 'error');
+            return;
+          }
+
+          if (responseData.success) {
+            showMessage(`CSV processed successfully! ${responseData.leadsCount} leads assigned to ${responseData.assignedTo}`, 'success');
+            resetForm();
+          } else {
+            showMessage(responseData.message || 'Failed to upload CSV', 'error');
+          }
+        } catch (error) {
+          console.error('Upload error:', error);
+          showMessage('Network error uploading CSV file', 'error');
+        } finally {
+          setLoading(false);
         }
-
-        return newObject
-    })
-
-    console.log("this is the file data" , formattedData)
-    setUploadData(()=>formattedData)
-
-  }},)
-
-    try {
-      console.log('Making request to: http://localhost:3000/saleslead/assign');
-      const response = await fetch('http://localhost:3000/saleslead/assign', {
-        method: 'POST',
-        headers:{
-          'Content-Type':"application/json"
-        },
-        body: JSON.stringify(uploadData),
-      });
-
-      console.log('Upload response status:', response.status);
-
-      
-      const data = await response.json();
-      
-      console.log('Upload response data:', data);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${data}`);
       }
-      
-
-      if (data.success) {
-        showMessage(`CSV processed successfully! ${data.leadsCount} leads assigned to ${data.assignedTo}`, 'success');
-        resetForm();
-      } else {
-        showMessage(data.message || 'Failed to upload CSV', 'error');
-      }
-    } catch (error) {
-      
-      if (error.name === 'TypeError' && error.message.includes('fetch')) {
-        showMessage('Cannot connect to server. Please check if the backend is running.', 'error');
-      } else if (error.message.includes('HTTP error')) {
-        showMessage(`Server error: ${error.message}`, 'error');
-      } else {
-        showMessage('Network error uploading CSV file', 'error');
-      }
-    } finally {
-      setLoading(false);
-    }
+    });
   };
 
   const handleAssign = async () => {
@@ -177,9 +153,7 @@ const AssignLeadToMembers = () => {
     setLoading(true);
 
     try {
-      // Simulate assignment for testing
       await new Promise(resolve => setTimeout(resolve, 1000));
-      
       const selectedMemberName = teamMembers.find(m => m._id === selectedMember)?.empname;
       showMessage(`${selectedLeadType} assigned to ${selectedMemberName} successfully!`, 'success');
       resetForm();
@@ -200,10 +174,10 @@ const AssignLeadToMembers = () => {
   };
 
   return (
-    <div className="bg-white p-3 relative right-3"> 
-      <div className="bg-white rounded-lg p-6 w-full max-w-xl border border-blue-800"> 
-        <h1 className="text-xl font-normal text-gray-800 mb-4">Assign Lead to Members</h1> 
-        
+    <div className="bg-white p-3 relative right-3">
+      <div className="bg-white rounded-lg p-6 w-full max-w-xl border border-blue-800">
+        <h1 className="text-xl font-normal text-gray-800 mb-4">Assign Lead to Members</h1>
+
         {message && (
           <div className={`p-2 rounded-lg mb-3 font-medium ${
             messageType === 'success' 
@@ -214,7 +188,7 @@ const AssignLeadToMembers = () => {
           </div>
         )}
 
-        <div className="flex gap-3 mb-4"> 
+        <div className="flex gap-3 mb-4">
           <div className="flex-1">
             <select
               className="w-72 h-14 px-5 border border-blue-500 rounded-xl text-base text-blue-500 bg-gray-50 appearance-none cursor-pointer transition-all duration-300 focus:outline-none focus:border-blue-600 focus:bg-white focus:text-gray-800 disabled:opacity-60 disabled:cursor-not-allowed"
@@ -230,7 +204,7 @@ const AssignLeadToMembers = () => {
             >
               <option value="">Lead Type</option>
               {leadTypes.map((type, index) => (
-                <option key={index} value={type}>
+                <option key={`${type}-${index}`} value={type}>
                   {type}
                 </option>
               ))}
@@ -261,15 +235,13 @@ const AssignLeadToMembers = () => {
                   <span className="truncate max-w-40">{csvFile.name}</span>
                 </>
               ) : (
-                <>
-                  <span>Import CSV File</span>
-                </>
+                <span>Import CSV File</span>
               )}
             </label>
           </div>
         </div>
 
-        <div className="flex gap-3"> 
+        <div className="flex gap-3">
           <div className="flex-[2]">
             <select
               className="w-full h-14 px-5 border border-blue-500 rounded-xl text-base text-blue-500 bg-gray-50 appearance-none cursor-pointer transition-all duration-300 focus:outline-none focus:border-blue-600 focus:bg-white focus:text-gray-800 disabled:opacity-60 disabled:cursor-not-allowed"
@@ -284,8 +256,8 @@ const AssignLeadToMembers = () => {
               disabled={loading}
             >
               <option value="">Member Name</option>
-              {teamMembers.map((member) => (
-                <option key={member._id} value={member._id}>
+              {teamMembers.map((member, index) => (
+                <option key={`${member._id}-${index}`} value={member._id}>
                   {member.username} - {member.email}
                 </option>
               ))}

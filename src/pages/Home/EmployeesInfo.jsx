@@ -4,6 +4,8 @@ import { GoArrowUpRight } from "react-icons/go";
 import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 import CustomSelect from "../../components/button/CustomSelect";
 import useFetchEmployees from "../../utils/useFetchEmployeesUtils";
+import { useNavigate } from "react-router-dom"; 
+
 
 const EmployeesInfo = () => {
   const [employees, setEmployees] = useState([]);
@@ -12,6 +14,7 @@ const EmployeesInfo = () => {
   const [pageSize] = useState(9);
 
   const { data, loading, error } = useFetchEmployees(month);
+   const navigate = useNavigate();
 
   const handleMonthChange = (e) => {
     setMonth(Number(e.target.value));
@@ -40,12 +43,16 @@ const EmployeesInfo = () => {
     if (page < totalPages) setPage((prev) => prev + 1);
   };
 
+    const handleEmployeeClick = (employee) => {
+    navigate("attendence", { state: employee });
+  };
+
   const columns = [
     {
       id: "username",
       header: "Employee Name",
       cell: (row) => (
-        <div className="flex gap-1 justify-center items-center">
+        <div className="flex gap-1 justify-center items-center"  onClick={() => handleEmployeeClick(row)}>
           <h1>{row.username}</h1>
           <GoArrowUpRight className="hover:cursor-pointer" />
         </div>

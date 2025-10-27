@@ -23,7 +23,7 @@ const LeadInt = () => {
   const [teams, setTeams] = useState([]);
   const [teamMembers, setTeamMembers] = useState([]);
   const [filteredMembers, setFilteredMembers] = useState([]);
-
+  const [statusMap, setStatusMap] = useState({});
 
   useEffect(() => {
     const fetchTeams = async () => {
@@ -38,14 +38,20 @@ const LeadInt = () => {
    
         // const formattedTeams = data.map(team => ({ id: team.name, label: team.name, _id: team._id }));
         setLeadData(data);
-        setTotalPages(data.data.page)
-      } catch (error) {
+        setTotalPages(data.pages||1)
+        const initialStatus = {};
+        data.data.forEach(item => {
+          initialStatus[item._id] = item.status;
+      });
+       setStatusMap(initialStatus);
+    }
+       catch (error) {
         console.error(error);
       }
     };
 
-    fetchTeams();
-  }, [page]);
+     if (userDetails?._id) fetchTeams();
+  }, [userDetails, page]);
 
   console.log("the data is.......",teams)
 

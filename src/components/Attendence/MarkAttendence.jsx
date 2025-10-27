@@ -13,8 +13,8 @@ function MarkAttendance() {
       const formatted = data.users.map(emp => ({
         employee: emp._id,
         empname: emp.username,
-        attendance: "",
-        remark: ""
+        attendance: "Present",
+        remark: "No"
       }));
       setEmployees(formatted);
     }

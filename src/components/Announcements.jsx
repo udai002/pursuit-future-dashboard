@@ -7,6 +7,8 @@ import Edit from "../assets/edit.png";
 import { RxCaretDown } from "react-icons/rx";
 import { GoArrowUpRight } from "react-icons/go";
 import CustomSelect from "./button/CustomSelect";
+import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
+
 
 const Announcements = () => {
   const [modalType, setModalType] = useState(null);
@@ -16,20 +18,24 @@ const Announcements = () => {
   const [editAnnocement, setEditAnnouncement] = useState(null);
   const [month, setMonth] = useState(() => new Date().getMonth() + 1);
   const [announcements, setAnnouncements] = useState([]);
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(8);
+  const [totalPages, setTotalPages] = useState(1);
 
   const fetchData = async (selectedMonth = month) => {
     try {
       setLoading(true);
-      const url = `http://localhost:3000/announcement/announcement?month=${selectedMonth}`
-
+      const url = `http://localhost:3000/announcement/announcement?month=${selectedMonth}&page=${page}&limit=${limit}`;
 
       const response = await fetch(url);
       const result = await response.json();
 
-      if (Array.isArray(result)) {
-        setData(result);
+      if (result.announcements && Array.isArray(result.announcements)) {
+        setData(result.announcements);
+        setTotalPages(Math.ceil(result.totalCount / limit) || 1);
       } else {
         setData([]);
+        setTotalPages(1);
       }
     } catch (error) {
       console.log("Error fetching announcements:", error);
@@ -41,7 +47,19 @@ const Announcements = () => {
 
   useEffect(() => {
     fetchData(month);
-  }, [month]); // re-fetch when month changes
+  }, [month, page, limit]);
+
+  const handlePrevious = () => {
+    if (page > 1) {
+      setPage(page - 1);
+    }
+  };
+
+  const handleNext = () => {
+    if (page < totalPages) {
+      setPage(page + 1);
+    }
+  };
 
 
   const handleDelete = async (id) => {
@@ -176,6 +194,30 @@ const Announcements = () => {
 
       <div className="pr-4">
         {loading ? <p>Loading...</p> : <Table data={data} columns={columns} />}
+      </div>
+      <div className="flex justify-center items-center mt-10 gap-4 px-7 mb-5 flex-row">
+        <span className="text-lg flex-1 text-[#444444] font-medium sm:text-base md:text-lg sm:text-left">
+          {" "}
+          Page {page} of {totalPages}
+        </span>
+        <div className="flex gap-2">
+          <button
+            onClick={handlePrevious}
+            disabled={page === 1}
+            className={`p-2 bg-[#004AAD] rounded-full ${page === 1 ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+          >
+            <FaArrowLeftLong className="text-2xl text-white" />
+          </button>
+          <button
+            onClick={handleNext}
+            disabled={page === totalPages}
+            className={`p-2 bg-[#004AAD] rounded-full ${page === totalPages ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+          >
+            <FaArrowRightLong className="text-2xl text-white" />
+          </button>
+        </div>
       </div>
 
       {(modalType === "add" || modalType === "edit") && (

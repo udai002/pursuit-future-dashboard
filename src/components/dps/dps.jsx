@@ -5,13 +5,13 @@ const DpsDataPage = ({ onAddDps }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
-  const [limit] = useState(10);
+  const [limit] = useState(10);                                                                                                      
   const [totalPages, setTotalPages] = useState(1);
   const [preferredMonth, setPreferredMonth] = useState("");
 
   const { userDetails } = useAuth();
   const isRestricted =
-  userDetails?.role === "Admin" || userDetails?.role === "Post Sales";
+  userDetails?.role === "Admin" || userDetails?.role === "Post Sales" || userDetails?.role === "Operations";
 
 
   useEffect(() => {

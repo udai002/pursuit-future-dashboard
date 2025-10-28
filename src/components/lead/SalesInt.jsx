@@ -21,6 +21,7 @@ const monthOptions = [
   { value: '12', label: 'December' },
 ];
 
+// 🧩 Utility: Extract month from record
 function getRecordMonth(rec) {
   const candidates = [rec?.createdAt, rec?.created_at, rec?.date, rec?.Date, rec?.updatedAt];
   for (const c of candidates) {
@@ -31,6 +32,7 @@ function getRecordMonth(rec) {
   return null;
 }
 
+// 🧩 Utility: Extract ISO date (yyyy-mm-dd)
 function getRecordISODate(rec) {
   const candidates = [rec?.createdAt, rec?.created_at, rec?.date, rec?.Date, rec?.updatedAt];
   for (const c of candidates) {
@@ -48,7 +50,7 @@ function getRecordISODate(rec) {
 
 const SalesInt = () => {
   const { userDetails } = useAuth();
-  const { id: paramId } = useParams(); // ✅ get the id from the URL
+  const { id: paramId } = useParams();
 
   const [salesLeadData, setSalesLeadData] = useState([]);
   const [page, setPage] = useState(1);
@@ -57,12 +59,12 @@ const SalesInt = () => {
   const [statusMap, setStatusMap] = useState({});
   const [month, setMonth] = useState('');
   const [selectedDate, setSelectedDate] = useState('');
+  const [selectedTypeLead, setSelectedTypeLead] = useState(false); // false = sales, true = leads
   const year = new Date().getFullYear();
 
-   console.log(paramId)
-
   useEffect(() => {
-    if (!userDetails?._id && !paramId) return; // ✅ wait until both are available
+    if (!userDetails?._id && !paramId) return;
+
     const controller = new AbortController();
 
     const fetchLeads = async () => {
@@ -70,13 +72,16 @@ const SalesInt = () => {
         let url;
 
         if (userDetails.role === "Admin") {
-          // ✅ Admin: fetch all leads
           url = `${import.meta.env.VITE_BACKEND_URL}/saleslead/allLeads?page=${page}&limit=${limit}`;
         } else {
-          // ✅ Employees: fetch leads using either paramId or userDetails._id
           const employeeId = paramId || userDetails._id;
-          console.log(employeeId)
-          url = `${import.meta.env.VITE_BACKEND_URL}/saleslead/salelead/employee/${employeeId}?page=${page}&limit=${limit}`;
+          if (selectedTypeLead) {
+            // ✅ Fetch from leadgen when dropdown = "Leads"
+            url = `${import.meta.env.VITE_BACKEND_URL}/leadgen/leadgen/employee/${employeeId}?page=${page}&limit=${limit}`;
+          } else {
+            // ✅ Fetch from saleslead when dropdown = "Sales"
+            url = `${import.meta.env.VITE_BACKEND_URL}/saleslead/salelead/employee/${employeeId}?page=${page}&limit=${limit}`;
+          }
         }
 
         const res = await fetch(url, { signal: controller.signal });
@@ -85,10 +90,21 @@ const SalesInt = () => {
         const data = await res.json();
         const leads = data.salesLeads || data.data || [];
 
-        setSalesLeadData(leads);
+        // ✅ Optional: Filter locally by month or date (frontend filter)
+        const filteredLeads = leads.filter(item => {
+          const recordMonth = getRecordMonth(item);
+          const recordISO = getRecordISODate(item);
 
-        // ✅ safer totalPages calculation
-        const pagesFromServer = data.data.length ?? (data.total ? Math.ceil((data.total || 0) / limit) : 1);
+          const matchesMonth = month ? recordMonth === Number(month) : true;
+          const matchesDate = selectedDate ? recordISO === selectedDate : true;
+
+          return matchesMonth && matchesDate;
+        });
+
+        setSalesLeadData(filteredLeads);
+
+        // ✅ Fix total page logic (fallback)
+        const pagesFromServer = data.pages ?? (data.total ? Math.ceil(data.total / limit) : 1);
         setTotalPages(pagesFromServer);
 
         // ✅ initialize status map
@@ -106,15 +122,16 @@ const SalesInt = () => {
 
     fetchLeads();
     return () => controller.abort();
-  }, [userDetails, paramId, page, limit]); // ✅ include paramId in dependency array
+  }, [userDetails, paramId, page, limit, selectedTypeLead, month, selectedDate]);
 
   // ======================
   // Status Update Handler
   // ======================
   async function handleStatusChange(value, id) {
-    if (!userDetails || userDetails.role === "Admin") return; // prevent admin updates
+    if (!userDetails || userDetails.role === "Admin") return;
 
     setStatusMap(prev => ({ ...prev, [id]: value })); // optimistic update
+
     try {
       const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/saleslead/status/update/${id}`, {
         method: 'PUT',
@@ -127,23 +144,22 @@ const SalesInt = () => {
     } catch (err) {
       toast.error('Failed to update status');
       console.error('Error updating status:', err);
-      // Optional: revert UI or refetch
-      setPage(prev => prev);
     }
   }
 
-  // Pagination
+  // Pagination Handlers
   const handlePrevious = () => page > 1 && setPage(page - 1);
   const handleNext = () => page < totalPages && setPage(page + 1);
-  
+
   const handleMonthChange = (e) => {
     setMonth(e.target.value);
     setPage(1);
   };
+
   const handleDateChange = (e) => {
     setSelectedDate(e.target.value);
     setPage(1);
-  }
+  };
 
   // Table columns
   const columns = [
@@ -184,6 +200,23 @@ const SalesInt = () => {
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-sans">Sales Lead Info</h2>
         <div className="flex gap-2">
+          {/* Type Dropdown: Sales / Leads */}
+          <label className="bg-blue-800 text-white px-2 py-2 rounded flex items-center">
+            <select
+              className="bg-blue-800 text-white outline-none"
+              value={selectedTypeLead ? "lead" : "sales"}
+              onChange={(e) => {
+                const newValue = e.target.value === "lead";
+                setSelectedTypeLead(newValue);
+                setPage(1);
+              }}
+            >
+              <option value="sales">Sales</option>
+              <option value="lead">Leads</option>
+            </select>
+          </label>
+
+          {/* Month Filter */}
           <label className="bg-blue-800 text-white px-2 py-2 rounded flex items-center">
             <select
               className="bg-blue-800 text-white outline-none"
@@ -195,6 +228,8 @@ const SalesInt = () => {
               ))}
             </select>
           </label>
+
+          {/* Date Filter */}
           <label className="bg-blue-800 text-white px-2 py-2 rounded flex items-center">
             <input
               type="date"
@@ -206,8 +241,10 @@ const SalesInt = () => {
         </div>
       </div>
 
+      {/* Table Display */}
       <Table columns={columns} data={salesLeadData} />
 
+      {/* Pagination */}
       <div className="flex justify-center items-center mt-10 gap-4 px-7 mb-5 flex-row">
         <span className="text-lg flex-1 text-[#444444] font-medium">
           Page {page} of {totalPages}

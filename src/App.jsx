@@ -95,7 +95,7 @@ function App() {
     return <Routes>
       <Route path="/" Component={Superadmin} />
       <Route path="/teaminfo" Component={Teaminformation} />
-      <Route path='/salesLeadInfo' Component={SalesInt} />
+      <Route path='/salesLeadInfo' Component={SalesLeadsInfo} />
       <Route path='/lead' Component={LeadInt} />
       <Route path='/pay' Component={Payment} />
       <Route path='/dps' Component={Dps} />

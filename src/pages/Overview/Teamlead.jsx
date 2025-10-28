@@ -115,6 +115,7 @@ export default function Teamlead() {
     totalPendingRevenue,
     creditedCount,
     pendingCount,
+    partialPaymentCount
   } = data || {};
 
   return (
@@ -154,7 +155,7 @@ export default function Teamlead() {
             </div>
 
             <div className='flex'>
-              <Payment creditedCount={creditedCount} pendingCount={pendingCount} />
+              <Payment creditedCount={creditedCount} pendingCount={pendingCount} partialPaymentCount={partialPaymentCount}/>
             </div>
           </div>
 

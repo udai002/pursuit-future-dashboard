@@ -54,7 +54,7 @@ const SalesInt = () => {
 
   const [salesLeadData, setSalesLeadData] = useState([]);
   const [page, setPage] = useState(1);
-  const [limit] = useState(5);
+  const [limit] = useState(9);
   const [totalPages, setTotalPages] = useState(1);
   const [statusMap, setStatusMap] = useState({});
   const [month, setMonth] = useState('');
@@ -184,7 +184,7 @@ const SalesInt = () => {
               if (isAdmin) return;
               handleStatusChange(e.target.value, row._id);
             }}
-            disabled={isAdmin}
+            disabled={isAdmin || userDetails.role==="Team Lead"}
           >
             {["Interested", "Not Interested", "Not Answered", "Follow Up", "Parents Update"].map(o => (
               <option key={o} value={o}>{o}</option>

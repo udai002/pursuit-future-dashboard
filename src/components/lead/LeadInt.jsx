@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Table from '../table';
+import CustomSelect from '../button/CustomSelect';
 import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 import useAuth from '../../context/AuthContext';
 import toast from 'react-hot-toast';
@@ -22,7 +23,7 @@ const LeadInt = () => {
         if (userDetails.role === "Admin") {
           url = `${import.meta.env.VITE_BACKEND_URL}/leadgen/all?page=${page}&limit=${limit}`;
         } else {
-          url = `${import.meta.env.VITE_BACKEND_URL}/leadgen/employee/${userDetails._id}?page=${page}&limit=${limit}`;
+          url = `${import.meta.env.VITE_BACKEND_URL}/leadgen/leadgen/employee/${userDetails._id}?page=${page}&limit=${limit}`;
         }
 
         const res = await fetch(url);

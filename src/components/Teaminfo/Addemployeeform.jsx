@@ -176,7 +176,7 @@ const Addemployeeform = ({ teamsInfo, handleCloseModal }) => {
                         </select>
                     </div>
                     <div className='flex justify-end'>
-                        <button type='submit' className='bg-[#004AAd] text-white p-2 px-4 rounded-lg'>Add </button>
+                        <button type='submit' className='bg-[#004AAd] text-white p-2 px-4 rounded-lg'> Add </button>
                     </div>
                 </form>
 

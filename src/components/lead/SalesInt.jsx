@@ -21,31 +21,6 @@ const monthOptions = [
   { value: '12', label: 'December' },
 ];
 
-function getRecordMonth(rec) {
-  const candidates = [rec?.createdAt, rec?.created_at, rec?.date, rec?.Date, rec?.updatedAt];
-  for (const c of candidates) {
-    if (!c) continue;
-    const d = new Date(c);
-    if (!Number.isNaN(d.getTime())) return d.getMonth() + 1;
-  }
-  return null;
-}
-
-function getRecordISODate(rec) {
-  const candidates = [rec?.createdAt, rec?.created_at, rec?.date, rec?.Date, rec?.updatedAt];
-  for (const c of candidates) {
-    if (!c) continue;
-    const d = new Date(c);
-    if (!Number.isNaN(d.getTime())) {
-      const yyyy = d.getFullYear();
-      const mm = String(d.getMonth() + 1).padStart(2, '0');
-      const dd = String(d.getDate()).padStart(2, '0');
-      return `${yyyy}-${mm}-${dd}`;
-    }
-  }
-  return null;
-}
-
 const SalesInt = () => {
   const { userDetails } = useAuth();
   const { id: paramId } = useParams(); // ✅ get the id from the URL
@@ -67,31 +42,41 @@ const SalesInt = () => {
 
     const fetchLeads = async () => {
       try {
-        let url;
+        const base =
+          userDetails.role === "Admin"
+            ? `${import.meta.env.VITE_BACKEND_URL}/saleslead/allLeads`
+            : `${import.meta.env.VITE_BACKEND_URL}/saleslead/salelead/employee/${userDetails._id}`;
 
-        if (userDetails.role === "Admin") {
-          // ✅ Admin: fetch all leads
-          url = `${import.meta.env.VITE_BACKEND_URL}/saleslead/allLeads?page=${page}&limit=${limit}`;
-        } else {
-          // ✅ Employees: fetch leads using either paramId or userDetails._id
-          const employeeId = paramId || userDetails._id;
-          console.log(employeeId)
-          url = `${import.meta.env.VITE_BACKEND_URL}/saleslead/salelead/employee/${employeeId}?page=${page}&limit=${limit}`;
+        const params = new URLSearchParams({ page: String(page), limit: String(limit) });
+        
+        // Add year parameter for month filtering
+        if (month) {
+          params.append('month', month);
+          params.append('year', String(year));
+        }
+        
+        // Add date parameter for date filtering
+        if (selectedDate) {
+          params.append('date', selectedDate);
         }
 
-        const res = await fetch(url, { signal: controller.signal });
+        const url = `${base}?${params.toString()}`;
+        console.log('Fetching from:', url); // Debug log
+        
+        const res = await fetch(url);
         if (!res.ok) throw new Error('Failed to fetch leads');
 
         const data = await res.json();
         const leads = data.salesLeads || data.data || [];
 
         setSalesLeadData(leads);
-
-        // ✅ safer totalPages calculation
-        const pagesFromServer = data.data.length ?? (data.total ? Math.ceil((data.total || 0) / limit) : 1);
-        setTotalPages(pagesFromServer);
-
-        // ✅ initialize status map
+        setTotalPages(
+          data.totalPages
+          || data.pages
+          || Math.ceil((data.total || 0) / limit)
+          || 1
+        );
+        
         const initialStatus = {};
         leads.forEach(item => {
           initialStatus[item._id] = item.status ?? 'Not Answered';
@@ -105,12 +90,9 @@ const SalesInt = () => {
     };
 
     fetchLeads();
-    return () => controller.abort();
-  }, [userDetails, paramId, page, limit]); // ✅ include paramId in dependency array
+  }, [userDetails, page, limit, month, year, selectedDate]);
 
-  // ======================
-  // Status Update Handler
-  // ======================
+  // Status update handler
   async function handleStatusChange(value, id) {
     if (!userDetails || userDetails.role === "Admin") return; // prevent admin updates
 
@@ -135,7 +117,7 @@ const SalesInt = () => {
   // Pagination
   const handlePrevious = () => page > 1 && setPage(page - 1);
   const handleNext = () => page < totalPages && setPage(page + 1);
-  
+
   const handleMonthChange = (e) => {
     setMonth(e.target.value);
     setPage(1);
@@ -206,7 +188,9 @@ const SalesInt = () => {
         </div>
       </div>
 
-      <Table columns={columns} data={salesLeadData} />
+      <div className="mt-[0.1%]">
+        <Table columns={columns} data={salesLeadData} />
+      </div>
 
       <div className="flex justify-center items-center mt-10 gap-4 px-7 mb-5 flex-row">
         <span className="text-lg flex-1 text-[#444444] font-medium">

@@ -102,7 +102,7 @@ const AssignLeadToMembers = () => {
           type.includes("leadgen") ||
           type.includes("lead-gen")
         ) {
-          apiUrl = "http://localhost:3000/leadgen/assignLeadGen";
+          apiUrl = "http://localhost:3000/leadgen/leadgen/assign";
         } else {
           showMessage("Invalid lead type selected", "error");
           setLoading(false);

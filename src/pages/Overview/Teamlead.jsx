@@ -119,6 +119,10 @@ export default function Teamlead() {
   } = data || {};
 
   return (
+    <>
+    <div className='text-[24px]'>
+      <h1>Team Name</h1>
+    </div>
     <div className='overflow-y-auto h-[80vh] no-scrollbar'>
       <div>
         <div className='flex gap-2'>
@@ -169,6 +173,7 @@ export default function Teamlead() {
         <Assign_leads />
       </div>
     </div>
+    </>
   );
 }
 

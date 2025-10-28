@@ -15,7 +15,6 @@ const LeadInt = () => {
   const [statusMap, setStatusMap] = useState({});
   const [filterValue, setFilterValue] = useState("All");
 
-  // 🟢 Single date filter
   const [selectedDate, setSelectedDate] = useState('');
 
   useEffect(() => {
@@ -26,7 +25,6 @@ const LeadInt = () => {
         let url;
         let filterQuery = `&status=${filterValue}`;
 
-        // 🟢 Send selectedDate to backend (newly supported)
         if (selectedDate) {
           filterQuery += `&selectedDate=${selectedDate}`;
         }
@@ -34,7 +32,7 @@ const LeadInt = () => {
         if (userDetails.role === "Admin") {
           url = `${import.meta.env.VITE_BACKEND_URL}/leadgen/all?page=${page}&limit=${limit}${filterQuery}`;
         } else {
-          url = `${import.meta.env.VITE_BACKEND_URL}/leadgen/leadgen/employee/${userDetails._id}?page=${page}&limit=${limit}`;
+          url = `${import.meta.env.VITE_BACKEND_URL}/leadgen/leadgen/employee/${userDetails._id}?page=${page}&limit=${limit}${filterQuery}`;
         }
 
         console.log("Fetching from URL:", url);
@@ -63,7 +61,6 @@ const LeadInt = () => {
     fetchLeads();
   }, [userDetails, page, filterValue, selectedDate]);
 
-  // 🟢 Handle status update
   async function handleStatusChange(value, id) {
     if (userDetails.role === "Admin") return;
 
@@ -153,10 +150,8 @@ const LeadInt = () => {
         </div>
       </div>
 
-      {/* 🧾 Table */}
       <Table columns={columns} data={leadData} />
 
-      {/* 🔢 Pagination */}
       <div className="flex justify-center items-center mt-10 gap-4 px-7 mb-5 flex-row">
         <span className="text-lg flex-1 text-[#444444] font-medium">
           Page {page} of {totalPages}

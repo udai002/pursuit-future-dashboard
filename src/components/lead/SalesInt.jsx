@@ -3,6 +3,7 @@ import Table from '../table';
 import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 import useAuth from '../../context/AuthContext';
 import toast from 'react-hot-toast';
+import { useParams } from 'react-router';
 
 const monthOptions = [
   { value: '', label: 'Month' },
@@ -47,79 +48,91 @@ function getRecordISODate(rec) {
 
 const SalesInt = () => {
   const { userDetails } = useAuth();
+  const { id: paramId } = useParams(); // ✅ get the id from the URL
 
   const [salesLeadData, setSalesLeadData] = useState([]);
   const [page, setPage] = useState(1);
-  const [limit] = useState(8);
+  const [limit] = useState(5);
   const [totalPages, setTotalPages] = useState(1);
   const [statusMap, setStatusMap] = useState({});
   const [month, setMonth] = useState('');
   const [selectedDate, setSelectedDate] = useState('');
   const year = new Date().getFullYear();
 
+   console.log(paramId)
+
   useEffect(() => {
+    if (!userDetails?._id && !paramId) return; // ✅ wait until both are available
+    const controller = new AbortController();
+
     const fetchLeads = async () => {
-      if (!userDetails?._id) return;
-
       try {
-        const base =
-          userDetails.role === "Admin"
-            ? `${import.meta.env.VITE_BACKEND_URL}/saleslead/allLeads`
-            : `${import.meta.env.VITE_BACKEND_URL}/saleslead/salelead/employee/${userDetails._id}`;
+        let url;
 
-        const params = new URLSearchParams({ page: String(page), limit: String(limit) });
-        if (month) {
-          params.append('month', month);
-          params.append('year', String(year));
-        }
-        if (selectedDate) {
-          params.append('date', selectedDate);
+        if (userDetails.role === "Admin") {
+          // ✅ Admin: fetch all leads
+          url = `${import.meta.env.VITE_BACKEND_URL}/saleslead/allLeads?page=${page}&limit=${limit}`;
+        } else {
+          // ✅ Employees: fetch leads using either paramId or userDetails._id
+          const employeeId = paramId || userDetails._id;
+          console.log(employeeId)
+          url = `${import.meta.env.VITE_BACKEND_URL}/saleslead/salelead/employee/${employeeId}?page=${page}&limit=${limit}`;
         }
 
-        const url = `${base}?${params.toString()}`;
-        const res = await fetch(url);
+        const res = await fetch(url, { signal: controller.signal });
         if (!res.ok) throw new Error('Failed to fetch leads');
 
         const data = await res.json();
         const leads = data.salesLeads || data.data || [];
 
         setSalesLeadData(leads);
-        setTotalPages(data.totalPages || Math.ceil((data.total || 0) / limit));
 
+        // ✅ safer totalPages calculation
+        const pagesFromServer = data.data.length ?? (data.total ? Math.ceil((data.total || 0) / limit) : 1);
+        setTotalPages(pagesFromServer);
+
+        // ✅ initialize status map
         const initialStatus = {};
         leads.forEach(item => {
-          initialStatus[item._id] = item.status;
+          initialStatus[item._id] = item.status ?? 'Not Answered';
         });
         setStatusMap(initialStatus);
       } catch (error) {
+        if (error.name === 'AbortError') return;
         console.error("Error fetching leads:", error);
         toast.error("Failed to fetch leads");
       }
     };
 
     fetchLeads();
-  }, [userDetails, page, limit, month, year, selectedDate]);
+    return () => controller.abort();
+  }, [userDetails, paramId, page, limit]); // ✅ include paramId in dependency array
 
-  // Client-side filters as fallback
-  let filteredData = salesLeadData;
-  if (month) filteredData = filteredData.filter(r => getRecordMonth(r) === Number(month));
-  if (selectedDate) filteredData = filteredData.filter(r => getRecordISODate(r) === selectedDate);
-
+  // ======================
+  // Status Update Handler
+  // ======================
   async function handleStatusChange(value, id) {
-    setStatusMap(prev => ({ ...prev, [id]: value }));
+    if (!userDetails || userDetails.role === "Admin") return; // prevent admin updates
+
+    setStatusMap(prev => ({ ...prev, [id]: value })); // optimistic update
     try {
       const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/saleslead/status/update/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status: value }),
       });
-      if (!res.ok) throw new Error();
+
+      if (!res.ok) throw new Error('Failed to update status');
       toast.success('Status updated successfully');
-    } catch {
+    } catch (err) {
       toast.error('Failed to update status');
+      console.error('Error updating status:', err);
+      // Optional: revert UI or refetch
+      setPage(prev => prev);
     }
   }
 
+  // Pagination
   const handlePrevious = () => page > 1 && setPage(page - 1);
   const handleNext = () => page < totalPages && setPage(page + 1);
   
@@ -132,6 +145,7 @@ const SalesInt = () => {
     setPage(1);
   }
 
+  // Table columns
   const columns = [
     { id: "name", header: "Lead Name" },
     { id: "contactNumber", header: "Phone Number" },
@@ -142,23 +156,31 @@ const SalesInt = () => {
     {
       id: "status",
       header: "Status",
-      cell: (row) => (
-        <select
-          className={`border p-1 rounded ${userDetails.role === "Admin" ? "bg-gray-200 cursor-not-allowed" : ""}`}
-          value={statusMap[row._id] || 'Not Answered'}
-          onChange={(e) => handleStatusChange(e.target.value, row._id)}
-          disabled={userDetails.role === "Admin"}
-        >
-          {["Interested", "Not Interested", "Not Answered", "Follow Up", "Parents Update"].map(o => (
-            <option key={o} value={o}>{o}</option>
-          ))}
-        </select>
-      ),
+      cell: (row) => {
+        const currentValue = statusMap[row._id] ?? row.status ?? 'Not Answered';
+        const isAdmin = userDetails?.role === "Admin";
+
+        return (
+          <select
+            className={`border p-1 rounded ${isAdmin ? "bg-gray-200 cursor-not-allowed" : ""}`}
+            value={currentValue}
+            onChange={(e) => {
+              if (isAdmin) return;
+              handleStatusChange(e.target.value, row._id);
+            }}
+            disabled={isAdmin}
+          >
+            {["Interested", "Not Interested", "Not Answered", "Follow Up", "Parents Update"].map(o => (
+              <option key={o} value={o}>{o}</option>
+            ))}
+          </select>
+        );
+      },
     },
   ];
 
   return (
-    <div className="px-6">
+    <div className="mt-6 px-6">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-sans">Sales Lead Info</h2>
         <div className="flex gap-2">
@@ -184,9 +206,7 @@ const SalesInt = () => {
         </div>
       </div>
 
-      <div className="mt-[0.1%]">
-        <Table columns={columns} data={filteredData} />
-      </div>
+      <Table columns={columns} data={salesLeadData} />
 
       <div className="flex justify-center items-center mt-10 gap-4 px-7 mb-5 flex-row">
         <span className="text-lg flex-1 text-[#444444] font-medium">

@@ -12,6 +12,11 @@ const LeadInt = () => {
   const [limit] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
   const [statusMap, setStatusMap] = useState({});
+  const [filterValue, setFilterValue] = useState("All");
+
+  // 🟢 Single date filter
+  const [selectedDate, setSelectedDate] = useState('');
+
 
   useEffect(() => {
     const fetchLeads = async () => {
@@ -108,8 +113,10 @@ const LeadInt = () => {
         <h2 className="text-xl font-sans">Lead Generation Info</h2>
       </div>
 
+      {/* 🧾 Table */}
       <Table columns={columns} data={leadData} />
 
+      {/* 🔢 Pagination */}
       <div className="flex justify-center items-center mt-10 gap-4 px-7 mb-5 flex-row">
         <span className="text-lg flex-1 text-[#444444] font-medium">
           Page {page} of {totalPages}

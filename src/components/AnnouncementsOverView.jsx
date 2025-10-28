@@ -10,10 +10,11 @@ export default function AnnouncementsOverView() {
         "http://localhost:3000/announcement/announcement"
       );
       const result = await response.json();
-      console.log(result)
+      console.log("announcement", result);
 
-      const latest = result.reduce((latest, current) => {
-        if (!latest ||
+      const latest = result.announcements.reduce((latest, current) => {
+        if (
+          !latest ||
           new Date(current.createdAt) > new Date(latest.createdAt)
         ) {
           return current;
@@ -27,7 +28,7 @@ export default function AnnouncementsOverView() {
     } finally {
       setLoading(false);
     }
-  };  
+  };
 
   useEffect(() => {
     fetchImage();
@@ -43,39 +44,35 @@ export default function AnnouncementsOverView() {
   }
 
   return (
-
-    <div className="h-[383px] border-[#004AAD] border rounded-md bg-[#004AAD1A] items-center cursor-pointer">
-      <div className="p-2 ml-3 ">
+    <div className=" border-[#004AAD] border rounded-md bg-[#004AAD1A] items-center cursor-pointer">
+      <div className="p-2 ml-3">
         <h1 className="text-[#004AAD] font-bold text-2xl">Announcements</h1>
-        {latestAnnouncement && latestAnnouncement.image ? (
-          <>
 
-          <div className="flex gap-2">
-        <h1 className="">{latestAnnouncement.title}</h1>
-      </div>
-
-      <div className="text-[#004AAD]">
-        <h1 className="font-sans text-2xl">{latestAnnouncement.description}</h1>
-      </div>
-      
-          <img
-            src={`http://localhost:3000${latestAnnouncement.image}`}
-            alt="Announcement"
-            className="w-[30%] object-cover h-[200px] rounded-md mt-2"
-          />
-
-         
-            </>
-          
-            
-
+        {latestAnnouncement ? (
+          latestAnnouncement.image ? (
+            <img
+              src={`http://localhost:3000${latestAnnouncement.image}`}
+              alt="Announcement"
+              className="w-[23%] object-cover h-[10%] rounded-md mt-2"
+            />
+          ) : (
+            <div>
+              <div className="flex gap-2">
+                <h1>{latestAnnouncement.title}</h1>
+              </div>
+              <div className="text-[#004AAD]">
+                <h1 className="font-sans text-2xl">
+                  {latestAnnouncement.description}
+                </h1>
+              </div>
+            </div>
+          )
         ) : (
           <p className="mt-2 text-gray-600">
-            No recent announcement image available.
+            No recent announcement available.
           </p>
         )}
       </div>
-
     </div>
   );
 }

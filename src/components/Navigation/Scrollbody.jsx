@@ -59,6 +59,21 @@ const OptionsList = [
             // "Operations" , 
             // "HR" , 
             // "Team Lead" , 
+            // "Intern" , 
+            // "Post Sales" , 
+            // "Digital Marteking"
+         ],
+  },
+  {
+    id: 4,
+    title: "Sales Leads Info",
+    icon: <FaTruckFast className="h-6 w-6 " />,
+    link: "int",
+    access:[ 
+            // "Admin" ,
+            // "Operations" , 
+            // "HR" , 
+            // "Team Lead" , 
             "Intern" , 
             // "Post Sales" , 
             // "Digital Marteking"

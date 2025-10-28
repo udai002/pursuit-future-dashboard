@@ -25,7 +25,6 @@ const LeadInt = () => {
         let url;
         let filterQuery = `&status=${filterValue}`;
 
-        // 🟢 Send selectedDate to backend (newly supported)
         if (selectedDate) {
           filterQuery += `&selectedDate=${selectedDate}`;
         }
@@ -62,7 +61,6 @@ const LeadInt = () => {
     fetchLeads();
   }, [userDetails, page, filterValue, selectedDate]);
 
-  // 🟢 Handle status update
   async function handleStatusChange(value, id) {
     if (userDetails.role === "Admin") return;
 

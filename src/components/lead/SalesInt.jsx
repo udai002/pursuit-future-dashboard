@@ -20,31 +20,6 @@ const monthOptions = [
   { value: '12', label: 'December' },
 ];
 
-function getRecordMonth(rec) {
-  const candidates = [rec?.createdAt, rec?.created_at, rec?.date, rec?.Date, rec?.updatedAt];
-  for (const c of candidates) {
-    if (!c) continue;
-    const d = new Date(c);
-    if (!Number.isNaN(d.getTime())) return d.getMonth() + 1;
-  }
-  return null;
-}
-
-function getRecordISODate(rec) {
-  const candidates = [rec?.createdAt, rec?.created_at, rec?.date, rec?.Date, rec?.updatedAt];
-  for (const c of candidates) {
-    if (!c) continue;
-    const d = new Date(c);
-    if (!Number.isNaN(d.getTime())) {
-      const yyyy = d.getFullYear();
-      const mm = String(d.getMonth() + 1).padStart(2, '0');
-      const dd = String(d.getDate()).padStart(2, '0');
-      return `${yyyy}-${mm}-${dd}`;
-    }
-  }
-  return null;
-}
-
 const SalesInt = () => {
   const { userDetails } = useAuth();
 
@@ -68,15 +43,21 @@ const SalesInt = () => {
             : `${import.meta.env.VITE_BACKEND_URL}/saleslead/salelead/employee/${userDetails._id}`;
 
         const params = new URLSearchParams({ page: String(page), limit: String(limit) });
+        
+        // Add year parameter for month filtering
         if (month) {
           params.append('month', month);
           params.append('year', String(year));
         }
+        
+        // Add date parameter for date filtering
         if (selectedDate) {
           params.append('date', selectedDate);
         }
 
         const url = `${base}?${params.toString()}`;
+        console.log('Fetching from:', url); // Debug log
+        
         const res = await fetch(url);
         if (!res.ok) throw new Error('Failed to fetch leads');
 
@@ -84,8 +65,13 @@ const SalesInt = () => {
         const leads = data.salesLeads || data.data || [];
 
         setSalesLeadData(leads);
-        setTotalPages(data.totalPages || Math.ceil((data.total || 0) / limit));
-
+        setTotalPages(
+          data.totalPages
+          || data.pages
+          || Math.ceil((data.total || 0) / limit)
+          || 1
+        );
+        
         const initialStatus = {};
         leads.forEach(item => {
           initialStatus[item._id] = item.status;
@@ -100,11 +86,7 @@ const SalesInt = () => {
     fetchLeads();
   }, [userDetails, page, limit, month, year, selectedDate]);
 
-  // Client-side filters as fallback
-  let filteredData = salesLeadData;
-  if (month) filteredData = filteredData.filter(r => getRecordMonth(r) === Number(month));
-  if (selectedDate) filteredData = filteredData.filter(r => getRecordISODate(r) === selectedDate);
-
+  // Status update handler
   async function handleStatusChange(value, id) {
     setStatusMap(prev => ({ ...prev, [id]: value }));
     try {
@@ -122,7 +104,7 @@ const SalesInt = () => {
 
   const handlePrevious = () => page > 1 && setPage(page - 1);
   const handleNext = () => page < totalPages && setPage(page + 1);
-  
+
   const handleMonthChange = (e) => {
     setMonth(e.target.value);
     setPage(1);
@@ -185,7 +167,7 @@ const SalesInt = () => {
       </div>
 
       <div className="mt-[0.1%]">
-        <Table columns={columns} data={filteredData} />
+        <Table columns={columns} data={salesLeadData} />
       </div>
 
       <div className="flex justify-center items-center mt-10 gap-4 px-7 mb-5 flex-row">

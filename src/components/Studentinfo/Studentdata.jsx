@@ -5,8 +5,11 @@ import { FaFileCsv } from "react-icons/fa6";
 import toast from "react-hot-toast";
 import CustomSelect from "../button/CustomSelect";
 import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
+import useAuth from "../../context/AuthContext";
 
 export default function Studentdata() {
+  const { userDetails } = useAuth(); 
+
   const [data, setData] = useState([]);
   const [file, setFile] = useState(null);
   const [search, setSearch] = useState('');
@@ -18,6 +21,7 @@ export default function Studentdata() {
   const [month, setMonth] = useState("");
   const [programType, setProgramType] = useState("");
 
+  const isDisabled = userDetails?.role === "PostSale" || userDetails?.role === "Intern";
 
   const fetchStudents = async () => {
     try {
@@ -114,7 +118,7 @@ export default function Studentdata() {
     { id: "PricePitched", header: "Price Pitched" },
     { id: "courseOpted", header: "Course Opted" },
     { id: "Registration", header: "Registration Date" },
-    {id: "programType", header:"programType"},
+    { id: "programType", header: "programType" },
     { id: "employeeIdemail", header: "Employee Email" },
     {
       header: "Payment Status",
@@ -192,16 +196,22 @@ export default function Studentdata() {
             />
           </div>
 
+       
           <input
             type="file"
             accept=".csv"
             onChange={handleFileChange}
             className="hidden"
             id="csvUpload"
+            disabled={isDisabled}
           />
           <label
             htmlFor="csvUpload"
-            className="border-2 border-[#004AAD] rounded-xl w-[160px] h-[45px] text-[16px] p-2 bg-[#004AAD] text-[#fff] flex items-center justify-center gap-2 cursor-pointer"
+            className={`border-2 border-[#004AAD] rounded-xl w-[160px] h-[45px] text-[16px] p-2 flex items-center justify-center gap-2
+              ${isDisabled
+                ? "bg-gray-300 text-gray-600 cursor-not-allowed"
+                : "bg-[#004AAD] text-white cursor-pointer"
+              }`}
           >
             Import CSV File
             <FaFileCsv className="text-[#fff]" />

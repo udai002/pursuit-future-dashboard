@@ -22,7 +22,7 @@ const LeadInt = () => {
         if (userDetails.role === "Admin") {
           url = `${import.meta.env.VITE_BACKEND_URL}/leadgen/all?page=${page}&limit=${limit}`;
         } else {
-          url = `${import.meta.env.VITE_BACKEND_URL}/leadgen/employee/${userDetails._id}?page=${page}&limit=${limit}`;
+          url = `${import.meta.env.VITE_BACKEND_URL}/leadgen/leadgen/employee/${userDetails._id}?page=${page}&limit=${limit}`;
         }
 
         const res = await fetch(url);

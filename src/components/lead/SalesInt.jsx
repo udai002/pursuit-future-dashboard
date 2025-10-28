@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Table from '../table';
+import CustomSelect from '../button/CustomSelect';
 import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 import useAuth from '../../context/AuthContext';
 import toast from 'react-hot-toast';
@@ -8,8 +9,9 @@ const SalesInt = () => {
   const { userDetails } = useAuth();
 
   const [salesLeadData, setSalesLeadData] = useState([]);
+  const [month, setMonth] = useState('');
   const [page, setPage] = useState(1);
-  const [limit] = useState(8);
+  const [limit] = useState(5);
   const [totalPages, setTotalPages] = useState(1);
   const [statusMap, setStatusMap] = useState({});
 
@@ -31,10 +33,8 @@ const SalesInt = () => {
         const data = await res.json();
         const leads = data.salesLeads || data.data || [];
 
-        console.log("this is data from leads ..." , data)
-
-        setSalesLeadData(data.data);
-        setTotalPages(data.total || 1);
+        setSalesLeadData(leads);
+        setTotalPages(data.pages || 1);
 
         const initialStatus = {};
         leads.forEach(item => {
@@ -82,10 +82,9 @@ const SalesInt = () => {
       header: "Status",
       cell: (row) => (
         <select
-          className={`border p-1 rounded ${userDetails.role === "Admin" ? "bg-gray-200 cursor-not-allowed" : ""}`}
+          className="border p-1 rounded"
           value={statusMap[row._id] || 'Not Answered'}
           onChange={(e) => handleStatusChange(e.target.value, row._id)}
-          disabled={userDetails.role === "Admin"}
         >
           {["Interested", "Not Interested", "Not Answered", "Follow Up", "Parents Update"].map(o => (
             <option key={o} value={o}>{o}</option>
@@ -96,14 +95,13 @@ const SalesInt = () => {
   ];
 
   return (
-    <div className=" px-6">
+    <div className="mt-6 px-6">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-sans">Sales Lead Info</h2>
+        
       </div>
 
-      <div className="mt-[0.1%]">
-        <Table columns={columns} data={salesLeadData} />
-      </div>
+      <Table columns={columns} data={salesLeadData} />
 
       <div className="flex justify-center items-center mt-10 gap-4 px-7 mb-5 flex-row">
         <span className="text-lg flex-1 text-[#444444] font-medium">

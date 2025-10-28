@@ -10,7 +10,9 @@ const DpsDataPage = ({ onAddDps }) => {
   const [preferredMonth, setPreferredMonth] = useState("");
 
   const { userDetails } = useAuth();
-  const isAdmin = userDetails?.role === "Admin";
+  const isRestricted =
+  userDetails?.role === "Admin" || userDetails?.role === "Post Sales";
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -63,10 +65,10 @@ const DpsDataPage = ({ onAddDps }) => {
 
             {/* Add DPS button with admin restriction */}
             <button
-              onClick={!isAdmin ? onAddDps : undefined}
-              disabled={isAdmin}
+              onClick={!isRestricted ? onAddDps : undefined}
+              disabled={isRestricted}
               className={`px-5 py-2 rounded-lg shadow transition font-medium ${
-                isAdmin
+                isRestricted
                   ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                   : "bg-[#004AAD] text-white hover:bg-blue-800"
               }`}

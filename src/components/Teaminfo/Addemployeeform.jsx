@@ -43,7 +43,7 @@ const Addemployeeform = ({ teamsInfo, handleCloseModal }) => {
         const optionName = options.find(item=>item.value===value)
         return optionName
     }
-    const isDigitalMarketing = role === "Digital Marketing"
+    const isDigitalMarketing = role==="Digital Marketing"
     const isAdmin = role === "Admin"
     
     async function handleCreateEmployee(e) {

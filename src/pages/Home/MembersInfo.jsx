@@ -98,7 +98,12 @@ const MembersInfo = () => {
     ];
 
     return (
-        <div className='mt-[5%]'>
+        <>
+        <div className=''>
+            <h1 className='text-[24px]'>Members Info</h1>
+
+        </div>
+        <div className=''>
             <Table columns={columns} data={data} />
 
             <div className='flex justify-end mt-5 pr-10'>
@@ -109,6 +114,7 @@ const MembersInfo = () => {
                 </h2>
             </div>
         </div>
+        </>
     )
 }
 

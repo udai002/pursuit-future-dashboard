@@ -84,7 +84,10 @@ const SalesInt = () => {
           }
         }
 
-        const res = await fetch(url, { signal: controller.signal });
+        const url = `${base}?${params.toString()}`;
+        console.log('Fetching from:', url); // Debug log
+        
+        const res = await fetch(url);
         if (!res.ok) throw new Error('Failed to fetch leads');
 
         const data = await res.json();
@@ -124,9 +127,7 @@ const SalesInt = () => {
     return () => controller.abort();
   }, [userDetails, paramId, page, limit, selectedTypeLead, month, selectedDate]);
 
-  // ======================
-  // Status Update Handler
-  // ======================
+  // Status update handler
   async function handleStatusChange(value, id) {
     if (!userDetails || userDetails.role === "Admin") return;
 
@@ -241,8 +242,9 @@ const SalesInt = () => {
         </div>
       </div>
 
-      {/* Table Display */}
-      <Table columns={columns} data={salesLeadData} />
+      <div className="mt-[0.1%]">
+        <Table columns={columns} data={salesLeadData} />
+      </div>
 
       {/* Pagination */}
       <div className="flex justify-center items-center mt-10 gap-4 px-7 mb-5 flex-row">

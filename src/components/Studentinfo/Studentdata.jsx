@@ -5,7 +5,7 @@ import { FaFileCsv } from "react-icons/fa6";
 import toast from "react-hot-toast";
 import CustomSelect from "../button/CustomSelect";
 import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
-import useAuth from "../../context/AuthContext";
+import useAuth from "../../context/AuthContext"; 
 
 export default function Studentdata() {
   const { userDetails } = useAuth(); 
@@ -21,7 +21,9 @@ export default function Studentdata() {
   const [month, setMonth] = useState("");
   const [programType, setProgramType] = useState("");
 
-  const isDisabled = userDetails?.role === "PostSale" || userDetails?.role === "Intern";
+
+  const disableCsvUpload = userDetails?.role === "PostSale" || userDetails?.role === "Intern";
+  const disablePaymentStatus = userDetails?.role === "Operations" || userDetails?.role === "Intern";
 
   const fetchStudents = async () => {
     try {
@@ -123,11 +125,16 @@ export default function Studentdata() {
     {
       header: "Payment Status",
       cell: (row) => (
-        <div className=" text-center">
+        <div className="text-center">
           <select
             value={row.paymentStatus}
             onChange={(e) => handleChange(e, row._id)}
-            className="border-2 border-blue-700 rounded px-2 py-1 text-[#00499d]"
+            disabled={disablePaymentStatus}
+            className={`border-2 rounded px-2 py-1 text-[#00499d] ${
+              disablePaymentStatus
+                ? "border-gray-400 bg-gray-200 cursor-not-allowed text-gray-600"
+                : "border-blue-700"
+            }`}
           >
             <option value="Paid">Paid</option>
             <option value="Not Paid">Not Paid</option>
@@ -196,19 +203,19 @@ export default function Studentdata() {
             />
           </div>
 
-       
+      
           <input
             type="file"
             accept=".csv"
             onChange={handleFileChange}
             className="hidden"
             id="csvUpload"
-            disabled={isDisabled}
+            disabled={disableCsvUpload}
           />
           <label
             htmlFor="csvUpload"
             className={`border-2 border-[#004AAD] rounded-xl w-[160px] h-[45px] text-[16px] p-2 flex items-center justify-center gap-2
-              ${isDisabled
+              ${disableCsvUpload
                 ? "bg-gray-300 text-gray-600 cursor-not-allowed"
                 : "bg-[#004AAD] text-white cursor-pointer"
               }`}

@@ -5,7 +5,7 @@ const DpsDataPage = ({ onAddDps }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
-  const [limit] = useState(10);
+  const [limit] = useState(10);                                                                                                      
   const [totalPages, setTotalPages] = useState(1);
   const [preferredMonth, setPreferredMonth] = useState("");
   const [allMembers, setAllMembers] = useState([]);
@@ -13,7 +13,9 @@ const DpsDataPage = ({ onAddDps }) => {
   const [singleEmpData, setSingleEmpData] = useState([]);
 
   const { userDetails } = useAuth();
-  const isAdmin = userDetails?.role === "Admin";
+  const isRestricted =
+  userDetails?.role === "Admin" || userDetails?.role === "Post Sales" || userDetails?.role === "Operations";
+
 
   //  Fetch all DPS data and all employees
   useEffect(() => {
@@ -119,10 +121,10 @@ const DpsDataPage = ({ onAddDps }) => {
             </select>
 
             <button
-              onClick={!isAdmin ? onAddDps : undefined}
-              disabled={isAdmin}
+              onClick={!isRestricted ? onAddDps : undefined}
+              disabled={isRestricted}
               className={`px-5 py-2 rounded-lg shadow transition font-medium ${
-                isAdmin
+                isRestricted
                   ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                   : "bg-[#004AAD] text-white hover:bg-blue-800"
               }`}

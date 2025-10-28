@@ -43,7 +43,9 @@ const Addemployeeform = ({ teamsInfo, handleCloseModal }) => {
         const optionName = options.find(item=>item.value===value)
         return optionName
     }
-
+    const isDigitalMarketing = role === "Digital Marketing"
+    const isAdmin = role === "Admin"
+    
     async function handleCreateEmployee(e) {
         e.preventDefault()
         if (!username || !email || !phone || !officeLocation) {
@@ -103,7 +105,7 @@ const Addemployeeform = ({ teamsInfo, handleCloseModal }) => {
                                     <option value="HR" className='text-[#004AAD]'>HR</option>
                                     <option value="Team Lead" className='text-[#004AAD]'>Team Lead</option>
                                     <option value="Post Sales" className='text-[#004AAD]'>Post Sales</option>
-                                    <option value="Digital Marteking" className='text-[#004AAD]'>Digital Marteking</option>
+                                    <option value="Digital Marketing" className='text-[#004AAD]'>Digital Marketing</option>
                                 </select>
 
                             </div>
@@ -164,13 +166,16 @@ const Addemployeeform = ({ teamsInfo, handleCloseModal }) => {
                          <select
                          id='selectTeam'
                             className=" p-3  text-[#004AAD] "
-                             value={team} onChange={e => setTeam([...team , e.target.value])}>
+                             value={team} onChange={e => setTeam([...team , e.target.value])}
+                             disabled={isDigitalMarketing || isAdmin}>
                             {options.filter(item=>team.includes(item.value)===false).map(item=> <option value={item.value} className="text-[#004AAD]">{item.label}</option>)}
                         </select>
                         </div>
                         <select
                             className="border-2 border-[#004AAD] p-3 rounded-2xl w-1/2 text-[#004AAD]"
-                            defaultValue="" value={officeLocation} onChange={e => setOfficeLocation(e.target.value)}>
+                            defaultValue="" value={officeLocation} 
+                            onChange={e => setOfficeLocation(e.target.value)}
+                            disabled={isDigitalMarketing || isAdmin} >
                             <option value="Hyderabad" className="text-[#004AAD]">Hyderabad</option>
                             <option value="Banglore" className="text-[#004AAD]">Banglore</option>
                         </select>

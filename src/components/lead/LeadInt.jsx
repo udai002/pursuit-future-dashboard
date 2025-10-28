@@ -77,7 +77,7 @@ const LeadInt = () => {
   //  Table Columns
   const columns = [
     { id: "name", header: "Lead Name" },
-    { id: "contactNumber", header: "Phone Number" },y
+    { id: "contactNumber", header: "Phone Number" },
     { id: "branch", header: "Department/Branch" },
     { id: "collegeName", header: "College" },
     { id: "domain1", header: "Course Interest" },

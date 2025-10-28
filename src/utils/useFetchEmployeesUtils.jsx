@@ -1,20 +1,26 @@
 import { useEffect, useState } from "react";
+import useAuth from "../context/AuthContext";
 
 export default function useFetchEmployees(selectedMonth) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
 
+  const { userDetails } = useAuth();
+
   useEffect(() => {
+    if (!userDetails?.officeLocation) return; // wait until location is available
+
     const fetchEmployees = async () => {
       try {
         setLoading(true);
         setMessage("");
 
-        const url = selectedMonth
-          ? `http://localhost:3000/api/Allusers?month=${selectedMonth}`
-          : `http://localhost:3000/api/Allusers`;
+        const params = new URLSearchParams();
+        if (selectedMonth) params.append("month", selectedMonth);
+        if (userDetails.officeLocation) params.append("location", userDetails.officeLocation);
 
+        const url = `http://localhost:3000/api/Allusers?${params.toString()}`;
         console.log("Fetching employees from:", url);
 
         const response = await fetch(url);
@@ -23,7 +29,7 @@ export default function useFetchEmployees(selectedMonth) {
         const json = await response.json();
         console.log("Fetched employees data:", json);
 
-        if (!json || !json.users || json.users.length === 0) {
+        if (!json.users || json.users.length === 0) {
           setData([]);
           setMessage("No employees found for the selected month.");
         } else {
@@ -40,7 +46,7 @@ export default function useFetchEmployees(selectedMonth) {
     };
 
     fetchEmployees();
-  }, [selectedMonth]);
+  }, [selectedMonth, userDetails]);
 
   return { data, loading, message };
 }

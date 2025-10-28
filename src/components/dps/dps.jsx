@@ -8,17 +8,21 @@ const DpsDataPage = ({ onAddDps }) => {
   const [limit] = useState(10);                                                                                                      
   const [totalPages, setTotalPages] = useState(1);
   const [preferredMonth, setPreferredMonth] = useState("");
+  const [allMembers, setAllMembers] = useState([]);
+  const [oneEmp, setOneEmp] = useState("");
+  const [singleEmpData, setSingleEmpData] = useState([]);
 
   const { userDetails } = useAuth();
   const isRestricted =
   userDetails?.role === "Admin" || userDetails?.role === "Post Sales" || userDetails?.role === "Operations";
 
 
+  //  Fetch all DPS data and all employees
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        let url = `http://localhost:3000/api/all?page=${page}&limit=${limit}`;
+        let url = `http://localhost:3000/dps/all?page=${page}&limit=${limit}`;
         if (preferredMonth) {
           url += `&preferredProgramMonth=${preferredMonth}`;
         }
@@ -32,17 +36,70 @@ const DpsDataPage = ({ onAddDps }) => {
         setLoading(false);
       }
     };
+
+    const fetchAllMembers = async () => {
+      try {
+        const allM = await fetch(`http://localhost:3000/dps/getAll/dps`);
+        const res = await allM.json();
+        setAllMembers(res.allEmployees);
+      } catch (e) {
+        console.log("Error fetching all members:", e);
+      }
+    };
+
     fetchData();
+    fetchAllMembers();
   }, [page, limit, preferredMonth]);
+
+  //  Fetch DPS data by specific employee
+  const dpsByIntern = async (empId) => {
+    try {
+      const res = await fetch(`http://localhost:3000/dps/dps/intern/${empId}`);
+      const opt = await res.json();
+      setSingleEmpData(opt.dpsByOne || []);
+    } catch (e) {
+      console.log("Error fetching DPS by intern:", e);
+    }
+  };
+
+  //  Decide which dataset to display
+  const displayedData = oneEmp ? singleEmpData : data;
 
   return (
     <div className="flex h-screen">
       <main className="flex-1 flex pb-5 flex-col">
+        {/* Header */}
         <div className="flex items-center pb-5 justify-between">
-          <h1 className="text-xl font-semibold text-gray-800">
-            DPS Student Data
-          </h1>
+          <div className="flex items-center gap-4">
+            <h1 className="text-xl font-semibold text-gray-800">
+              DPS Student Data
+            </h1>
 
+            {/* Employee Dropdown */}
+            <select
+              value={oneEmp}
+              onChange={(e) => {
+                const selectedId = e.target.value;
+                setOneEmp(selectedId);
+                if (selectedId) {
+                  dpsByIntern(selectedId);
+                } else {
+                  setSingleEmpData([]); // Reset when "All Employees" is selected
+                }
+              }}
+              className="border border-gray-300 rounded-lg px-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="">All Employees</option>
+              {allMembers &&
+                allMembers.map((member) => (
+                  <option key={member._id} value={member._id}>
+                    {member.username}
+                  </option>
+                ))}
+            </select>
+          </div>
+
+          {/* Month & Add Button */}
           <div className="flex items-center gap-3">
             <select
               value={preferredMonth}
@@ -63,7 +120,6 @@ const DpsDataPage = ({ onAddDps }) => {
               ))}
             </select>
 
-            {/* Add DPS button with admin restriction */}
             <button
               onClick={!isRestricted ? onAddDps : undefined}
               disabled={isRestricted}
@@ -78,7 +134,8 @@ const DpsDataPage = ({ onAddDps }) => {
           </div>
         </div>
 
-        <div className="bg-white border-b-2 border-blue-200">
+        {/* Data Table */}
+        <div className="bg-white border-b-2 border-blue-200 rounded-lg shadow-sm overflow-x-auto">
           {loading ? (
             <p className="text-center text-gray-600 py-6">Loading...</p>
           ) : (
@@ -89,17 +146,17 @@ const DpsDataPage = ({ onAddDps }) => {
                     "Student Name", "Email", "Contact No", "WhatsApp No", "Department",
                     "Year", "Course Opted", "Preferred Month", "Amount Pitched", "Amount Paid",
                   ].map((head, i) => (
-                    <th key={i} className="px-1 py-3 font-medium">{head}</th>
+                    <th key={i} className="px-2 py-3 font-medium">{head}</th>
                   ))}
                 </tr>
               </thead>
               <tbody>
-                {data.length > 0 ? (
-                  data.map((student, index) => (
+                {displayedData.length > 0 ? (
+                  displayedData.map((student, index) => (
                     <tr
                       key={index}
                       className={`hover:bg-blue-50 transition ${
-                        index % 2 === 0 ? "bg-white" : "bg-white"
+                        index % 2 === 0 ? "bg-white" : "bg-gray-50"
                       }`}
                     >
                       <td className="py-2 border-b border-blue-300">{student.studentName}</td>
@@ -129,28 +186,33 @@ const DpsDataPage = ({ onAddDps }) => {
           )}
         </div>
 
-        <div className="flex justify-center items-center mt-6 space-x-4">
-          <button
-            onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
-            disabled={page === 1}
-            className="px-4 py-2 border rounded-lg bg-white shadow hover:bg-gray-100 disabled:opacity-50"
-          >
-            Prev
-          </button>
-          <span className="text-sm font-medium text-gray-700">
-            Page {page} of {totalPages}
-          </span>
-          <button
-            onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
-            disabled={page === totalPages}
-            className="px-4 py-2 border rounded-lg bg-white shadow hover:bg-gray-100 disabled:opacity-50"
-          >
-            Next
-          </button>
-        </div>
+        {/* Pagination */}
+        {!oneEmp && (
+          <div className="flex justify-center items-center mt-6 space-x-4">
+            <button
+              onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+              disabled={page === 1}
+              className="px-4 py-2 border rounded-lg bg-white shadow hover:bg-gray-100 disabled:opacity-50"
+            >
+              Prev
+            </button>
+            <span className="text-sm font-medium text-gray-700">
+              Page {page} of {totalPages}
+            </span>
+            <button
+              onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
+              disabled={page === totalPages}
+              className="px-4 py-2 border rounded-lg bg-white shadow hover:bg-gray-100 disabled:opacity-50"
+            >
+              Next
+            </button>
+          </div>
+        )}
       </main>
     </div>
   );
 };
+
+
 
 export default DpsDataPage;

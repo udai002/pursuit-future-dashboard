@@ -5,6 +5,47 @@ import useAuth from '../../context/AuthContext';
 import toast from 'react-hot-toast';
 import { useParams } from 'react-router';
 
+const monthOptions = [
+  { value: '', label: 'Month' },
+  { value: '1', label: 'January' },
+  { value: '2', label: 'February' },
+  { value: '3', label: 'March' },
+  { value: '4', label: 'April' },
+  { value: '5', label: 'May' },
+  { value: '6', label: 'June' },
+  { value: '7', label: 'July' },
+  { value: '8', label: 'August' },
+  { value: '9', label: 'September' },
+  { value: '10', label: 'October' },
+  { value: '11', label: 'November' },
+  { value: '12', label: 'December' },
+];
+
+function getRecordMonth(rec) {
+  const candidates = [rec?.createdAt, rec?.created_at, rec?.date, rec?.Date, rec?.updatedAt];
+  for (const c of candidates) {
+    if (!c) continue;
+    const d = new Date(c);
+    if (!Number.isNaN(d.getTime())) return d.getMonth() + 1;
+  }
+  return null;
+}
+
+function getRecordISODate(rec) {
+  const candidates = [rec?.createdAt, rec?.created_at, rec?.date, rec?.Date, rec?.updatedAt];
+  for (const c of candidates) {
+    if (!c) continue;
+    const d = new Date(c);
+    if (!Number.isNaN(d.getTime())) {
+      const yyyy = d.getFullYear();
+      const mm = String(d.getMonth() + 1).padStart(2, '0');
+      const dd = String(d.getDate()).padStart(2, '0');
+      return `${yyyy}-${mm}-${dd}`;
+    }
+  }
+  return null;
+}
+
 const SalesInt = () => {
   const { userDetails } = useAuth();
   const { id: paramId } = useParams(); // ✅ get the id from the URL
@@ -14,6 +55,9 @@ const SalesInt = () => {
   const [limit] = useState(5);
   const [totalPages, setTotalPages] = useState(1);
   const [statusMap, setStatusMap] = useState({});
+  const [month, setMonth] = useState('');
+  const [selectedDate, setSelectedDate] = useState('');
+  const year = new Date().getFullYear();
 
    console.log(paramId)
 
@@ -56,6 +100,7 @@ const SalesInt = () => {
       } catch (error) {
         if (error.name === 'AbortError') return;
         console.error("Error fetching leads:", error);
+        toast.error("Failed to fetch leads");
       }
     };
 
@@ -90,6 +135,15 @@ const SalesInt = () => {
   // Pagination
   const handlePrevious = () => page > 1 && setPage(page - 1);
   const handleNext = () => page < totalPages && setPage(page + 1);
+  
+  const handleMonthChange = (e) => {
+    setMonth(e.target.value);
+    setPage(1);
+  };
+  const handleDateChange = (e) => {
+    setSelectedDate(e.target.value);
+    setPage(1);
+  }
 
   // Table columns
   const columns = [
@@ -129,6 +183,27 @@ const SalesInt = () => {
     <div className="mt-6 px-6">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-sans">Sales Lead Info</h2>
+        <div className="flex gap-2">
+          <label className="bg-blue-800 text-white px-2 py-2 rounded flex items-center">
+            <select
+              className="bg-blue-800 text-white outline-none"
+              value={month}
+              onChange={handleMonthChange}
+            >
+              {monthOptions.map(m => (
+                <option key={m.value} value={m.value}>{m.label}</option>
+              ))}
+            </select>
+          </label>
+          <label className="bg-blue-800 text-white px-2 py-2 rounded flex items-center">
+            <input
+              type="date"
+              className="bg-blue-800 text-white outline-none"
+              value={selectedDate}
+              onChange={handleDateChange}
+            />
+          </label>
+        </div>
       </div>
 
       <Table columns={columns} data={salesLeadData} />

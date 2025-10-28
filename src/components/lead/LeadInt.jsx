@@ -15,6 +15,7 @@ const LeadInt = () => {
   const [statusMap, setStatusMap] = useState({});
   const [filterValue, setFilterValue] = useState("All");
 
+  // 🟢 Single date filter
   const [selectedDate, setSelectedDate] = useState('');
 
   useEffect(() => {
@@ -150,8 +151,10 @@ const LeadInt = () => {
         </div>
       </div>
 
+      {/* 🧾 Table */}
       <Table columns={columns} data={leadData} />
 
+      {/* 🔢 Pagination */}
       <div className="flex justify-center items-center mt-10 gap-4 px-7 mb-5 flex-row">
         <span className="text-lg flex-1 text-[#444444] font-medium">
           Page {page} of {totalPages}

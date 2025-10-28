@@ -70,14 +70,14 @@ const LeadInt = () => {
     }
   }
 
-  // ✅ Pagination
+  //  Pagination
   const handlePrevious = () => page > 1 && setPage(page - 1);
   const handleNext = () => page < totalPages && setPage(page + 1);
 
-  // ✅ Table Columns
+  //  Table Columns
   const columns = [
     { id: "name", header: "Lead Name" },
-    { id: "contactNumber", header: "Phone Number" },
+    { id: "contactNumber", header: "Phone Number" },y
     { id: "branch", header: "Department/Branch" },
     { id: "collegeName", header: "College" },
     { id: "domain1", header: "Course Interest" },
@@ -100,7 +100,7 @@ const LeadInt = () => {
     },
   ];
 
-  // ✅ UI
+  //  UI
   return (
     <div className="mt-6 px-6">
       <div className="flex items-center justify-between mb-4">

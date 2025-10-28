@@ -26,7 +26,7 @@ export default function Payment({creditedCount,pendingCount,partialPaymentCount}
         </div>
 
         <div className='text-[#004AAD] font-bold '>
-            <h1  className='text-2xl'>{partialPaymentCount}</h1>
+            <h1  className='text-2xl'>{partialPaymentCount||0}</h1>
         </div>
         
     </div>

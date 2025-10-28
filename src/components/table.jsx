@@ -5,7 +5,7 @@ const Table = ({ data, columns, emptyMessage = "No data available." }) => {
     
 console.log(data)
     return (
-      <div className=" w-full justify-center align-center pt-4">
+      <div className=" w-full h-[62vh] overflow-y-auto justify-center align-center pt-4">
         <div className="flex w-full justify-center align-center">
           <table className="w-[100%] border-collapse overflow-auto sticky">
             <thead>

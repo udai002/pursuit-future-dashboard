@@ -25,6 +25,9 @@ export default function TopNavBar() {
           <div className="border border-[#004AAD] rounded-xl px-3 py-1">
             <h1 className="text-[#004AAD] m-0">{safe(userDetails?.role)}</h1>
           </div>
+          <div>
+            <p>{userDetails?.employeeId || "Emp001"}</p>
+          </div>
         </div>
 
         <div className="flex items-center gap-4">

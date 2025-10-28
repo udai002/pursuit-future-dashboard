@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 export default function useFetchEmployees(selectedMonth) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [message, setMessage] = useState(""); 
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     const fetchEmployees = async () => {
@@ -25,15 +25,15 @@ export default function useFetchEmployees(selectedMonth) {
 
         if (!json || !json.users || json.users.length === 0) {
           setData([]);
-          setMessage("No data available for the selected month.");
+          setMessage("No employees found for the selected month.");
         } else {
           setData(json);
-          setMessage(""); 
+          setMessage("");
         }
       } catch (err) {
         console.error("Error fetching employees:", err);
         setData([]);
-        // setMessage("Unable to load employees. Please try again later.");
+        setMessage("Unable to load employees. Please try again later.");
       } finally {
         setLoading(false);
       }
@@ -42,5 +42,5 @@ export default function useFetchEmployees(selectedMonth) {
     fetchEmployees();
   }, [selectedMonth]);
 
-  return { data, loading, message }; 
+  return { data, loading, message };
 }

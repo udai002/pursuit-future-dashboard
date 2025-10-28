@@ -182,7 +182,7 @@ function App() {
       {/* sales lead info  */}
 
       <Route path='/studentsinfo' Component={StudentsInfo} />
-      <Route path='/salesLeadInfo' Component={SalesInt} />
+      <Route path='/int' Component={SalesInt} />
 
 
 

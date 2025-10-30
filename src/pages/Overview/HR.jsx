@@ -2,6 +2,7 @@ import OverviewComp from '../../components/Overview'
 import AnnouncementsOverView from '../../components/AnnouncementsOverView'
 import MarkAttendence from '../../components/Attendence/MarkAttendence'
 import { useState, useEffect, useRef } from 'react';
+import useFetchEmployees from '../../utils/useFetchEmployeesUtils';
 
 
 export default function HROverView() {
@@ -11,6 +12,10 @@ export default function HROverView() {
   let month = getCurrentDate.getMonth() + 1;
   let year = getCurrentDate.getFullYear();
   let currentDate = `${year}-${month}-${day}`;
+
+  const {data} = useFetchEmployees()
+
+  console.log(data)
 
   console.log(currentDate)
   const [totalEmployee, setTotal] = useState(0);
@@ -75,8 +80,8 @@ useEffect(()=>{
       </div>
       <div className='flex flex-wrap gap-2 sm-grid-1 md:grid-2 lg:grid-4'>
 
-        <OverviewComp title="Total Employees" revenue={totalEmployee} />
-        <OverviewComp title="Present Employees" revenue={employeeData.presentCount} />
+        <OverviewComp title="Total Employees" revenue={data.users?.length}/>
+        <OverviewComp title="Present Employees" revenue={data.users?.length - employeeData.leaveCount} />
         <OverviewComp title="Employees on Leave" revenue={employeeData.leaveCount} />
         <OverviewComp title="Absent" revenue={employeeData.absentCount} />
 
